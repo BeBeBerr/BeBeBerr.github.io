@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS 布局与自动布局关于AutoLayout的苹果官方教程
+Key PointsLayout Process 布局过程参见 Core Layout Runtime
+相比于 Frame 布局，Cocoa Auto Layout 除去显示（display）以外，还在之前增加了两个更多的过程：updat">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS 布局与自动布局"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS 布局与自动布局 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS 布局与自动布局</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-04-25</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/AutoLayout/">#AutoLayout</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h2 id="iOS-布局与自动布局"><a href="#iOS-布局与自动布局" class="headerlink" title="iOS 布局与自动布局"></a>iOS 布局与自动布局</h2><p>关于AutoLayout的苹果<a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/index.html#//apple_ref/doc/uid/TP40010853-CH7-SW1" target="_blank" rel="external">官方教程</a></p>
+<h3 id="Key-Points"><a href="#Key-Points" class="headerlink" title="Key Points"></a>Key Points</h3><h4 id="Layout-Process-布局过程"><a href="#Layout-Process-布局过程" class="headerlink" title="Layout Process 布局过程"></a>Layout Process 布局过程</h4><p>参见 <a href="https://developer.apple.com/library/content/releasenotes/UserExperience/RNAutomaticLayout/index.html#//apple_ref/doc/uid/TP40010631-CH1-SW14" target="_blank" rel="external">Core Layout Runtime</a></p>
+<p>相比于 Frame 布局，Cocoa Auto Layout 除去显示（display）以外，还在之前增加了两个更多的过程：<code>updateConstraintsIfNeeded</code> 和 <code>layoutIfNeeded</code> 。这些过程按顺序进行：更新约束、布局、显示。如果你手动唤起显示，那么显示会唤起布局，布局会唤起更新约束（显示依赖布局，布局依赖约束）。</p>
+<p>你可以认为更新约束的传递就像是测量的传递。例如，如果你改变了一个按钮的标题，那么文字会被测量，并且约束会被设置以向布局系统通知信息。</p>
+<p>详细过程：</p>
+<ol>
+<li>更新约束，被称为测量阶段。这个过程自下而上（从子视图到父视图），为下一步的布局做准备。可以调用 <code>setNeedsUpdateConstraints()</code> 去触发此步骤，约束发生改变时亦会自动触发。但是当自定义 view 的时候，如果一些改变会影响布局，需要用 <code>updateConstraintsIfNeeded()</code> 手动通知AutoLayout。自定义 view 通常需要重写 <code>updateConstraints</code> 方法，在其中添加 view 需要的局部约束。SnapKit 的示例代码中，约束就是在这个方法中添加的。注意⚠️：<code>updateConstraints()</code>  方法不应该手动直接调用。</li>
+<li>布局，自上而下（从父视图到子视图）。应用上一步的信息去设置 view 的 center 和 bounds 。可以通过 <code>setNeedsLayout()</code> 方法去触发此步骤，但此方法不会立即触发布局过程。想要立即更新布局，可以调用 <code>layoutIfNeeded()</code> 方法。自定义的 view 可以重写 <code>layoutSubviews()</code> 方法获得更多自定义效果。该方法会被 <code>layoutIfNeeded()</code> 方法自动触发，不要手动直接调用。</li>
+<li>显示，此过程将 view 渲染到屏幕，此过程与是否使用 AutoLayout 无关，自上而下（父视图到子视图），通过调用 <code>setNeedsDisplay()</code> 方法触发。</li>
+</ol>
+<p>以上三个过程不是单向的。如果在 layout 的过程中改变了 constraints，那么 update constraints 过程又会被再次触发。如果 <code>layoutSubview()</code> 方法中唤起了另外的布局过程，那么有陷入死循环的风险。</p>
+<p>死循环举例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myView</span>: <span class="title">UIView</span> </span>&#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">layoutSubviews</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"layoutSubviews"</span>)</div><div class="line">        <span class="keyword">self</span>.constraints.first?.constant += <span class="number">5</span> <span class="comment">//修改约束，会再次唤醒更新约束过程；之后又会唤起布局过程，无限循环</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</div><div class="line">    <span class="keyword">let</span> myview = myView() </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.viewDidLoad()</div><div class="line">        view.addSubview(myview)</div><div class="line">        myview.translatesAutoresizingMaskIntoConstraints = <span class="literal">false</span></div><div class="line">        myview.backgroundColor = <span class="type">UIColor</span>.red</div><div class="line">            &#125;   </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(<span class="number">_</span> animated: Bool)</span></span> &#123;</div><div class="line">        myview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.width, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: .notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">10</span>))</div><div class="line">        myview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.height, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: .notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">10</span>))</div><div class="line">        view.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.centerX, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>.view, attribute: .centerX, multiplier: <span class="number">1.0</span>, constant: <span class="number">0</span>))</div><div class="line">        view.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.centerY, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>.view, attribute: .centerY, multiplier: <span class="number">1.0</span>, constant: <span class="number">0</span>))</div><div class="line">        view.layoutIfNeeded()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Content-Hugging-Priority-amp-Content-Compression-Resistance-Priority-控件的两个优先级参数"><a href="#Content-Hugging-Priority-amp-Content-Compression-Resistance-Priority-控件的两个优先级参数" class="headerlink" title="Content Hugging Priority &amp; Content Compression Resistance Priority 控件的两个优先级参数"></a>Content Hugging Priority &amp; Content Compression Resistance Priority 控件的两个优先级参数</h4><p>像 ImageView，Label，Button 这样的控件可以根据内容计算出大小。比如 Label 中的文字越多，Label 也就越长。这个大小被称为固有值。如果设置了约束，比如设置 label 的左边距屏幕边界100，右边距边界100，则 label 可能会被拉长。</p>
+<p>Content Hugging Priority 表示控件抗拉伸的优先级。数字越大，控件越不容易被拉伸。默认值是251。</p>
+<p>Content Compression Resistance Priority 表示空间抗压缩的优先级。数字越大越不容易被压缩。默认值是750。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/22/58fae76214f9d.png" alt=""></p>
+<p>这里两边的约束都是100，label 本应该被拉长以满足约束的要求。如果把右边的约束优先级修改为10，左边优先级不变，为默认的1000，Content Hugging Priority 为默认的251，高于10。所以优先满足左边的约束和 label 的固有大小，因此右边的约束无效了。</p>
+<h4 id="Frame-amp-Alignment-Rect-两个不同的矩形"><a href="#Frame-amp-Alignment-Rect-两个不同的矩形" class="headerlink" title="Frame &amp; Alignment Rect 两个不同的矩形"></a>Frame &amp; Alignment Rect 两个不同的矩形</h4><p>自动布局参照的是 Alignment Rectangle 而不是 Frame。比如一个控件的阴影并不会影响到自动布局。应该牢记在自动布局中，Frame 没有视觉大小重要。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/24/58fdfed66497a.png" alt=""></p>
+<h4 id="AutoLayout-Constraints-自动布局的约束"><a href="#AutoLayout-Constraints-自动布局的约束" class="headerlink" title="AutoLayout Constraints 自动布局的约束"></a>AutoLayout Constraints 自动布局的约束</h4><p>视图的布局体系由一系列线性方程所确定，每个约束都可看作是一个方程的表示。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/23/58fc7e1582b9f.png" alt=""></p>
+<p>多数的约束都由两项组成，但是当你设置一个视图的长度、宽度为一个常数时，第二个属性（attribute）会被设为<code>Not An Attribute</code>，比例系数会变成0.0。</p>
+<h4 id="Cassowary-布局算法"><a href="#Cassowary-布局算法" class="headerlink" title="Cassowary 布局算法"></a>Cassowary 布局算法</h4><p>Cassowary 是上世纪 90 年代的一个布局算法，它通过将布局问题抽象成线形等式和不等式约束，求解这个多元方程组来算出 x，y，width 和 height。AutoLayout 就是对 Cassowary 的一个实现。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/24/58fe029e44f4d.png" alt=""></p>
+<h4 id="AutoLayout-Performance-自动布局的性能"><a href="#AutoLayout-Performance-自动布局的性能" class="headerlink" title="AutoLayout Performance 自动布局的性能"></a>AutoLayout Performance 自动布局的性能</h4><p>AutoLayout 的性能瓶颈就是 Cassowary 求解多个方程组的效率问题。因此有人建议在 TableView 中不要用 AutoLayout 设置动态高度的 Cell，而是自己手动计算。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/24/58fe058303e42.png" alt=""></p>
+<p>网上有人对 AutoLayout 和 Frame 做了性能对比测试，可见当 view 很多时，AutoLayout 的速度会慢很多。</p>
+<h4 id="Masonry-amp-SnapKit-自动布局库"><a href="#Masonry-amp-SnapKit-自动布局库" class="headerlink" title="Masonry &amp; SnapKit 自动布局库"></a>Masonry &amp; SnapKit 自动布局库</h4><p>一个简单易用的 AutoLayout 库，可以告别系统自带 api 冗长的代码。Masonry is for Obj-C, SnapKit is for Swift.</p>
+<p>GitHub地址：<a href="https://github.com/SnapKit" target="_blank" rel="external">https://github.com/SnapKit</a></p>
+<h4 id="ComponentKit-and-its-layout-视图框架"><a href="#ComponentKit-and-its-layout-视图框架" class="headerlink" title="ComponentKit and its layout 视图框架"></a>ComponentKit and its layout 视图框架</h4><p>ComponentKit 是 FaceBook 开源的响应式视图框架，不支持 Swift。</p>
+<p>GitHub地址：<a href="https://github.com/facebook/componentkit" target="_blank" rel="external">https://github.com/facebook/componentkit</a></p>
+<h4 id="Constraints-Priority-约束优先级"><a href="#Constraints-Priority-约束优先级" class="headerlink" title="Constraints Priority 约束优先级"></a>Constraints Priority 约束优先级</h4><p>每个约束都有优先级（Priority），范围从1～1000。优先级为1000的约束为必须的（required），其余的为可选的（optional）优先级的绝对大小没有意义，重要的是相对大小。Auto-Layout 会优先满足优先级高的约束。如果一个可选的约束不能被满足，Auto-Layout 会跳过它转而计算下一个约束。</p>
+<p>即使可选的约束可能会不被满足，但它依然对布局有影响。系统会选择最接近这个约束的解决方案，不被满足的约束可以看作是一股将视图拉向它的力。</p>
+<p>可选的约束经常和不等式配合工作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// A single equal relationship</span></div><div class="line"></div><div class="line"><span class="type">Blue</span>.leading = <span class="number">1.0</span> * <span class="type">Red</span>.trailing + <span class="number">8.0</span></div><div class="line"></div><div class="line"><span class="comment">// Can be replaced with two inequality relationships</span></div><div class="line"></div><div class="line"><span class="type">Blue</span>.leading &gt;= <span class="number">1.0</span> * <span class="type">Red</span>.trailing + <span class="number">8.0</span></div><div class="line"></div><div class="line"><span class="type">Blue</span>.leading &lt;= <span class="number">1.0</span> * <span class="type">Red</span>.trailing + <span class="number">8.0</span></div></pre></td></tr></table></figure>
+<p>你可以对上面的两个不等式设置不同的优先级。大于等于不等式的优先级可以设为必须的（1000），小于等于可以设置得低一些（250）。这意味着蓝色的视图与红色视图的距离不能小于8，但是其他的约束可能把它拉得更远。当时可选的约束会把蓝色视图拉向红色视图，保证它尽可能地逼近 8 个点的距离。</p>
+<h4 id="AutoLayout-with-hidden-UIViews-layouts-隐藏的视图的自动布局"><a href="#AutoLayout-with-hidden-UIViews-layouts-隐藏的视图的自动布局" class="headerlink" title="AutoLayout with hidden UIViews layouts 隐藏的视图的自动布局"></a>AutoLayout with hidden UIViews layouts 隐藏的视图的自动布局</h4><p>如果一个 view 被隐藏了，只是试图上看不到了，但是其他的视图距它的约束没有变。如果想让其他的视图跟着变化，可能要修改约束的值，或移除约束，这样代码会过于繁琐。</p>
+<p>如下图，如果我们隐藏第一个 Button，第二个 Button 的位置不会改变。而很多情况下我们希望让第二个 Button 位置往左平移，就像第一个按钮真的不存在一样。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/24/58fe1cd895059.png" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/24/58fe1cd897b3d.png" alt=""></p>
+<h4 id="Variable-row-heights-iOS7-amp-iOS8-变化的行高"><a href="#Variable-row-heights-iOS7-amp-iOS8-变化的行高" class="headerlink" title="Variable row heights (iOS7 &amp; iOS8) 变化的行高"></a>Variable row heights (iOS7 &amp; iOS8) 变化的行高</h4><p>iOS7 和 iOS8 下代理方法调用顺序不同。iOS7 先调用 heightForRowAtIndexPath 方法，后调用 cellForRowAtIndexPath 方法；而 iOS8 与之相反。</p>
+<h4 id="AutoLayout-in-UITableView-for-dynamic-cell-表格视图中动态的-Cell"><a href="#AutoLayout-in-UITableView-for-dynamic-cell-表格视图中动态的-Cell" class="headerlink" title="AutoLayout in UITableView for dynamic cell 表格视图中动态的 Cell"></a>AutoLayout in UITableView for dynamic cell 表格视图中动态的 Cell</h4><p>TableViewCell可以自适应高度，但这个功能不是默认实现的。只有当以下的两个属性被设置后，系统才会使用AutoLayout计算每行的实际高度。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tableView.estimatedRowHeight = <span class="number">85.0</span></div><div class="line"></div><div class="line">tableView.rowHeight = <span class="type">UITableViewAutomaticDimension</span></div></pre></td></tr></table></figure>
+<p>注意：你不能改变预先定义好的部分的布局，如 textLabel , detailTextLabel, imageView。</p>
+<hr>
+<h3 id="Questions-amp-Answers"><a href="#Questions-amp-Answers" class="headerlink" title="Questions &amp; Answers"></a>Questions &amp; Answers</h3><h4 id="Pros-and-cons-of-AutoLayout-amp-Frame-Layout-不同布局方式的优缺点分析"><a href="#Pros-and-cons-of-AutoLayout-amp-Frame-Layout-不同布局方式的优缺点分析" class="headerlink" title="Pros and cons of AutoLayout &amp; Frame Layout 不同布局方式的优缺点分析"></a>Pros and cons of AutoLayout &amp; Frame Layout 不同布局方式的优缺点分析</h4><p>UI 布局有以下三种主要方法：</p>
+<ol>
+<li>Frame layout：直接用代码设置每个空间的 Frame。</li>
+<li>使用 auto-resizing masks：可以自动调整子视图与父视图之间的位置关系。</li>
+<li>使用 auto-layout。</li>
+</ol>
+<p>使用 frame layout 最直接，最灵活。当需要发生变化的时候，所有的改变都有你自己来控制。它带来的问题就是过于繁杂。即使一个很简单的界面，为了适配各种可能的情况，都要花费大量的精力去设计、调试、维持。Frame 的性能高。</p>
+<p>使用 auto-resizing masks 可以部分地解决上述问题。但它只是完整的解决方案中的一个子集，无法适应所有可能的情况。而且它只能应对来自外部的改变，如 macOS 中用户调整了窗口大小、iOS中的横屏和分屏。而内部的改变如本地化、app 展示的内容改变这类的问题无法解决。</p>
+<p>使用 auto-layout 可以动态地解决内部改变和外部改变。它不直接设置控件的大小和位置，而是通过约束去考虑控件之间的相对关系。功能强大，但可能有点抽象，跟传统的方法不太一致。 AutoLayout 性能低，而且代码冗长蹩脚。</p>
+<h4 id="How-to-get-real-frame-after-AutoLayout-自动布局之后怎样获得控件真实的-Frame"><a href="#How-to-get-real-frame-after-AutoLayout-自动布局之后怎样获得控件真实的-Frame" class="headerlink" title="How to get real frame after AutoLayout 自动布局之后怎样获得控件真实的 Frame"></a>How to get real frame after AutoLayout 自动布局之后怎样获得控件真实的 Frame</h4><p>在 <code>layoutSubviews()</code> 中对子视图设置约束，首次获取的 frame 不会是自动布局后真实的尺寸，而是一开始默认的值。也就是说在 <code>layoutSubviews()</code> 方法中获取 frame 时，布局还没有完成：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myView</span>: <span class="title">UIView</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> mysubview = <span class="type">UIView</span>()</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">layoutSubviews</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"layoutSubviews"</span>)</div><div class="line">        <span class="keyword">self</span>.addSubview(mysubview)</div><div class="line">        mysubview.translatesAutoresizingMaskIntoConstraints = <span class="literal">false</span></div><div class="line">        mysubview.backgroundColor = <span class="type">UIColor</span>.green</div><div class="line">        mysubview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: mysubview, attribute: <span class="type">NSLayoutAttribute</span>.width, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: <span class="type">NSLayoutAttribute</span>.notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">20</span>))</div><div class="line">        mysubview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: mysubview, attribute: <span class="type">NSLayoutAttribute</span>.height, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: <span class="type">NSLayoutAttribute</span>.notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">20</span>))</div><div class="line">        <span class="keyword">self</span>.addConstraint(<span class="type">NSLayoutConstraint</span>(item: mysubview, attribute: <span class="type">NSLayoutAttribute</span>.centerX, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>, attribute: <span class="type">NSLayoutAttribute</span>.centerX, multiplier: <span class="number">1</span>, constant: <span class="number">0.0</span>))</div><div class="line">        <span class="keyword">self</span>.addConstraint(<span class="type">NSLayoutConstraint</span>(item: mysubview, attribute: <span class="type">NSLayoutAttribute</span>.centerY, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>, attribute: <span class="type">NSLayoutAttribute</span>.centerY, multiplier: <span class="number">1</span>, constant: <span class="number">0.0</span>))</div><div class="line">        <span class="built_in">print</span>(mysubview.frame.height)</div><div class="line">        <span class="built_in">print</span>(mysubview.frame.width)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是这个方法实际上是多次调用的，在最后一次调用时 frame 就是真实的了。</p>
+<p>在 ViewController 中，假设约束是在 viewDidLoad 中设置的，若在 viewDidLoad 中获取 frame，那么 frame 不是真实的。在 viewDidAppear 中获取 frame，是真实的。但是在 <code>viewDidLayoutSubviews()</code> 中获取，仍然不是真实的，这是因为此时 <strong>AutoLayout</strong> 还没有完成。需要在前面加一句 <code>view.layoutIfNeeded()</code> ，再获取就是真实的了。</p>
+<h4 id="Using-AutoLayout-to-create-equal-width-spacing-使用自动布局构建等间距效果"><a href="#Using-AutoLayout-to-create-equal-width-spacing-使用自动布局构建等间距效果" class="headerlink" title="Using AutoLayout to create equal width spacing 使用自动布局构建等间距效果"></a>Using AutoLayout to create equal width spacing 使用自动布局构建等间距效果</h4><p>最简单的方法（无需添加约束）就是在 Interface Builder 中创建一个 StackView，并设置它的 spacing 参数。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/22/58fb29843456d.png" alt=""></p>
+<p>也可以添加约束来实现，设置约束值相同就可以了。当然也可以在代码中设置约束大小相同。</p>
+<h4 id="Some-reasons-for-application-crash-when-updating-the-constraints-after-removing-the-views-which-has-some-mutual-constraints-relationship-移除具有共同约束关系的控件后更新约束导致的应用崩溃的一些原因"><a href="#Some-reasons-for-application-crash-when-updating-the-constraints-after-removing-the-views-which-has-some-mutual-constraints-relationship-移除具有共同约束关系的控件后更新约束导致的应用崩溃的一些原因" class="headerlink" title="Some reasons for application crash when updating the constraints after removing the views which has some mutual constraints relationship 移除具有共同约束关系的控件后更新约束导致的应用崩溃的一些原因"></a>Some reasons for application crash when updating the constraints after removing the views which has some mutual constraints relationship 移除具有共同约束关系的控件后更新约束导致的应用崩溃的一些原因</h4><p>暂时没有发现应用崩溃。移除约束依赖的视图后，相应的约束也自动被移除了，而使用默认的 Frame 值在屏幕上绘制。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/AutoLayout/">#AutoLayout</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/04/25/iOS-布局与自动布局/">iOS 布局与自动布局</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
