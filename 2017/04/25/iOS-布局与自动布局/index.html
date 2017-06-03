@@ -139,7 +139,7 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
                     
 
                     <!-- Main Post Content -->
-                    <h2 id="iOS-布局与自动布局"><a href="#iOS-布局与自动布局" class="headerlink" title="iOS 布局与自动布局"></a>iOS 布局与自动布局</h2><p>关于AutoLayout的苹果<a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/index.html#//apple_ref/doc/uid/TP40010853-CH7-SW1" target="_blank" rel="external">官方教程</a></p>
+                    <h1 id="iOS-布局与自动布局"><a href="#iOS-布局与自动布局" class="headerlink" title="iOS 布局与自动布局"></a>iOS 布局与自动布局</h1><p>关于AutoLayout的苹果<a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/index.html#//apple_ref/doc/uid/TP40010853-CH7-SW1" target="_blank" rel="external">官方教程</a></p>
 <h3 id="Key-Points"><a href="#Key-Points" class="headerlink" title="Key Points"></a>Key Points</h3><h4 id="Layout-Process-布局过程"><a href="#Layout-Process-布局过程" class="headerlink" title="Layout Process 布局过程"></a>Layout Process 布局过程</h4><p>参见 <a href="https://developer.apple.com/library/content/releasenotes/UserExperience/RNAutomaticLayout/index.html#//apple_ref/doc/uid/TP40010631-CH1-SW14" target="_blank" rel="external">Core Layout Runtime</a></p>
 <p>相比于 Frame 布局，Cocoa Auto Layout 除去显示（display）以外，还在之前增加了两个更多的过程：<code>updateConstraintsIfNeeded</code> 和 <code>layoutIfNeeded</code> 。这些过程按顺序进行：更新约束、布局、显示。如果你手动唤起显示，那么显示会唤起布局，布局会唤起更新约束（显示依赖布局，布局依赖约束）。</p>
 <p>你可以认为更新约束的传递就像是测量的传递。例如，如果你改变了一个按钮的标题，那么文字会被测量，并且约束会被设置以向布局系统通知信息。</p>
@@ -241,6 +241,10 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
                     <!-- Widget 3: Recent Posts -->
                     <div class="mt5 tc tl-l">
     <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/06/04/iOS-核心动画/">iOS-核心动画</a>
+        </p>
     
         <p>
             <a href="/2017/04/25/iOS-布局与自动布局/">iOS 布局与自动布局</a>

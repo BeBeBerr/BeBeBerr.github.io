@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS Core-Animation 动画熟悉 Core-Animation 框架Core-Animation ，中文译为“核心动画”，是 iOS 和 macOS 上一组非常强大的 API 。它的最底层是 GPU ，上层是 OpenGL ／ OpenGL ES 和 CoreGraphics ，这两个">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS-核心动画"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS-核心动画 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS-核心动画</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-06-04</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/CoreAnimation/">#CoreAnimation</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS-Core-Animation-动画"><a href="#iOS-Core-Animation-动画" class="headerlink" title="iOS Core-Animation 动画"></a>iOS Core-Animation 动画</h1><h3 id="熟悉-Core-Animation-框架"><a href="#熟悉-Core-Animation-框架" class="headerlink" title="熟悉 Core-Animation 框架"></a>熟悉 Core-Animation 框架</h3><p>Core-Animation ，中文译为“核心动画”，是 iOS 和 macOS 上一组非常强大的 API 。它的最底层是 GPU ，上层是 OpenGL ／ OpenGL ES 和 CoreGraphics ，这两个框架提供了一些接口来访问 GPU 。最上层 CoreAnimation 提供了大量封装好的 API 来实现简单或复杂的动画。程序员只需要编写很少的代码，比如修改几个参数（比如一些 property），或者设置起始、终止状态，就可以制作出很精美的动画。</p>
+<p>Core-Animation 是基于 Layer 的，而非 UIView 。利用 GPU 来计算，所以速度快、效率高，且不会拖累 CPU 造成程序卡顿。所有的动画都是在后台执行的，不会阻塞主线程。</p>
+<h3 id="基本动画的使用"><a href="#基本动画的使用" class="headerlink" title="基本动画的使用"></a>基本动画的使用</h3><h4 id="1-CABasicAnimation"><a href="#1-CABasicAnimation" class="headerlink" title="1. CABasicAnimation"></a>1. CABasicAnimation</h4><p><strong>Demo</strong> - 模仿 iOS9 锁屏界面的“滑动以解锁”动画（在 iOS10 中这个动画已经被”按下主屏幕按钮以解锁“取代）</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/03/59319180d3293.gif" alt="滑动解锁演示"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> gradientLayer = <span class="type">CAGradientLayer</span>() <span class="comment">//创建一个"梯度"层</span></div><div class="line">gradientLayer.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="number">200</span>, height: <span class="number">60</span>)</div><div class="line"><span class="comment">//设置起始位置和终止位置，由于是水平的，所以 0.5 也可以改成任何其他的值，没有其他影响</span></div><div class="line">gradientLayer.startPoint = <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0.5</span>)</div><div class="line">gradientLayer.endPoint = <span class="type">CGPoint</span>(x: <span class="number">1</span>, y: <span class="number">0.5</span>)</div><div class="line"><span class="comment">//黑-白-黑的颜色渐变</span></div><div class="line">gradientLayer.colors = [<span class="type">UIColor</span>.black.cgColor,<span class="type">UIColor</span>.white.cgColor,<span class="type">UIColor</span>.black.cgColor]</div><div class="line"></div><div class="line">gradientLayer.locations = [<span class="number">0</span>,<span class="number">0.5</span>,<span class="number">1</span>] <span class="comment">//每个颜色处于的位置，即白色在正中间，只要让这里动起来就可以了</span></div><div class="line">        </div><div class="line"><span class="keyword">let</span> myview = <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">120</span>, y: <span class="number">200</span>, width: <span class="number">200</span>, height: <span class="number">60</span>))</div><div class="line">myview.layer.addSublayer(gradientLayer) <span class="comment">//把梯度层加入</span></div><div class="line">view.addSubview(myview)</div><div class="line">        </div><div class="line"><span class="comment">// CABasicAnimation 部分</span></div><div class="line"><span class="keyword">let</span> gradient = <span class="type">CABasicAnimation</span>(keyPath: <span class="string">"locations"</span>)</div><div class="line">gradient.fromValue = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.25</span>]</div><div class="line">gradient.toValue = [<span class="number">0.75</span>,<span class="number">1</span>,<span class="number">1</span>]</div><div class="line">gradient.duration = <span class="number">3</span></div><div class="line">gradient.repeatCount = <span class="type">Float</span>.infinity <span class="comment">//无限循环</span></div><div class="line"></div><div class="line">gradientLayer.add(gradient, forKey: <span class="literal">nil</span>) <span class="comment">//添加动画</span></div><div class="line">        </div><div class="line"><span class="keyword">let</span> text:<span class="type">NSString</span> = <span class="string">"滑动以解锁"</span></div><div class="line"></div><div class="line"><span class="comment">//下面把文字转化为图片</span></div><div class="line"><span class="keyword">let</span> textAttributes:[<span class="type">String</span>:<span class="type">Any</span>] = &#123;</div><div class="line">	<span class="keyword">let</span> style = <span class="type">NSMutableParagraphStyle</span>()</div><div class="line">    style.alignment = .center</div><div class="line">    <span class="keyword">return</span> [<span class="type">NSFontAttributeName</span>: <span class="type">UIFont</span>.systemFont(ofSize: <span class="number">25</span>),<span class="type">NSParagraphStyleAttributeName</span>: style]</div><div class="line">&#125;()</div><div class="line">        </div><div class="line"><span class="keyword">let</span> image = <span class="type">UIGraphicsImageRenderer</span>(size: <span class="type">CGSize</span>(width: <span class="number">200</span>, height: <span class="number">60</span>)).image(actions: &#123;</div><div class="line">	<span class="number">_</span> <span class="keyword">in</span></div><div class="line">   	text.draw(<span class="keyword">in</span>: <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="number">200</span>, height: <span class="number">60</span>), withAttributes: textAttributes)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">let</span> masklayer = <span class="type">CALayer</span>() <span class="comment">//遮罩层</span></div><div class="line">masklayer.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="number">200</span>, height: <span class="number">60</span>)</div><div class="line">masklayer.backgroundColor = <span class="type">UIColor</span>.clear.cgColor</div><div class="line">masklayer.contents = image.cgImage</div><div class="line">myview.layer.mask = masklayer <span class="comment">//myview 其实是黑色的方块（带有动画），只露出来文字的形状</span></div></pre></td></tr></table></figure>
+<h4 id="2-CAKeyFrameAnimation"><a href="#2-CAKeyFrameAnimation" class="headerlink" title="2. CAKeyFrameAnimation"></a>2. CAKeyFrameAnimation</h4><p>所谓的“关键帧动画”。与 BasicAnimation 的区别是： CABasicAnimation 只能设置起始和终止值，而 CAKeyFrameAnimation 可以用一个数组保存中间值，即记录下来“关键帧”的信息。</p>
+<p>这里可以设置 path（其实 CABasicAnimation 也可以设置 path ），让动画沿着轨迹运动。但是设置 path 之后，value 值将被忽略。</p>
+<p><strong>Demo</strong> - 沿路径运动（ UIBeizerPath ）</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/03/5932b0c3731fd.gif" alt="沿路径运动动画"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> move = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">"position"</span>)</div><div class="line">move.path = <span class="type">UIBezierPath</span>(rect: <span class="type">CGRect</span>(x: <span class="number">120</span>+<span class="number">25</span>, y: <span class="number">200</span>+<span class="number">25</span>, width: <span class="number">100</span>, 	height: <span class="number">100</span>)).cgPath</div><div class="line">move.duration = <span class="number">3</span></div><div class="line">move.repeatCount = .infinity</div><div class="line">        </div><div class="line">myview.layer.add(move, forKey: <span class="literal">nil</span>)</div></pre></td></tr></table></figure>
+<p>这里似乎不能直接设置反向运动。想要反向运动需要自己绘制一个反向的矩形。</p>
+<p><strong>Demo</strong> - 圆形进度条（ CAShapeLayer ）</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/03/5932b5ef6a311.gif" alt="圆形进度条"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shape = <span class="type">CAShapeLayer</span>()</div><div class="line">shape.frame = myview.bounds</div><div class="line">shape.path = <span class="type">UIBezierPath</span>(ovalIn: shape.frame).cgPath</div><div class="line">shape.fillColor = <span class="type">UIColor</span>.clear.cgColor</div><div class="line">shape.lineWidth = <span class="number">5</span></div><div class="line">shape.strokeColor = <span class="type">UIColor</span>.red.cgColor</div><div class="line">        </div><div class="line">myview.layer.addSublayer(shape)</div><div class="line">        </div><div class="line"><span class="keyword">let</span> anim = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">"strokeEnd"</span>) <span class="comment">//strokeEnd 也是可以动的参数</span></div><div class="line">anim.values = [<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">anim.keyTimes = [<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">anim.duration = <span class="number">3</span></div><div class="line">anim.autoreverses = <span class="literal">true</span></div><div class="line">anim.repeatCount = .infinity</div><div class="line">        </div><div class="line">shape.add(anim, forKey: <span class="literal">nil</span>)</div></pre></td></tr></table></figure>
+<h4 id="3-CATransition"><a href="#3-CATransition" class="headerlink" title="3. CATransition"></a>3. CATransition</h4><p><strong>Demo</strong> - 简单的转场动画（渐变效果）</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/03/5932c324448aa.gif" alt="转场动画"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"><span class="keyword">import</span> PlaygroundSupport</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span>, <span class="title">UIViewControllerTransitioningDelegate</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">let</span> button = <span class="type">UIButton</span>(frame: <span class="type">CGRect</span>(x: <span class="number">100</span>, y: <span class="number">100</span>, width: <span class="number">50</span>, height: <span class="number">50</span>))</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        view.backgroundColor = <span class="type">UIColor</span>.white</div><div class="line">        view.addSubview(button)</div><div class="line">        button.backgroundColor = <span class="type">UIColor</span>.red</div><div class="line">        button.addTarget(<span class="keyword">self</span>, action: #selector(<span class="type">ViewController</span>.onClick), <span class="keyword">for</span>: .touchUpInside)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">onClick</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">let</span> vc = <span class="type">YellowViewController</span>()</div><div class="line">        vc.transitioningDelegate = <span class="keyword">self</span></div><div class="line">        present(vc, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animationController</span><span class="params">(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController)</span></span> -&gt; <span class="type">UIViewControllerAnimatedTransitioning</span>? &#123;</div><div class="line">        <span class="keyword">return</span> <span class="type">Animator</span>()</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animationController</span><span class="params">(forDismissed dismissed: UIViewController)</span></span> -&gt; <span class="type">UIViewControllerAnimatedTransitioning</span>? &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">YellowViewController</span>: <span class="title">UIViewController</span>, <span class="title">UIViewControllerTransitioningDelegate</span> </span>&#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        view.backgroundColor = <span class="type">UIColor</span>.yellow</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animator</span>: <span class="title">NSObject</span>, <span class="title">UIViewControllerAnimatedTransitioning</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">let</span> duration = <span class="number">2.0</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">transitionDuration</span><span class="params">(using transitionContext: UIViewControllerContextTransitioning?)</span></span> -&gt; <span class="type">TimeInterval</span> &#123;</div><div class="line">        <span class="keyword">return</span> duration</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animateTransition</span><span class="params">(using transitionContext: UIViewControllerContextTransitioning)</span></span> &#123;</div><div class="line">        <span class="keyword">let</span> containerView = transitionContext.containerView</div><div class="line">        <span class="keyword">let</span> toView = transitionContext.view(forKey: .to)!</div><div class="line">        containerView.addSubview(toView)</div><div class="line">        toView.alpha = <span class="number">0</span></div><div class="line">        <span class="type">UIView</span>.animate(withDuration: duration, animations: &#123;</div><div class="line">            toView.alpha = <span class="number">1</span></div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="type">PlaygroundPage</span>.current.liveView = <span class="type">ViewController</span>()</div></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="1-CoreAnimation-的工作机制"><a href="#1-CoreAnimation-的工作机制" class="headerlink" title="1. CoreAnimation 的工作机制"></a>1. CoreAnimation 的工作机制</h4><p>CoreAnimation 是基于 layer 的动画，通过 GPU 来渲染。而基于 view 的动画是通过调用 drawRect 方法使用新参数不断的重绘内容，使用 CPU 来不断的计算，因而效率很低。</p>
+<h4 id="2-为什么动画结束后返回原状态？为什么动画在移动过程中我们不能进行操作？"><a href="#2-为什么动画结束后返回原状态？为什么动画在移动过程中我们不能进行操作？" class="headerlink" title="2. 为什么动画结束后返回原状态？为什么动画在移动过程中我们不能进行操作？"></a>2. 为什么动画结束后返回原状态？为什么动画在移动过程中我们不能进行操作？</h4><p>因为在动画运行时，我们看到的并不是该控件本身，而是一个假的“躯壳”，即 presentation layer 。真实的控件会被隐藏，而只有视觉层在做动画，所以移动的过程中不能做任何操作。一旦动画结束， presentation layer 就会被移除，真实的控件又会显示出来，这就是为什么动画结束后会返回到原状态，因为动画并没有修改控件本身的属性。有时候会为了不让动画结束后跳回原状态而设置 fillMode 参数，但是这也这是让 presentation layer 停留在最后的位置。如果你的控件是可以操作的，那就不可以这么做。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/CoreAnimation/">#CoreAnimation</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/06/04/iOS-核心动画/">iOS-核心动画</a>
+        </p>
+    
+        <p>
+            <a href="/2017/04/25/iOS-布局与自动布局/">iOS 布局与自动布局</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
