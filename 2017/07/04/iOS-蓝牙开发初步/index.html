@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS 蓝牙开发初步注意：CoreBluetooth 是基于 BLE 4.0 版本的。
+官方教程：Core Bluetooth Programming Guide
+CoreBluetooth 简介低功耗蓝牙技术是基于蓝牙 4.0 版本的，它在低功耗设备之间定义了一系列通信协议。CoreBluetoo">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS 蓝牙开发初步"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS 蓝牙开发初步 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS 蓝牙开发初步</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-07-04</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/CoreBluetooth/">#CoreBluetooth</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS-蓝牙开发初步"><a href="#iOS-蓝牙开发初步" class="headerlink" title="iOS 蓝牙开发初步"></a>iOS 蓝牙开发初步</h1><p>注意：CoreBluetooth 是基于 BLE 4.0 版本的。</p>
+<p>官方教程：<a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/AboutCoreBluetooth/Introduction.html#//apple_ref/doc/uid/TP40013257-CH1-SW1" target="_blank" rel="external">Core Bluetooth Programming Guide</a></p>
+<h3 id="CoreBluetooth-简介"><a href="#CoreBluetooth-简介" class="headerlink" title="CoreBluetooth 简介"></a>CoreBluetooth 简介</h3><p>低功耗蓝牙技术是基于蓝牙 4.0 版本的，它在低功耗设备之间定义了一系列通信协议。CoreBluetooth 框架是低功耗蓝牙通信协议的一个抽象：它帮开发者隐藏了许多底层技术的细节，使得开发能与低功耗蓝牙设备交互的 App 变得更容易。</p>
+<p><strong>中心设备和外围设备</strong>是 CoreBluetooth 里最重要的两个角色。不同角色有不同的任务：外围设备拥有其他设备所需要的数据；中心设备用外围设备提供的信息去完成某些任务。举例来说：一个装备了低功耗蓝牙技术的心率探测器为一个 iOS App 提供了房间的温度，而 App 将这些数据用用户友好的方式呈现出来——就像传统的服务器-客户端结构那样。</p>
+<p><img src="/img/CBDevices1_2x.png" alt="CBDevices1_2x"></p>
+<h3 id="外围设备的数据结构"><a href="#外围设备的数据结构" class="headerlink" title="外围设备的数据结构"></a>外围设备的数据结构</h3><p>外设可能会包含多个服务（services），或者提供一些关于连接信号强度的信息。一个服务是指为了完成某种功能所需要的数据和行为的集合。</p>
+<p>服务本身由特征（characteristics）或者包含的服务（其他服务的引用）组成。一个 characteristic 提供了外设服务的更多细节。举例来说，心率监视器的服务只描述了它可能含有一个描述身体传感器位置的特征，和一个心律测量值的特征。<img src="/img/CBPeripheralData_Example_2x.png" alt="CBPeripheralData_Example_2x"></p>
+<p>当中心设备成功建立了和外设的连接之后，它就可以发现外设提供的所有服务和特征。中心设备也可以通过读或者写特征的值来与外设交互。比如你的 App 会从温度控制器中获得一个温度，也会提供一个温度值给控制器，使它调节室温。</p>
+<h3 id="中心设备、外设和外设数据的表现方式"><a href="#中心设备、外设和外设数据的表现方式" class="headerlink" title="中心设备、外设和外设数据的表现方式"></a>中心设备、外设和外设数据的表现方式</h3><p>除非特别设置，多数情况下本地设备会以中心设备的方式工作。中心设备是一个 <code>CBCentralManager</code> 对象。这个对象用来管理已发现或已连接的远程外围设备。包括扫描、发现和连接正在广播的外设。外设用 <code>CBPeripheral</code> 对象表示，外设的服务用 <code>CBService</code> 表示。类似的，服务的特征用 <code>CBCharacteristic</code> 对象表示。</p>
+<p><img src="/img/TreeOfServicesAndCharacteristics_Remote_2x.png" alt="TreeOfServicesAndCharacteristics_Remote_2x"></p>
+<p>在 macOS 10.9 和 iOS 6 之后，Mac 和 iOS 设备也可以用作低功耗蓝牙外设，向其他设备提供数据。本地设备作为外设时，用 <code>CBPeripheralManager</code> 表示。这些对象涌来管理发布的服务。远程中心设备用 <code>CBCentral</code> 表示。Peripheral Manager 也涌来读或写中心设备发出的请求。</p>
+<p>可以看到，本地设备作为中心设备和外围设备时，使用的类和类的作用是对偶的。</p>
+<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><h4 id="构建外围设备"><a href="#构建外围设备" class="headerlink" title="构建外围设备"></a>构建外围设备</h4><p>由于模拟器上不能操作蓝牙，所以必须使用真机进行调试。因此可能需要两部 iOS 设备，一台用来做中心设备，另外一台做外设。如果不想自己写外设的代码，也可以使用 LightBlue 软件模拟外设。这里我用了 Arduino Uno 单片机，配合蓝牙 4.0 模块作为外设。</p>
+<p><img src="/img/arduinoWithBluetooth.JPG" alt="arduinoWithBluetooth"></p>
+<p>使用时，需要给蓝牙模块 Vcc 引脚接 5V 的电压，Gnd 引脚接 Arduino 的“接地”。蓝牙模块的 Rx 接 Arduino 的Tx，Tx 接 Rx。</p>
+<p>用 Arduino 操作蓝牙通信非常简单，因为 Arduino 屏蔽了底层的细节，将蓝牙看作普通的串口。因此直接操作串口既可以了。打开 Arduino IDE，将下面的代码下载到单片机。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// put your setup code here, to run once:</span></div><div class="line">  Serial.begin(<span class="number">9600</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// put your main code here, to run repeatedly:</span></div><div class="line">  Serial.println(i);</div><div class="line">  i++;</div><div class="line">  delay(<span class="number">2000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里波特率设为 9600 符号／秒。在 loop 中，每间隔 2 秒发送一个数字，同时数字加一。需要注意的是，由于 Arduino 下载程序也需要使用串口，所以会和蓝牙模块连接的串口冲突。下载程序时，需要暂时断开 Rx 和 Tx 引脚。</p>
+<h4 id="构建中心设备"><a href="#构建中心设备" class="headerlink" title="构建中心设备"></a>构建中心设备</h4><p>需要以下几个属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> manager: <span class="type">CBCentralManager</span>!</div><div class="line"><span class="keyword">var</span> peripherals = [<span class="type">CBPeripheral</span>]()</div><div class="line"><span class="keyword">var</span> connectedPeripheral: <span class="type">CBPeripheral</span>?</div></pre></td></tr></table></figure>
+<p>peripherals 用来存放扫描到的设备，connectedPeripheral 代表需要操作的外设。</p>
+<p>在 <code>viewDidLoad()</code> 中，对 manager 初始化：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">manager = <span class="type">CBCentralManager</span>(delegate: <span class="keyword">self</span>, queue: <span class="type">DispatchQueue</span>.main)</div></pre></td></tr></table></figure>
+<p>代理选择 self，线程选择主线程。为了设置代理，需要遵守 <code>CBCentralManagerDelegate</code> 协议，并实现该协议的 required 方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">centralManagerDidUpdateState</span><span class="params">(<span class="number">_</span> central: CBCentralManager)</span></span> &#123;</div><div class="line">    <span class="keyword">switch</span> central.state &#123;</div><div class="line">    <span class="keyword">case</span> .poweredOn:</div><div class="line">        manager.scanForPeripherals(withServices: <span class="literal">nil</span>, options: <span class="literal">nil</span>)</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        <span class="built_in">print</span>(<span class="string">"未开启蓝牙"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用 manager 的方法，必须保证蓝牙状态处于 poweredOn。如果蓝牙已开启，则开始扫描外围设备。填 nil 表示不做过滤，扫描一切外围设备。扫描到外设会自动调用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">centralManager</span><span class="params">(<span class="number">_</span> central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)</span></span> &#123; </div><div class="line">    <span class="keyword">if</span> peripheral.name! == <span class="string">"BT05"</span> &#123;</div><div class="line">        peripherals.append(peripheral)</div><div class="line">        manager.connect(peripheral, options: <span class="literal">nil</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>利用外设的名字判断我要连接的设备。我的蓝牙模块名称默认是“BT05”。如果发现了该设备，进行连接。注意，必须持有该外设对象的引用，否则会报错。所以将它添加到数组中。使用数组是因为在一般的应用中，可能不止需要一个外设，这里并不是必须的。</p>
+<p>连接到外设后，会调用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">centralManager</span><span class="params">(<span class="number">_</span> central: CBCentralManager, didConnect peripheral: CBPeripheral)</span></span> &#123;</div><div class="line">    connectedPeripheral = peripheral</div><div class="line">    peripheral.discoverServices(<span class="literal">nil</span>)</div><div class="line">        </div><div class="line">    peripheral.delegate = <span class="keyword">self</span></div><div class="line">    <span class="built_in">print</span>(peripheral.name!)</div><div class="line">    manager.stopScan()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>去查看已连接外设的服务。参数传 nil 同样是查看所有服务，不加过滤。将连接的外设的代理设为 self，因此需要遵守 <code>CBPeripheralDelegate</code> 协议。</p>
+<p>发现了外设的服务，会调用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">peripheral</span><span class="params">(<span class="number">_</span> peripheral: CBPeripheral, didDiscoverServices error: Error?)</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> peripheral.services! &#123;</div><div class="line">        <span class="keyword">if</span> each.uuid.uuidString == <span class="string">"FFE0"</span> &#123;</div><div class="line">            peripheral.discoverCharacteristics(<span class="literal">nil</span>, <span class="keyword">for</span>: each)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>遍历外设的所有服务，用 uuid 来判断感兴趣的服务。注意这里的 uuid 是服务的 uuid 而不是外设的 uuid。可以通过下载软件 LightBlue 查看服务的 uuid 码，这里是 FFE0。一旦发现，就去获取该服务的特性（characteristic）。</p>
+<p>发现了特性会调用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">peripheral</span><span class="params">(<span class="number">_</span> peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?)</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> service.characteristics! &#123;</div><div class="line">        peripheral.readValue(<span class="keyword">for</span>: each)</div><div class="line">        peripheral.setNotifyValue(<span class="literal">true</span>, <span class="keyword">for</span>: each)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>遍历所有的 characteristic，读取它的值并允许接受广播。这样每次 characteristic 的值变化后，都会调用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">peripheral</span><span class="params">(<span class="number">_</span> peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?)</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> str = <span class="type">String</span>(data: characteristic.value!, encoding: .utf8)</div><div class="line">    <span class="built_in">print</span>(str!)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里把接收到的值转换为字符串，并用 UTF-8 编码。之后把收到的字符串打印出来。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>用面包线把单片机和蓝牙模块连接好，上电。把程序放到真机上调试，在控制台输出：</p>
+<p><img src="/img/screenshotBluetooth.png" alt="screenshotBluetooth"></p>
+<p>每隔两秒，输出一个数字，且每次加一。这里没有从 0 开始是因为单片机一上电，就自动开始工作了，不会等到蓝牙连接好再往串口上写数据。测试成功。</p>
+<p>今天学习了 CoreBluetooth 的基本概念，并了解了基本的操作流程。可以看到使用 CoreBluetooth 流程比较多，如果不了解基本的概念可能会比较懵。不过总体来说逻辑一层套一层非常严谨，不难理解。接下来我会尝试用蓝牙构建稍复杂的应用。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/CoreBluetooth/">#CoreBluetooth</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+
+
+
+
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "",
+    productKey: "b74c283f83244823a11c92027cbc27b8",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/07/04/iOS-蓝牙开发初步/">iOS 蓝牙开发初步</a>
+        </p>
+    
+        <p>
+            <a href="/2017/06/23/Swift-多线程/">Swift 多线程初步</a>
+        </p>
+    
+        <p>
+            <a href="/2017/06/04/iOS-核心动画/">iOS 核心动画</a>
+        </p>
+    
+        <p>
+            <a href="/2017/04/25/iOS-布局与自动布局/">iOS 布局与自动布局</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
