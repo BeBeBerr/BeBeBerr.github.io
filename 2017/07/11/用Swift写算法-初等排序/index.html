@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="用 Swift 写算法——初等排序插入排序法简介：
+就像打扑克时整理牌的顺序一样，将牌一张张地抽出来，再插入到已经排列好的牌的适当位置中。重复这个动作直到插入最后一张牌。
+Swift 实现：
+1234567891011func insertionSort(array: inout [Int]) &amp;#">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="用Swift写算法-初等排序"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>用Swift写算法-初等排序 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">用Swift写算法-初等排序</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-07-11</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="用-Swift-写算法——初等排序"><a href="#用-Swift-写算法——初等排序" class="headerlink" title="用 Swift 写算法——初等排序"></a>用 Swift 写算法——初等排序</h1><h3 id="插入排序法"><a href="#插入排序法" class="headerlink" title="插入排序法"></a>插入排序法</h3><p><strong>简介：</strong></p>
+<p>就像打扑克时整理牌的顺序一样，将牌一张张地抽出来，再插入到已经排列好的牌的适当位置中。重复这个动作直到插入最后一张牌。</p>
+<p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertionSort</span><span class="params">(array: <span class="keyword">inout</span> [Int])</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..&lt;array.<span class="built_in">count</span> &#123;</div><div class="line">        <span class="keyword">let</span> v = array[i]</div><div class="line">        <span class="keyword">var</span> j = i - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> j &gt;= <span class="number">0</span> &amp;&amp; array[j] &gt; v &#123;</div><div class="line">            array[j + <span class="number">1</span>] = array[j]</div><div class="line">            j -= <span class="number">1</span></div><div class="line">        &#125;</div><div class="line">        array[j + <span class="number">1</span>] = v</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>我们从第二个元素开始，往后遍历数组。这个元素左边的序列是已排序的；右边是未排序的。我们在已排序的部分中，从大的元素向小的元素滑动，直到遇到小于当前元素的位置。也就是说，这个位置左边（含这个位置）的元素都小于当前元素；右边都大于当前元素。在滑动的过程中，所有遇到的元素都往后挪动一位以腾出插入的空间（第一次滑动当前元素就被覆盖掉了）。</p>
+<p>在插入排序中，不相邻的元素不会交换位置，因此是稳定的。在最坏的情况下，每 i 个循环都需要移动数组元素 i 次，总共需要：<br>$$<br>1+2+3+\cdots+(N-1) = \frac{N\times(N-1)}{2}<br>$$<br>故时间复杂度是 $O(n^2)$。</p>
+<p>如果输入已经是升序排列，那么插入排序法只需要比较而不用移动，故可以快速地完成相对有序数列的排序。</p>
+<h3 id="冒泡排序法"><a href="#冒泡排序法" class="headerlink" title="冒泡排序法"></a>冒泡排序法</h3><p><strong>简介：</strong></p>
+<p>冒泡排序法让数组元素像水中的气泡一样逐渐上浮，而达到排序的目的。有些人也把冒泡排序法称为”沉底排序法“。</p>
+<p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">bubbleSort</span><span class="params">(array: <span class="keyword">inout</span> [Int])</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> flag = <span class="literal">true</span></div><div class="line">    <span class="keyword">while</span> flag &#123;</div><div class="line">        flag = <span class="literal">false</span></div><div class="line">        <span class="keyword">var</span> i = array.<span class="built_in">count</span> - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &gt; <span class="number">0</span> &#123;</div><div class="line">            <span class="keyword">if</span> array[i - <span class="number">1</span>] &gt; array[i] &#123;</div><div class="line">                <span class="keyword">let</span> temp = array[i]</div><div class="line">                array[i] = array[i - <span class="number">1</span>]</div><div class="line">                array[i - <span class="number">1</span>] = temp</div><div class="line">                flag = <span class="literal">true</span></div><div class="line">            &#125;</div><div class="line">            i -= <span class="number">1</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>每次循环中，都从右往左遍历，遇到顺序相反的元素就交换二者的位置。这样，每次都把最小的泡泡推到最左边。重复这个操作知道所有的元素都符合要求为止。可以看到，这样在数组左边就形成了一个有序的子列，每次循环有序子列的元素个数就增加一个，且没有比这个子列里的元素更小的元素。因此我们可以利用这一点，去减少循环的次数（循环到有序子列尾就可以直接进行下次循环），这也被称为“改进的冒泡排序法”。</p>
+<p>冒泡排序法只对相邻的两个反序元素进行交换，因此也是稳定的。需要注意，如果把判断条件改为“大于等于（小于等于）”，则算法会失去稳定性。</p>
+<p>在最坏的情况下，冒泡排序法会对相邻的元素（未排序部分）进行以下次比较：<br>$$<br>(N-1)+(N-2)+\cdots+1=\frac{N^2-N}{2}<br>$$<br>因此时间复杂度是 $O(n^2)$。</p>
+<h3 id="选择排序法"><a href="#选择排序法" class="headerlink" title="选择排序法"></a>选择排序法</h3><p><strong>简介：</strong></p>
+<p>选择排序法在每个计算步骤中，选择出最小的数放到前面，进而完成排序。</p>
+<p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">selectionSort</span><span class="params">(array: <span class="keyword">inout</span> [Int])</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;array.<span class="built_in">count</span> &#123;</div><div class="line">        <span class="keyword">var</span> minj = i</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> i..&lt;array.<span class="built_in">count</span> &#123;</div><div class="line">            <span class="keyword">if</span> array[j] &lt; array[minj] &#123;</div><div class="line">                minj = j</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">let</span> temp = array[i]</div><div class="line">        array[i] = array[minj]</div><div class="line">        array[minj] = temp</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>在循环的过程中，minj 的值会不断地被后面的（更小时元素的下标）覆盖，这样在每次排序中，不相邻的元素会被交换，因此是不稳定的算法。</p>
+<p>选择排序法需要经过以下次比较：<br>$$<br>(N-1)+(N-2)+\cdots+1=\frac{N^2-N}{2}<br>$$<br>因此时间复杂度是 $O(n^2)$。</p>
+<h3 id="希尔排序法"><a href="#希尔排序法" class="headerlink" title="希尔排序法"></a>希尔排序法</h3><p><strong>简介：</strong></p>
+<p>希尔排序法循环地调用间隔为 g 的插入排序法，每次缩小 g 的范围进而完成排序。</p>
+<p><strong>Swift 实现</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">shellSort</span><span class="params">(array: <span class="keyword">inout</span> [Int])</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> <span class="type">G</span> = [<span class="number">4</span>,<span class="number">3</span>,<span class="number">1</span>]</div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="type">G</span> &#123;</div><div class="line">        <span class="built_in">insertionSort</span>(array: &amp;array, g: each)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertionSort</span><span class="params">(array: <span class="keyword">inout</span> [Int], g: Int)</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> g..&lt;array.<span class="built_in">count</span> &#123;</div><div class="line">        <span class="keyword">var</span> v = array[i]</div><div class="line">        <span class="keyword">var</span> j = i - g</div><div class="line">        <span class="keyword">while</span> j &gt;= <span class="number">0</span> &amp;&amp; array[j] &gt; v &#123;</div><div class="line">            array[j + g] = array[j]</div><div class="line">            j = j - g</div><div class="line">        &#125;</div><div class="line">        array[j + g] = v</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>前面已经分析过，插入排序法能较为快速地对比较有序的数组进行排序。希尔排序法就是发挥了插入排序法的优势，让数组一步步地变得越来越有序。不断地缩小插入排序法的间隔（间隔越大，插入排序法所需要交互的次数就越小，也就越快完成）直到间隔为 1。间隔为 1 时（退化成普通的插入排序法），数组已经基本有序了，因此效率较高。</p>
+<p>每次的间隔 g 的取值对希尔排序法的效率至关重要。对于如何选择 G，人们已经进行了许多研究。例如：当 $g = 1,4,13,40,121\cdots$ 时，即 $g_{n+1} = 3g_n+1$ 时，算法的复杂度基本维持在 $O(n^{1.25})$。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/07/11/用Swift写算法-初等排序/">用Swift写算法-初等排序</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/11/CQMUHelp/">CQMUHelp</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/04/iOS-蓝牙开发初步/">iOS 蓝牙开发初步</a>
+        </p>
+    
+        <p>
+            <a href="/2017/06/23/Swift-多线程/">Swift 多线程初步</a>
+        </p>
+    
+        <p>
+            <a href="/2017/06/04/iOS-核心动画/">iOS 核心动画</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
