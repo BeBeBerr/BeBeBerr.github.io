@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS 蓝牙开发——超声波测距仪写在前面：本来的计划是做一个 pm2.5 测量仪的，毕竟北京的空气有时很糟糕。去网上找粉尘传感器，发现有 200 多的，有 20 多的。看了眼支付宝余额……默默选择了 20 块钱的。结果到手之后发现精度实在太低了，而且线头又短又软，适合焊接而不是插到面包板上🤦‍♂️">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS蓝牙开发-超声波测距仪"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS蓝牙开发-超声波测距仪 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS蓝牙开发-超声波测距仪</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-07-30</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/CoreBluetooth/">#CoreBluetooth</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS-蓝牙开发——超声波测距仪"><a href="#iOS-蓝牙开发——超声波测距仪" class="headerlink" title="iOS 蓝牙开发——超声波测距仪"></a>iOS 蓝牙开发——超声波测距仪</h1><p><strong>写在前面：</strong>本来的计划是做一个 pm2.5 测量仪的，毕竟北京的空气有时很糟糕。去网上找粉尘传感器，发现有 200 多的，有 20 多的。看了眼支付宝余额……默默选择了 20 块钱的。结果到手之后发现精度实在太低了，而且线头又短又软，适合焊接而不是插到面包板上🤦‍♂️只好先改成了超声波测距仪。 Pm2.5 测量……就以后再说吧……</p>
+<h3 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>这里用了 Arduino 单片机 + 蓝牙 4.0 模块 + 超声波测距模块构成硬件电路，结构比较简单。</p>
+<p><img src="/img/蓝牙测距/原理图.png" alt="原理图"></p>
+<p><img src="/img/蓝牙测距/photo.jpg" alt="photo"></p>
+<p>蓝牙和超声波模块 Vcc 接 Arduino 5V 输出。特别要注意超声波模块的工作电压，如果模块本身的工作电压是 5V 却只给 3.3V 的话，会工作异常。二者 GND 接 Arduino GND。</p>
+<p>蓝牙模块的 Tx 和 Rx 分别接 Arduino 的 Rx 和 Tx。超声波模块的 Echo 和 Trig 分别接两个 Arduino 的数字输入／输出引脚。</p>
+<h3 id="超声波测距仪工作原理"><a href="#超声波测距仪工作原理" class="headerlink" title="超声波测距仪工作原理"></a>超声波测距仪工作原理</h3><p>超声波具有定向性好的特点，因此可以用来测距。此超声波测距模块需要给予 Trig 脚最少 10 微秒的高电平作为触发信号，之后便会自动发射超声波，并接收反射波。一旦接受到反射回来的声波，便会在 Echo 脚输出一段时间的高电平。该高电平持续时间就是声波的传播时间。因此，测量出超声波的传播时间，再结合已知的声音在空气中的传播速度，就可以算出距离。</p>
+<p>此超声波测距模块的工作范围是 4 厘米到 4.5 米，且精度很高，达到毫米级。两次测量最好间隔 60 毫秒以上。</p>
+<h3 id="Arduino-编程"><a href="#Arduino-编程" class="headerlink" title="Arduino 编程"></a>Arduino 编程</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> trigPin = <span class="number">7</span>;</div><div class="line"><span class="keyword">int</span> echoPin = <span class="number">8</span>;</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> startTime = <span class="number">0</span>;</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> endTime = <span class="number">0</span>; <span class="comment">//时间可能会溢出</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">  Serial.begin(<span class="number">9600</span>);</div><div class="line">  pinMode(trigPin, OUTPUT);</div><div class="line">  pinMode(echoPin, INPUT);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</div><div class="line">  </div><div class="line">  digitalWrite(trigPin, HIGH);</div><div class="line">  delayMicroseconds(<span class="number">15</span>); <span class="comment">//至少给trig引脚10us的高电平</span></div><div class="line">  digitalWrite(trigPin, LOW);</div><div class="line"></div><div class="line">  <span class="keyword">while</span>(digitalRead(echoPin) == LOW); <span class="comment">//等待echo引脚返回高电平</span></div><div class="line"></div><div class="line">  startTime = micros();</div><div class="line">  <span class="keyword">while</span>(digitalRead(echoPin) == HIGH);</div><div class="line">  endTime = micros();</div><div class="line"></div><div class="line">  <span class="keyword">if</span>(startTime &gt; endTime) &#123;</div><div class="line">    <span class="comment">//溢出，此次结果作废</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">double</span> deltaTime = endTime - startTime;</div><div class="line">  <span class="keyword">double</span> distance = (deltaTime / <span class="number">1000000.0</span> * <span class="number">340.0</span>) / <span class="number">2.0</span>; <span class="comment">//unit: m</span></div><div class="line"></div><div class="line">  Serial.println(distance * <span class="number">100</span>); <span class="comment">//unit: cm</span></div><div class="line"></div><div class="line">  delay(<span class="number">1000</span>);</div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的一点是，Arduino 的时间值是从上电到当前的累积，用 long 型保存。因此上电时间过长的话，会产生溢出。虽然这种情况要等待很久才会发生，但最好还是做一个判断。</p>
+<p>测量出高电平持续的时间，算出距离后直接写到串口上，蓝牙模块就会自动发送数据了。</p>
+<h3 id="iOS-客户端"><a href="#iOS-客户端" class="headerlink" title="iOS 客户端"></a>iOS 客户端</h3><p>源代码已经放在了 <a href="https://git.bingyan.net/BeBeBerr/DistanceDetector" target="_blank" rel="external">GitLab</a> 上。</p>
+<p><img src="/img/蓝牙测距/screenshot1.PNG" alt="screenshot1"></p>
+<p>上面是测量的过程中，用物体遮挡一段时间的结果。</p>
+<p><img src="/img/蓝牙测距/screenshot2.PNG" alt="screenshot2"></p>
+<p>上面是让障碍物先远离，再靠近，最后释放的结果。</p>
+<p>每接受到一次新的数据，就会让图标重绘一次，就形成了图表不断变化的效果。</p>
+<h3 id="附：近期总结"><a href="#附：近期总结" class="headerlink" title="附：近期总结"></a>附：近期总结</h3><p>转眼间七月就要过去了，暑假已经过去一大半了。本来计划是 8 月前把算法什么的搞完，8 月能自在些。结果最近突然要学车，再加上又双叒叕生病了……没办法只能往后拖拖了……祝明天科目二考试顺利吧，赶紧学完车能歇歇了。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/CoreBluetooth/">#CoreBluetooth</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/07/30/iOS蓝牙开发-超声波测距仪/">iOS蓝牙开发-超声波测距仪</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/14/用Swift写算法-递归和分治法/">用Swift写算法-递归和分治法</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/12/用Swift写算法-搜索/">用Swift写算法-搜索</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/11/用Swift写算法-初等排序/">用Swift写算法-初等排序</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/11/CQMUHelp/">CQMUHelp</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
