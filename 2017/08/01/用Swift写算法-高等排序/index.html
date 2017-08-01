@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="用 Swift 写算法——高等排序面对大量的数据，使用复杂度为 $O(n^2)$ 的初等排序法将失去实用价值，为此我们必须引入速度更快的高等排序算法。
+归并排序Swift 实现：
+12345678910111213141516171819202122232425262728293031323334f">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="用Swift写算法-高等排序"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>用Swift写算法-高等排序 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">用Swift写算法-高等排序</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-08-01</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="用-Swift-写算法——高等排序"><a href="#用-Swift-写算法——高等排序" class="headerlink" title="用 Swift 写算法——高等排序"></a>用 Swift 写算法——高等排序</h1><p>面对大量的数据，使用复杂度为 $O(n^2)$ 的初等排序法将失去实用价值，为此我们必须引入速度更快的高等排序算法。</p>
+<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">mergeSort</span><span class="params">(array: <span class="keyword">inout</span> [Int], <span class="keyword">left</span>: Int, <span class="keyword">right</span>: Int)</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> <span class="keyword">left</span> + <span class="number">1</span> &lt; <span class="keyword">right</span> &#123;</div><div class="line">        <span class="keyword">let</span> mid = (<span class="keyword">left</span> + <span class="keyword">right</span>) / <span class="number">2</span></div><div class="line">        mergeSort(array: &amp;array, <span class="keyword">left</span>: <span class="keyword">left</span>, <span class="keyword">right</span>: mid)</div><div class="line">        mergeSort(array: &amp;array, <span class="keyword">left</span>: mid, <span class="keyword">right</span>: <span class="keyword">right</span>)</div><div class="line">        merge(array: &amp;array, <span class="keyword">left</span>: <span class="keyword">left</span>, mid: mid, <span class="keyword">right</span>: <span class="keyword">right</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">merge</span><span class="params">(array: <span class="keyword">inout</span> [Int], <span class="keyword">left</span>: Int, mid: Int, <span class="keyword">right</span>: Int)</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> n1 = mid - <span class="keyword">left</span></div><div class="line">    <span class="keyword">let</span> n2 = <span class="keyword">right</span> - mid</div><div class="line">    <span class="keyword">var</span> <span class="type">L</span> = [<span class="type">Int</span>]()</div><div class="line">    <span class="keyword">var</span> <span class="type">R</span> = [<span class="type">Int</span>]()</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;n1 &#123;</div><div class="line">        <span class="type">L</span>.append(array[<span class="keyword">left</span> + i])</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;n2 &#123;</div><div class="line">        <span class="type">R</span>.append(array[mid + i])</div><div class="line">    &#125;</div><div class="line">    <span class="type">L</span>.append(<span class="type">Int</span>.<span class="built_in">max</span>)</div><div class="line">    <span class="type">R</span>.append(<span class="type">Int</span>.<span class="built_in">max</span>)</div><div class="line">    <span class="keyword">var</span> i = <span class="number">0</span></div><div class="line">    <span class="keyword">var</span> j = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="keyword">left</span>..&lt;<span class="keyword">right</span> &#123;</div><div class="line">        <span class="keyword">if</span> <span class="type">L</span>[i] &lt;= <span class="type">R</span>[j] &#123;</div><div class="line">            array[k] = <span class="type">L</span>[i]</div><div class="line">            i += <span class="number">1</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            array[k] = <span class="type">R</span>[j]</div><div class="line">            j += <span class="number">1</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>借助分治法的思路，我们将解决问题的方案分为以下步骤：</p>
+<ul>
+<li>分割：将数组对半分成两个部分</li>
+<li>求解：对两个局部数组分别执行归并排序</li>
+<li>整合：将排序完毕的局部数组整合成一个数组</li>
+</ul>
+<p>函数 <code>merge()</code> 是算法的基础。它的作用是将两个分别有序的数组，合并成一个整体有序的数组。为了方便实现，在两个数组末端各插入一个“无穷大”的数。由于两个小数组都已经有序，所以合并只需要分别依次比较大小，然后先行往大数组中插入较小的数就可以了。复杂度为 $O(n1+n2)$ 。</p>
+<p>在归并排序法中，我们递归地对数组进行分割，直到仅剩下一个元素。此时，只一个元素的数组是有序的。在一个元素的状态下，由于不满足条件，函数开始返回。返回时，调用了 <code>merge()</code> ，对有序的数组进行拼接。这样，经过不断的拼接，最终整体有序。</p>
+<p>一般来讲，n 个数需要递归 $O(logn)$ 层，每层执行归并又需要线性的复杂度，因此归并排序的时间复杂度为 $O(nlogn)$。</p>
+<p>归并排序法不会交换两个不相邻的元素位置，在合并时，只需要保证前半部分的优先级高于后半部分，就能保持稳定。</p>
+<p>归并排序高速、稳定，但是在递归的过程中需要占用递归所需的内存空间。</p>
+<p>tips：把控递归的过程，一个重要的方法是画出递归的层次图。画图时，牢牢记住同样层次的递归画在同样的深度下就可以了。</p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(array: <span class="keyword">inout</span> [Int], p: Int, r: Int)</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> p &lt; r &#123;</div><div class="line">        <span class="keyword">let</span> q = <span class="built_in">partition</span>(array: &amp;array, p: p, r: r)</div><div class="line">        <span class="built_in">quickSort</span>(array: &amp;array, p: p, r: q-<span class="number">1</span>)</div><div class="line">        <span class="built_in">quickSort</span>(array: &amp;array, p: q+<span class="number">1</span>, r: r)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">partition</span><span class="params">(array: <span class="keyword">inout</span> [Int], p: Int, r: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</div><div class="line">    <span class="keyword">let</span> x = array[r]</div><div class="line">    <span class="keyword">var</span> i = p - <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> p..&lt;r &#123;</div><div class="line">        <span class="keyword">if</span> array[j] &lt;= x &#123;</div><div class="line">            i += <span class="number">1</span></div><div class="line">            <span class="keyword">let</span> temp = array[j]</div><div class="line">            array[j] = array[i]</div><div class="line">            array[i] = temp</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">let</span> temp = array[r]</div><div class="line">    array[r] = array[i+<span class="number">1</span>]</div><div class="line">    array[i+<span class="number">1</span>] = temp</div><div class="line">    <span class="keyword">return</span> i+<span class="number">1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>快速排序的核心是 <code>partition()</code> 函数，它的作用是将数组 <code>array[p...r]</code> 进行分割。使得前半部分的元素均小于等于某个元素 <code>array[q]</code> ，后半部分的元素均大于 <code>array[q]</code> ，并返回下标 q。</p>
+<p>在快速排序法中，通过分割函数讲数组一分为二，之后分别对前后两部分再次进行分割。不断地分割下去，最终数组会趋于有序。</p>
+<p>如果快速排序在分割的过程中恰好能选择到中间值，那么效率将达到最高。一般而言快速排序的平局复杂度为 $O(nlogn)$ ，是多数情况下最高效的排序算法。在这个实现中，分割寒暑选择的基准数是一个固定的值，所以在有些情况下效率会很低（比如数组已经有序）。我们可以将其改为随机选择，或者抽样平均。</p>
+<p>快速排序在分割的过程中会交换不相邻的元素，因此是不稳定的排序算法。但是它除了占用递归的内存，不需要开辟额外的存储空间，因此是一种内部排序（原地排序）算法。</p>
+<h3 id="计数排序（桶排序）"><a href="#计数排序（桶排序）" class="headerlink" title="计数排序（桶排序）"></a>计数排序（桶排序）</h3><p><strong>Swift 实现：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">countingSort</span><span class="params">(A: [Int], k: Int)</span></span> -&gt; [<span class="type">Int</span>] &#123;</div><div class="line">    <span class="keyword">var</span> <span class="type">C</span> = [<span class="type">Int</span>]()</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;k &#123;</div><div class="line">        <span class="type">C</span>.append(<span class="number">0</span>)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="number">0</span>..&lt;<span class="type">A</span>.<span class="built_in">count</span> &#123;</div><div class="line">        <span class="type">C</span>[<span class="type">A</span>[j]] += <span class="number">1</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;k &#123;</div><div class="line">        <span class="keyword">if</span> i &gt; <span class="number">0</span> &#123;</div><div class="line">            <span class="type">C</span>[i] += <span class="type">C</span>[i-<span class="number">1</span>]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">var</span> <span class="type">B</span> = <span class="type">A</span></div><div class="line">    </div><div class="line">    <span class="keyword">var</span> j = <span class="type">A</span>.<span class="built_in">count</span> - <span class="number">1</span></div><div class="line">    <span class="keyword">while</span> j &gt;= <span class="number">0</span> &#123;</div><div class="line">        <span class="type">B</span>[<span class="type">C</span>[<span class="type">A</span>[j]] - <span class="number">1</span>] = <span class="type">A</span>[j]</div><div class="line">        <span class="type">C</span>[<span class="type">A</span>[j]] -= <span class="number">1</span></div><div class="line">        j -= <span class="number">1</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="type">B</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>分析：</strong></p>
+<p>计数排序的特点是使用了一个计数数组 C（桶）。它统计各元素出现的次数，然后再求出各元素的累积和。因此 C[x] 的值代表 A 中小于等于 x 的元素个数，借此我们就得到了排序后各元素应出现的位置。</p>
+<p>从末尾开始选择，计数排序就是稳定的。计数排序的时间复杂度仅为 $O(n+k)$ ，线性。但是它不仅需要额外的内存空间，也需要保证 A 中元素非负，要求比较高。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/08/01/用Swift写算法-高等排序/">用Swift写算法-高等排序</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/30/iOS蓝牙开发-超声波测距仪/">iOS蓝牙开发-超声波测距仪</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/14/用Swift写算法-递归和分治法/">用Swift写算法-递归和分治法</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/12/用Swift写算法-搜索/">用Swift写算法-搜索</a>
+        </p>
+    
+        <p>
+            <a href="/2017/07/11/用Swift写算法-初等排序/">用Swift写算法-初等排序</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
