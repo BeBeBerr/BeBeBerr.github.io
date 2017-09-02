@@ -154,7 +154,7 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myView</span>: <span class="title">UIView</span> </span>&#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">layoutSubviews</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"layoutSubviews"</span>)</div><div class="line">        <span class="keyword">self</span>.constraints.first?.constant += <span class="number">5</span> <span class="comment">//修改约束，会再次唤醒更新约束过程；之后又会唤起布局过程，无限循环</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</div><div class="line">    <span class="keyword">let</span> myview = myView() </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.viewDidLoad()</div><div class="line">        view.addSubview(myview)</div><div class="line">        myview.translatesAutoresizingMaskIntoConstraints = <span class="literal">false</span></div><div class="line">        myview.backgroundColor = <span class="type">UIColor</span>.red</div><div class="line">            &#125;   </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(<span class="number">_</span> animated: Bool)</span></span> &#123;</div><div class="line">        myview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.width, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: .notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">10</span>))</div><div class="line">        myview.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.height, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="literal">nil</span>, attribute: .notAnAttribute, multiplier: <span class="number">0.0</span>, constant: <span class="number">10</span>))</div><div class="line">        view.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.centerX, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>.view, attribute: .centerX, multiplier: <span class="number">1.0</span>, constant: <span class="number">0</span>))</div><div class="line">        view.addConstraint(<span class="type">NSLayoutConstraint</span>(item: myview, attribute: <span class="type">NSLayoutAttribute</span>.centerY, relatedBy: <span class="type">NSLayoutRelation</span>.<span class="built_in">equal</span>, toItem: <span class="keyword">self</span>.view, attribute: .centerY, multiplier: <span class="number">1.0</span>, constant: <span class="number">0</span>))</div><div class="line">        view.layoutIfNeeded()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="Content-Hugging-Priority-amp-Content-Compression-Resistance-Priority-控件的两个优先级参数"><a href="#Content-Hugging-Priority-amp-Content-Compression-Resistance-Priority-控件的两个优先级参数" class="headerlink" title="Content Hugging Priority &amp; Content Compression Resistance Priority 控件的两个优先级参数"></a>Content Hugging Priority &amp; Content Compression Resistance Priority 控件的两个优先级参数</h4><p>像 ImageView，Label，Button 这样的控件可以根据内容计算出大小。比如 Label 中的文字越多，Label 也就越长。这个大小被称为固有值。如果设置了约束，比如设置 label 的左边距屏幕边界100，右边距边界100，则 label 可能会被拉长。</p>
 <p>Content Hugging Priority 表示控件抗拉伸的优先级。数字越大，控件越不容易被拉伸。默认值是251。</p>
-<p>Content Compression Resistance Priority 表示空间抗压缩的优先级。数字越大越不容易被压缩。默认值是750。</p>
+<p>Content Compression Resistance Priority 表示控件抗压缩的优先级。数字越大越不容易被压缩。默认值是750。</p>
 <p><img src="https://ooo.0o0.ooo/2017/04/22/58fae76214f9d.png" alt=""></p>
 <p>这里两边的约束都是100，label 本应该被拉长以满足约束的要求。如果把右边的约束优先级修改为10，左边优先级不变，为默认的1000，Content Hugging Priority 为默认的251，高于10。所以优先满足左边的约束和 label 的固有大小，因此右边的约束无效了。</p>
 <h4 id="Frame-amp-Alignment-Rect-两个不同的矩形"><a href="#Frame-amp-Alignment-Rect-两个不同的矩形" class="headerlink" title="Frame &amp; Alignment Rect 两个不同的矩形"></a>Frame &amp; Alignment Rect 两个不同的矩形</h4><p>自动布局参照的是 Alignment Rectangle 而不是 Frame。比如一个控件的阴影并不会影响到自动布局。应该牢记在自动布局中，Frame 没有视觉大小重要。</p>
@@ -187,7 +187,7 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
 <hr>
 <h3 id="Questions-amp-Answers"><a href="#Questions-amp-Answers" class="headerlink" title="Questions &amp; Answers"></a>Questions &amp; Answers</h3><h4 id="Pros-and-cons-of-AutoLayout-amp-Frame-Layout-不同布局方式的优缺点分析"><a href="#Pros-and-cons-of-AutoLayout-amp-Frame-Layout-不同布局方式的优缺点分析" class="headerlink" title="Pros and cons of AutoLayout &amp; Frame Layout 不同布局方式的优缺点分析"></a>Pros and cons of AutoLayout &amp; Frame Layout 不同布局方式的优缺点分析</h4><p>UI 布局有以下三种主要方法：</p>
 <ol>
-<li>Frame layout：直接用代码设置每个空间的 Frame。</li>
+<li>Frame layout：直接用代码设置每个控件的 Frame。</li>
 <li>使用 auto-resizing masks：可以自动调整子视图与父视图之间的位置关系。</li>
 <li>使用 auto-layout。</li>
 </ol>
@@ -246,6 +246,10 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
     <h3>Recent Posts</h3>
     
         <p>
+            <a href="/2017/09/02/iOS-自定义TabBar的正确姿势/">iOS 自定义TabBar的正确姿势</a>
+        </p>
+    
+        <p>
             <a href="/2017/08/01/用Swift写算法-高等排序/">用Swift写算法-高等排序</a>
         </p>
     
@@ -259,10 +263,6 @@ Key PointsLayout Process 布局过程参见 Core Layout Runtime
     
         <p>
             <a href="/2017/07/12/用Swift写算法-搜索/">用Swift写算法-搜索</a>
-        </p>
-    
-        <p>
-            <a href="/2017/07/11/用Swift写算法-初等排序/">用Swift写算法-初等排序</a>
         </p>
     
 </div>
