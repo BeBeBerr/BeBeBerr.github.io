@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="SQLite.Swift + Codable 简单使用SQLite.Swift 在新版本中支持了 Swift4 的新特性 Codable。SQLite 体积小，是一个轻量级的数据库，而 SQLite.Swift 则是用 Swift 对其进行了封装，而在多数情况下不必撰写 SQL 语句。得益于 Cod">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="SQLite.Swift 简单使用"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>SQLite.Swift 简单使用 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">SQLite.Swift 简单使用</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-12-31</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/SQLite/">#SQLite</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="SQLite-Swift-Codable-简单使用"><a href="#SQLite-Swift-Codable-简单使用" class="headerlink" title="SQLite.Swift + Codable 简单使用"></a>SQLite.Swift + Codable 简单使用</h1><p>SQLite.Swift 在新版本中支持了 Swift4 的新特性 Codable。SQLite 体积小，是一个轻量级的数据库，而 SQLite.Swift 则是用 Swift 对其进行了封装，而在多数情况下不必撰写 SQL 语句。得益于 Codale，使用 SQLite.Swift 进行数据持久化将更加简单。</p>
+<p>下面，我用 SQLite.Swift 构建了一个简单的笔记本应用，来熟悉它的基本使用方式。</p>
+<h3 id="定义数据模型"><a href="#定义数据模型" class="headerlink" title="定义数据模型"></a>定义数据模型</h3><p>每一条笔记是一个 NoteItem 类型的结构体。由于我打算让它的主键自增，所以要重写 encode 方法。否则，可能就要用 uuid 来作为主键了，有点杀鸡用牛刀的感觉。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NoteItem</span>: <span class="title">Codable</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> id = <span class="number">0</span></div><div class="line">    <span class="keyword">var</span> title = <span class="string">""</span></div><div class="line">    <span class="keyword">var</span> content = <span class="string">""</span></div><div class="line">    <span class="keyword">var</span> timeStamp = <span class="number">0</span></div><div class="line">    </div><div class="line">    <span class="keyword">init</span>(title: <span class="type">String</span>, content: <span class="type">String</span>, timeStamp: <span class="type">Int</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.title = title</div><div class="line">        <span class="keyword">self</span>.content = content</div><div class="line">        <span class="keyword">self</span>.timeStamp = timeStamp</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">encode</span><span class="params">(to encoder: Encoder)</span></span> <span class="keyword">throws</span> &#123;</div><div class="line">        <span class="keyword">var</span> container = encoder.container(keyedBy: <span class="type">CodingKeys</span>.<span class="keyword">self</span>)</div><div class="line">        <span class="keyword">try</span> container.encode(title, forKey: .title)</div><div class="line">        <span class="keyword">try</span> container.encode(content, forKey: .content)</div><div class="line">        <span class="keyword">try</span> container.encode(timeStamp, forKey: .timeStamp)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为要用自增主键，就不能自己设定 id，否则 SQLite 会报错。因此要重写 encode 方法，不对对 id 进行编码。而 decode 方法不覆盖，即使用默认方法，把所有属性全部赋值。</p>
+<h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><p>构建一个数据库管理类，叫 DataBaseHandler。首先要连接数据库才能进行使用。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataBaseHandler</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> db: <span class="type">Connection</span>!</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">connect</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">do</span> &#123;</div><div class="line">            db = <span class="keyword">try</span> <span class="type">Connection</span>(getFilePath())</div><div class="line">        &#125; <span class="keyword">catch</span> &#123;</div><div class="line">            <span class="built_in">print</span>(<span class="string">"连接数据库失败"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  	<span class="function"><span class="keyword">func</span> <span class="title">getFilePath</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="type">NSHomeDirectory</span>() + <span class="string">"/Documents/db.sqlite3"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="新建-Table"><a href="#新建-Table" class="headerlink" title="新建 Table"></a>新建 Table</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> id = <span class="type">Expression</span>&lt;<span class="type">Int64</span>&gt;(<span class="string">"id"</span>)</div><div class="line"><span class="keyword">let</span> title = <span class="type">Expression</span>&lt;<span class="type">String</span>&gt;(<span class="string">"title"</span>)</div><div class="line"><span class="keyword">let</span> content = <span class="type">Expression</span>&lt;<span class="type">String</span>&gt;(<span class="string">"content"</span>)</div><div class="line"><span class="keyword">let</span> timeStamp = <span class="type">Expression</span>&lt;<span class="type">Int64</span>&gt;(<span class="string">"timeStamp"</span>)</div><div class="line">    </div><div class="line"><span class="keyword">let</span> noteList = <span class="type">Table</span>(<span class="string">"NoteList"</span>)</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">createTable</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">do</span> &#123;</div><div class="line">        <span class="keyword">try</span> db.run(noteList.create(ifNotExists: <span class="literal">true</span>) &#123;</div><div class="line">            t <span class="keyword">in</span></div><div class="line">            t.column(id, primaryKey: .autoincrement)</div><div class="line">            t.column(title)</div><div class="line">            t.column(content)</div><div class="line">            t.column(timeStamp)</div><div class="line">        &#125;)</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"建表失败"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里指定只有在 Table 不存在的时候才创建。按照数据模型添加列，并把 id 指定为自增主键以获得更好的查找性能。</p>
+<h3 id="删除行"><a href="#删除行" class="headerlink" title="删除行"></a>删除行</h3><p>作为一个笔记本应用，当然要支持滑动删除。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteItem</span><span class="params">(id: Int)</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> item = noteList.<span class="built_in">filter</span>(<span class="type">Int64</span>(id) == <span class="keyword">self</span>.id)</div><div class="line">    <span class="keyword">do</span> &#123;</div><div class="line">        <span class="keyword">try</span> db.run(item.delete())</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"删除失败"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里先通过 id 查找出元素，再调用 <code>db.run(item.delete())</code> 就可以了，等价于 SQL 语句 <code>DELETE FROM &quot;NoteList&quot; WHERE (&quot;id&quot; = \(id))</code> 。</p>
+<h3 id="插入行"><a href="#插入行" class="headerlink" title="插入行"></a>插入行</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insert</span><span class="params">(<span class="number">_</span> item: NoteItem)</span></span> -&gt; <span class="type">Int</span> &#123;</div><div class="line">    <span class="keyword">do</span> &#123;</div><div class="line">        <span class="keyword">try</span> db.run(noteList.insert(item))</div><div class="line">        <span class="keyword">return</span> <span class="type">Int</span>(db.lastInsertRowid)</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="built_in">print</span>(error)</div><div class="line">        <span class="built_in">print</span>(<span class="string">"插入失败"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于 id 是数据库自己生成的，为了让外界能拿到 id 号来进行其他的操作，必须把新插入的 id 号返回。可以用 <code>db.lastInsertRowid</code> 拿到最新插入的 id，但其实 <code>run()</code> 函数也是有返回值的，返回值就是 rowid，也可以直接返回。</p>
+<h3 id="更新行"><a href="#更新行" class="headerlink" title="更新行"></a>更新行</h3><p>笔记本应用一个常见的操作是编辑已有的笔记，因此需要把已有的行更新。也可以删除旧行再插入新行，但更新的效率更高。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">update</span><span class="params">(<span class="number">_</span> item: NoteItem)</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> oldItem = noteList.<span class="built_in">filter</span>(<span class="type">Int64</span>(item.id) == <span class="keyword">self</span>.id)</div><div class="line">    <span class="keyword">do</span> &#123;</div><div class="line">        <span class="keyword">try</span> db.run(oldItem.update(item))</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"更新失败"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取所有行"><a href="#获取所有行" class="headerlink" title="获取所有行"></a>获取所有行</h3><p>在笔记本应用打开时，应该展示所有已有的笔记，因此需要将数据库所有的元素都取出。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">getAllItems</span><span class="params">()</span></span> -&gt; [<span class="type">NoteItem</span>] &#123;</div><div class="line">    <span class="keyword">do</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">try</span> db.prepare(noteList).<span class="built_in">map</span>(&#123; row <span class="keyword">in</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">try</span> row.decode()</div><div class="line">        &#125;)</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"查找失败"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> []</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>数据持久化的部分到这里就完成了，剩下的操作就只有构建界面了。需要注意的是，应该尽量减少操作文件，毕竟读硬盘的速度比内存操作慢得多，因此各个界面中应该通过其他方式传值，而不是都根据数据库的内容来更新界面。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/SQLite/">#SQLite</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>友情链接：<br><a href="http://jiaojie910.cc/"target="_blank">jiaojie910.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/12/31/SQLite使用/">SQLite.Swift 简单使用</a>
+        </p>
+    
+        <p>
+            <a href="/2017/12/23/Swift集成友盟数据统计/">Swift集成友盟数据统计</a>
+        </p>
+    
+        <p>
+            <a href="/2017/11/18/iOS-为TableView左滑删除添加图片/">iOS 为 TableView 左滑删除添加图片</a>
+        </p>
+    
+        <p>
+            <a href="/2017/11/13/iOS限制UIScrollView允许滑动角度/">iOS限制UIScrollView允许滑动角度</a>
+        </p>
+    
+        <p>
+            <a href="/2017/10/08/Swift4新特性/">Swift4新特性</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
