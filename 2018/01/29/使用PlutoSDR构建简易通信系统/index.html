@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="使用 Pluto SDR 构建简易通信系统作者王路远
+电子信息与通信学院 通信工程 1502 班
+联系方式：e@wangluyuan.cc
+同组人：李星
+基本情况我们利用 Pluto SDR 设备，在已有的示例程序 bpsk_demo 的基础上修改，实现了可靠的无线通信系统。两台 Pluto 中，一">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="使用PlutoSDR构建简易通信系统"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>使用PlutoSDR构建简易通信系统 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">使用PlutoSDR构建简易通信系统</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-01-29</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/PlutoSDR/">#PlutoSDR</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="使用-Pluto-SDR-构建简易通信系统"><a href="#使用-Pluto-SDR-构建简易通信系统" class="headerlink" title="使用 Pluto SDR 构建简易通信系统"></a>使用 Pluto SDR 构建简易通信系统</h1><h3 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h3><p><strong>王路远</strong></p>
+<p>电子信息与通信学院 通信工程 1502 班</p>
+<p>联系方式：e@wangluyuan.cc</p>
+<p>同组人：李星</p>
+<h3 id="基本情况"><a href="#基本情况" class="headerlink" title="基本情况"></a>基本情况</h3><p>我们利用 Pluto SDR 设备，在已有的示例程序 bpsk_demo 的基础上修改，实现了可靠的无线通信系统。两台 Pluto 中，一台作为发射机，另一台作为接收机，可在实际的无线信道中，传输任意长度的文字或文件。为了保证可靠传输，分别实现了简化的<strong>停止等待协议</strong>和<strong>滑动窗口协议</strong>。</p>
+<p>操作系统：Windows 、 Ubuntu</p>
+<p>（在 Windows 和 Ubuntu 设备上配置 Pluto 比较容易，按照说明文档操作就可以了。但是我们也尝试了许久在 macOS 上操作 Pluto，但没有成功。表现为：Matlab 下启动程序，报错 <code>image not found</code>。如果你成功在 macOS 上运行了相关程序，请联系我！）</p>
+<p><img src="/img/Pluto/overview.JPG" alt="overview"></p>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在默认的库文件 <code>/library/matlab/iio_sys_obj_matlab.m</code> 中，函数 <code>function ret = stepImpl(obj, varargin)</code> 中实现了发射和接收数据，即</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">% Implement the data transmit flow</span></div><div class="line">writeData(obj.libiio_data_in_dev, varargin&#123;<span class="number">1</span>&#125;);</div><div class="line">            </div><div class="line"><span class="comment">% Implement the data capture flow</span></div><div class="line">[~, data] = readData(obj.libiio_data_out_dev);</div></pre></td></tr></table></figure>
+<p>我们认为 Pluto 是拥有一个发送存储器和接收存储器，分别读、写这两个存储器完成发送和接收的功能。单个设备自发自收时，在一个函数里既发送又接收是正确的。但是我们现在要实现多台设备的通信，就需要指定发射机和接收机，也就是分别控制发送和接收。于是需要把 <code>stepImpl</code> 函数拆成两个函数：发送数据函数和接收数据函数：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">%用来发送数据</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeTxData</span><span class="params">(obj, varargin)</span></span></div><div class="line">	<span class="comment">%......</span></div><div class="line">    writeData(obj.libiio_data_in_dev, varargin&#123;<span class="number">1</span>&#125;);</div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="comment">%用来接收数据</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ret</span> = <span class="title">readRxData</span><span class="params">(obj)</span></span></div><div class="line">	varargout = cell(<span class="number">1</span>, obj.out_ch_no + <span class="built_in">length</span>(obj.iio_dev_cfg.mon_ch));</div><div class="line">	[~, data] = readData(obj.libiio_data_out_dev);</div><div class="line">	<span class="comment">%......</span></div><div class="line">    ret=varargout;</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>在 bpsk_demo 的文件 <code>/code/matlab/BPSK/transmitter/bpsk_tx_func.m</code> 中，原作者设置了要发送的 128*4 = 512 bit 的数据（原注释有错，应是 bit 而不是 byte）。其中前 480 比特是有用信息（60 个字符），后 32 位用作循环冗余校验（CRC）。由于在其他地方设置了收发的数据长度而不好更改，这里我们就用了这 512 比特作为一个数据帧。为了支持任意长度的数据，需要把给定的不足 60 个字符的消息结尾补没有意义的空白字符填充到 60。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">txdata</span> = <span class="title">bpsk_tx_func</span><span class="params">(msgStr)</span></span></div><div class="line">	<span class="comment">%......</span></div><div class="line">	<span class="keyword">for</span> k = <span class="built_in">length</span>(msgStr)+<span class="number">1</span> :<span class="number">60</span></div><div class="line">    	msgStr = [msgStr, char(<span class="number">0</span>)];</div><div class="line">	<span class="keyword">end</span></div><div class="line">	<span class="comment">%......</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>当发送长消息时，以 60 个字符一切割，在接受到之后只需要抹去最后的空白字符就可以恢复原始消息。</p>
+<h3 id="停止等待协议"><a href="#停止等待协议" class="headerlink" title="停止等待协议"></a>停止等待协议</h3><p>我们实现的停止等待协议是这样的：</p>
+<ul>
+<li>帧序号有 0 和 1 两种，在两种之间跳变</li>
+<li>每帧的前 3 个字符用作帧序号和其他控制信息。即有效信息从 60 个字符减少到 57 个字符</li>
+<li><strong>发送方</strong>每次发送一个帧，并开始计时</li>
+<li><strong>接收方</strong>如果收到一个帧，且该帧的序号是自己期望的，则把收到的帧序号返回，并保存相应数据</li>
+<li><strong>发送方</strong>如果没有到规定的超时时间（这里是 10 秒）：<ul>
+<li>持续监听返回值</li>
+<li>如果收到自己刚刚发送到的帧序号<ul>
+<li>发送下一帧</li>
+</ul>
+</li>
+<li>否则<ul>
+<li>继续监听，直到超时</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>发送方</strong>如果超时，重新传输刚才的帧</li>
+</ul>
+<h3 id="滑动窗口协议"><a href="#滑动窗口协议" class="headerlink" title="滑动窗口协议"></a>滑动窗口协议</h3><p>我们实现的滑动窗口协议是这样的：</p>
+<ul>
+<li>发送方和接收方窗口大小均设置为 5</li>
+<li>为了避免序号回滚时引起歧义，序号的个数设置为窗口大小的 2 倍，即取 1- 10</li>
+<li><strong>发送方</strong>维护发送窗口，在等待发送的数据数组上滚动</li>
+<li><strong>接收方</strong>维护接收窗口，判断收到的数据帧号是否落在自己的窗口内，并酌情保存数据</li>
+<li><strong>接收方</strong>发现有一段序号连续的数据后（顺序正常），滑动自己的窗口，并返回这些连续的数据中的最大序号</li>
+<li><strong>发送方</strong>一次发完从上次发送的位置到窗口末尾中的所有数据，并开始计时</li>
+<li><strong>发送方</strong>如果没有到规定的超时时间（这里是 10 秒）<ul>
+<li>持续监听返回值</li>
+<li>如果收到的帧序号落在自己的发送窗口中，且与之前收到的帧序号不一样<ul>
+<li>滑动窗口并开始发送下一串数据</li>
+</ul>
+</li>
+<li>否则<ul>
+<li>继续监听，直到超时</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>发送方</strong>如果超时，重新传输窗口中的所有数据</li>
+</ul>
+<p><img src="/img/Pluto/sketch.JPG" alt="sketch"></p>
+<p>（这是我们在讨论两种协议时打的草稿，当时忘记带草稿纸，只好用抽纸应急:P）</p>
+<h3 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h3><p>一旦可靠的传输文字的系统构建完成，传输文件遍不再是问题。我们使用 Base64 编码，将二进制文件编码成字符串，就可以使用之前的通信系统来传输任意的文件了。</p>
+<p>需要注意的是，Base64 编码的字符集中不包含空白字符，因此不会与截取末尾空白字符的操作方法产生冲突。</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p>发送方将下图成功发送给接收方，该图片大小约为 3 kB。</p>
+<p><img src="/img/Pluto/logo.png" alt="logo"></p>
+<p>发送过程中，控制台打印如下消息：</p>
+<p><img src="/img/Pluto/console1.PNG" alt="console1"></p>
+<p>从上图可以看到，发送方先收到 4， 后收到 9，于是发送窗口滑动，一次性发送五条消息。</p>
+<p><img src="/img/Pluto/console2.PNG" alt="console2"></p>
+<p>从上图可以看到，由于全部消息已经发完，即使收到的序号发生改变，窗口也不再继续滑动。最后双方挥手再见，退出程序。平均发送速度为 49.8558 bps。</p>
+<h3 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h3><p>因为时间比较仓促（我要赴美国参加冬令营活动，李星即将去做手术），我们的程序还有一些不足。其中最主要的一点是发送数据的速度比较缓慢。我们分析的原因主要是，Pluto 每次接收数据都需要一定的时间，而发送的速度很快。有可能发送只用了一瞬间，而恰好这段时间接收方还在读取上次的数据，就错过了消息，导致丢包率非常严重，每次都不得不等待超时重传。我们对发送方发送的速度做了延迟，即同样的内容延长发送时间，效果有所改善，但仍不尽人意，两者不能进行很好的同步。目前我们还没找到比较好的解决方案。</p>
+<p>当然，改善发送速率也可以降低超时时间（现在的 10 秒是为了方便观察实验现象）；采用多进制的调制方式，如 4PSK、16QAM 等；增大包体积（因为误码率不算太高，而丢包率很高）还有增大滑动窗口大小等。</p>
+<h3 id="遇到的困难"><a href="#遇到的困难" class="headerlink" title="遇到的困难"></a>遇到的困难</h3><ul>
+<li>在 macOS 上程序一直报错，还没有解决。最后我们使用了 Windows 和 Ubuntu 操作系统。</li>
+<li>发送方频繁接收到自己刚刚发送的数据，而很少收到接收方回复的消息。也就是应该接受的消息完全被淹没在自己发送的消息里了。为了确定是干扰导致的，我们先用同轴线将两台 Pluto 的 Rx 和 Tx 分别连在了一起。有线的状态下，电磁波基本都被屏蔽在导线内，这个问题果然不存在了。确定问题的原因后，我们修改了发送和接收所用的载波频率，发送和接收就不再互相干扰了。)</li>
+</ul>
+<p><img src="/img/Pluto/wire.JPG" alt="wire"></p>
+<h3 id="总结和收获"><a href="#总结和收获" class="headerlink" title="总结和收获"></a>总结和收获</h3><p>做这样一件事情确实比较有挑战性。主要原因是网上公开的资料太少，无论是官方 Wiki 还是厂家提供的资料，帮助都比较小。再加上之前也没有使用过同类的 SDR 产品，开始确实比较懵。不过后来在自习阅读了厂家提供的示例代码，又和同学讨论过后，逐渐就能开始编写逻辑了。</p>
+<p>我和李星同学大概花了一天半的时间来实际的编写逻辑代码，时间确实比较紧张，不过收获也很多。从头到位设计可靠传输的协议实在太有意思了。事实上我们在写代码的时候完全没有翻看计算机网络的数据，也基本没有查找什么资料。因为时间过的比较久了，不少协议的细节我们都记不清楚了，于是就自己思考传输的过程中会出现什么差错，讨论解决这些问题的办法。有的时候会突然恍然大悟，想明白为什么前辈要这样设计！通过这次实验，熟悉了 SDR 设备、对通信原理中的理论知识有了一个落地，更是大大增强了对计算机网络的理解。</p>
+<p>期待以后还能有机会用 Pluto SDR 做一些更复杂、更有意思的东西。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>本项目的完整代码托管在了 GitHub 上：<a href="https://github.com/BeBeBerr/Pluto-Network" target="_blank" rel="external">https://github.com/BeBeBerr/Pluto-Network</a></p>
+<p>此文章发布在了我的 Blog 上，欢迎查看。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/PlutoSDR/">#PlutoSDR</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>友情链接：<br><a href="http://jiaojie910.cc/"target="_blank">jiaojie910.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/01/29/使用PlutoSDR构建简易通信系统/">使用PlutoSDR构建简易通信系统</a>
+        </p>
+    
+        <p>
+            <a href="/2017/12/31/SQLite使用/">SQLite.Swift 简单使用</a>
+        </p>
+    
+        <p>
+            <a href="/2017/12/23/Swift集成友盟数据统计/">Swift集成友盟数据统计</a>
+        </p>
+    
+        <p>
+            <a href="/2017/11/18/iOS-为TableView左滑删除添加图片/">iOS 为 TableView 左滑删除添加图片</a>
+        </p>
+    
+        <p>
+            <a href="/2017/11/13/iOS限制UIScrollView允许滑动角度/">iOS限制UIScrollView允许滑动角度</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
