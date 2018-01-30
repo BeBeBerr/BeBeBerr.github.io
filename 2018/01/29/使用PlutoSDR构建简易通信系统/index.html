@@ -213,6 +213,7 @@
 <p>当然，改善发送速率也可以降低超时时间（现在的 10 秒是为了方便观察实验现象）；采用多进制的调制方式，如 4PSK、16QAM 等；增大包体积（因为误码率不算太高，而丢包率很高）还有增大滑动窗口大小等。</p>
 <h3 id="遇到的困难"><a href="#遇到的困难" class="headerlink" title="遇到的困难"></a>遇到的困难</h3><ul>
 <li>在 macOS 上程序一直报错，还没有解决。最后我们使用了 Windows 和 Ubuntu 操作系统。</li>
+<li>公开的资料太少，上手不容易。不过在和同学讨论后得到解决，在写协议逻辑的时候还是很愉快的。</li>
 <li>发送方频繁接收到自己刚刚发送的数据，而很少收到接收方回复的消息。也就是应该接受的消息完全被淹没在自己发送的消息里了。为了确定是干扰导致的，我们先用同轴线将两台 Pluto 的 Rx 和 Tx 分别连在了一起。有线的状态下，电磁波基本都被屏蔽在导线内，这个问题果然不存在了。确定问题的原因后，我们修改了发送和接收所用的载波频率，发送和接收就不再互相干扰了。)</li>
 </ul>
 <p><img src="/img/Pluto/wire.JPG" alt="wire"></p>
@@ -220,7 +221,7 @@
 <p>我和李星同学大概花了一天半的时间来实际的编写逻辑代码，时间确实比较紧张，不过收获也很多。从头到位设计可靠传输的协议实在太有意思了。事实上我们在写代码的时候完全没有翻看计算机网络的数据，也基本没有查找什么资料。因为时间过的比较久了，不少协议的细节我们都记不清楚了，于是就自己思考传输的过程中会出现什么差错，讨论解决这些问题的办法。有的时候会突然恍然大悟，想明白为什么前辈要这样设计！通过这次实验，熟悉了 SDR 设备、对通信原理中的理论知识有了一个落地，更是大大增强了对计算机网络的理解。</p>
 <p>期待以后还能有机会用 Pluto SDR 做一些更复杂、更有意思的东西。</p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>本项目的完整代码托管在了 GitHub 上：<a href="https://github.com/BeBeBerr/Pluto-Network" target="_blank" rel="external">https://github.com/BeBeBerr/Pluto-Network</a></p>
-<p>此文章发布在了我的 Blog 上，欢迎查看。</p>
+<p>此文章发布在了我的 Blog 上，<a href="http://blog.wangluyuan.cc/2018/01/29/使用PlutoSDR构建简易通信系统/" target="_blank" rel="external">欢迎查看</a>。</p>
 
                     
                     <!-- Tags Bottom -->
@@ -262,7 +263,7 @@ window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="tex
             <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
         </div>
         <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
-            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>友情链接：<br><a href="http://jiaojie910.cc/"target="_blank">jiaojie910.cc</a>
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
         </div>
     </article>
 </div>
