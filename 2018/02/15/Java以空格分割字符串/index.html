@@ -10,9 +10,9 @@
 
     <!--Description-->
     
-        <meta name="description" content="Swift 集成友盟数据统计友盟是比较有名的数据统计服务提供商，但其 SDK 是用 OC 写的，开发文档中暂时也没有给出 Swift 的接入教程。不过其实用 Swift 集成友盟还是非常简单的。
-获取 App Key注册友盟账号，在 U-App 中创建新应用，就可以获取到 App Key 了。
-安装">
+        <meta name="description" content="Java 以空格分割字符串刷到一道弱智级别的算法题，5 分钟写完信心满满的提交上去，却提示有两个 case 错误。
+仔细检查了几百遍自己的代码，感觉什么问题都没有。搞了很久一直过不了，后来把以空格分割字符串的写法从：
+1String[] list = str.split(&quot; &quot;); //以空格进行分">
     
 
     <!--Author-->
@@ -22,7 +22,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Swift集成友盟数据统计"/>
+        <meta property="og:title" content="一个小坑-以空格分割字符串"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>Swift集成友盟数据统计 - Berr</title>
+    <title>一个小坑-以空格分割字符串 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -112,8 +112,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">Swift集成友盟数据统计</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-12-23</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">一个小坑-以空格分割字符串</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-02-15</p>
         </div>
     </div>
 
@@ -131,28 +131,28 @@
                 <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
                     <!-- Tags Vertical -->
                     
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Java/">#Java</a>
+                            </div>
+                        </div>
+                    
 
                     <!-- Main Post Content -->
-                    <h1 id="Swift-集成友盟数据统计"><a href="#Swift-集成友盟数据统计" class="headerlink" title="Swift 集成友盟数据统计"></a>Swift 集成友盟数据统计</h1><p><a href="umeng.com">友盟</a>是比较有名的数据统计服务提供商，但其 SDK 是用 OC 写的，开发文档中暂时也没有给出 Swift 的接入教程。不过其实用 Swift 集成友盟还是非常简单的。</p>
-<h3 id="获取-App-Key"><a href="#获取-App-Key" class="headerlink" title="获取 App Key"></a>获取 App Key</h3><p>注册友盟账号，在 U-App 中创建新应用，就可以获取到 App Key 了。</p>
-<h3 id="安装-SDK"><a href="#安装-SDK" class="headerlink" title="安装 SDK"></a>安装 SDK</h3><p>虽然目前在 iOS 的文档中没有写明，但友盟已经支持使用 CocoaPods 进行安装了。在 Podfile 里添加：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod '<span class="type">UMengAnalytics'</span></div></pre></td></tr></table></figure>
-<p>或</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod '<span class="type">UMengAnalytics</span>-<span class="type">NO</span>-<span class="type">IDFA'</span></div></pre></td></tr></table></figure>
-<p>上面的是标准 SDK，下面的是无 IDFA 版本的。IDFA 是苹果的广告标识符，用于保护用户隐私的同时让商家可以最终广告效果。友盟使用 IDFA 是为了防止今后苹果可能会禁用 open-UDID 而造成数据异常。不过苹果禁止没有广告而获取 IDFA 的应用上架，因此审核期间可能会有风险。这里我选择了不采集 IDFA 的版本。</p>
-<h3 id="构建桥接文件"><a href="#构建桥接文件" class="headerlink" title="构建桥接文件"></a>构建桥接文件</h3><p>由于友盟的 SDK 是用 OC 编写的，因此在 Swift 项目中需要桥接文件来完成混编。好在 Swift 调用 OC 是非常方便的。</p>
-<ol>
-<li><code>Command + N</code> 呼出新建文件窗口，选择 <code>Header File</code>，命名为 <code>YourAppName-Bridging-Header.h</code>。（如果你已经引用过 OC 的代码，无视这一步）</li>
-<li>在其中插入你需要的组件的头文件，如 <code>#import &quot;UMMobClick/MobClick.h&quot;</code>。</li>
-<li>在工程的 Build Settings 中，找到 Swift Compiler - General （如果没有，记得勾选上方的 All，或者直接搜索）。在 Objective-C Bridging Header 项填入刚刚桥接文件的路径。也可以双击该项使它处于可编辑状态，把文件直接从文件树中拖过来，就会自动填充路径。</li>
-</ol>
-<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><p>桥接文件构建完成，就可以按照官方文档用 Swift 调用友盟的 api 了。在 <code>AppDelegate.swift</code>中，找到 <code>application(_:didFinishLaunchingWithOptions:)</code> 函数，开始配置。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(<span class="number">_</span> application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)</span></span> -&gt; <span class="type">Bool</span> &#123; </div><div class="line">    <span class="keyword">let</span> <span class="type">UMConfig</span> = <span class="type">UMAnalyticsConfig</span>()</div><div class="line">    <span class="type">UMConfig</span>.appKey = <span class="string">"Your App Key"</span></div><div class="line">    <span class="type">UMConfig</span>.channelId = <span class="string">"App Store"</span></div><div class="line">    <span class="type">MobClick</span>.start(withConfigure: <span class="type">UMConfig</span>)</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>现在，在真机或模拟器中启动程序，如果你在友盟的统计页面中看到相应的信息，就说明已经配置成功了！</p>
-<p>如果不想污染数据，可以使用友盟的集成调试功能。具体的内容可以参考开发文档。</p>
+                    <h1 id="Java-以空格分割字符串"><a href="#Java-以空格分割字符串" class="headerlink" title="Java 以空格分割字符串"></a>Java 以空格分割字符串</h1><p>刷到一道弱智级别的算法题，5 分钟写完信心满满的提交上去，却提示有两个 case 错误。</p>
+<p>仔细检查了几百遍自己的代码，感觉什么问题都没有。搞了很久一直过不了，后来把以空格分割字符串的写法从：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String[] list = str.split(<span class="string">" "</span>); <span class="comment">//以空格进行分割</span></div></pre></td></tr></table></figure>
+<p>改成了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String[] list = str.split(<span class="string">"\\s+"</span>); <span class="comment">//正则表达式，以任意长空白符进行分割</span></div></pre></td></tr></table></figure>
+<p>竟然一下就过了……而题目明明说的输入格式是以空格进行分割啊！之前的写法理论上应该没问题啊！这不科学！</p>
+<p>这个问题困扰了我将近一个小时，虽然是个小问题，且到现在也不清楚为什么会这样……但还是记录一下吧，以后再也不敢直接用空格分割了……</p>
 
                     
                     <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Java/">#Java</a>
+                        </div>
                     
 
                     <!-- Comments -->
