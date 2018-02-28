@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Obj-C 内存管理手动引用计数（Manual Reference Counting, MRC)对一个对象发送 retain 消息，该对象引用计数加一；反之，对它发送 release 消息，对象的引用计数会减一。但是，实际上释放内存的消息并不是 release，而是 dealloc 方法。当对象的引">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Obj-C内存管理"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Obj-C内存管理 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">Obj-C内存管理</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-02-28</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Objective-C/">#Objective-C</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="Obj-C-内存管理"><a href="#Obj-C-内存管理" class="headerlink" title="Obj-C 内存管理"></a>Obj-C 内存管理</h1><h3 id="手动引用计数（Manual-Reference-Counting-MRC"><a href="#手动引用计数（Manual-Reference-Counting-MRC" class="headerlink" title="手动引用计数（Manual Reference Counting, MRC)"></a>手动引用计数（Manual Reference Counting, MRC)</h3><p>对一个对象发送 <code>retain</code> 消息，该对象引用计数加一；反之，对它发送 <code>release</code> 消息，对象的引用计数会减一。但是，实际上释放内存的消息并不是 release，而是 <code>dealloc</code> 方法。当对象的引用计数达到 0 时，OC 会自动调用 <code>dealloc</code> 方法去释放内存，而不需要手动调用。</p>
+<h3 id="测试-MRC"><a href="#测试-MRC" class="headerlink" title="测试 MRC"></a>测试 MRC</h3><p>首先需要关闭 Xcode 的自动引用计数功能，否则编译器会报错。</p>
+<p>在 Building Settings 中搜索 reference counting，将 <code>Objective-C Automatic Reference Counting</code> 设置为 NO。</p>
+<p>执行下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/NSObject.h&gt;</div><div class="line">#import &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    id obj = [[NSObject alloc] init];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]); //打印当前对象的引用计数</div><div class="line">    [obj retain];</div><div class="line">    [obj retain];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]);</div><div class="line">    [obj release];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>控制台输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1</div><div class="line">3</div><div class="line">2</div></pre></td></tr></table></figure>
+<h3 id="释放对象"><a href="#释放对象" class="headerlink" title="释放对象"></a>释放对象</h3><p>为了彻底销毁对象，也需要给对象所持有的变量发送 release 消息。</p>
+<p>由于真正释放内存的是 <code>dealloc</code> 方法，因此需要重写该方法，向类中所有变量发送 release 消息，放弃它们的所有权（ownership）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void)dealloc &#123;</div><div class="line">    /* 发送 release 消息</div><div class="line">    和其他的善后工作 */</div><div class="line">    [super dealloc];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="自动释放-Autorelease"><a href="#自动释放-Autorelease" class="headerlink" title="自动释放 (Autorelease)"></a>自动释放 (Autorelease)</h3><p>许多对象使用一次后就不再使用了。Cocoa 提供了自动释放机制，可以把要发送 release 消息的对象都记录下来，再统一发送。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line">#import &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    id pool = [[NSAutoreleasePool alloc] init];</div><div class="line">    //池内</div><div class="line">    id obj = [[NSObject alloc] init];</div><div class="line">    [obj retain];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]);</div><div class="line">    [obj autorelease];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]);</div><div class="line">    [pool release];</div><div class="line">    printf(&quot;%d\n&quot;, (int)[obj retainCount]);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>控制台打印：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">2</div><div class="line">2</div><div class="line">1</div></pre></td></tr></table></figure>
+<p>也可以用新的方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@autoreleasepool &#123;</div><div class="line">//池内</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用新方式更加高效、性能更好，且可以在池内使用 <code>break</code> <code>return</code> <code>goto</code> 等语句，因为只要运行到块外就会出发自动释放池释放内存，而传统方式中，如果使用跳转语句越过 <code>[pool release];</code> 将会导致内存无法释放。</p>
+<p>一般在大量使用临时变量的循环开始前创建自己的自动释放池，并在循环结束后释放。</p>
+<p>Cocoa 会在程序开始处理事件前，隐式的创造一个自动释放池以支持 runloop 的资源释放。因此在做 GUI 编程时，不需要手动创造自动释放池也可以使用临时对象。</p>
+<p>在支持垃圾回收的环境中，<code>[pool release]</code> 不做任何操作(no-op)，而应该使用 <code>drain</code> 去触发 GC （抽干池子）。在 iOS 中，drain 和 release 等价，因为 iOS 不支持 GC。</p>
+<h3 id="便利构造函数"><a href="#便利构造函数" class="headerlink" title="便利构造函数"></a>便利构造函数</h3><p>在内部调用别的构造函数的构造函数，成为便利构造函数。</p>
+<p>OC 中的一些便利构造函数可以创建临时变量，并自动加入到自动释放池中，而无需关心如何销毁它们。这些便利构造函数不以 init 开头，而是以类型名开头，如 <code>+ (id) stringWithUTF8String: (const char*) bytes</code> 。</p>
+<h3 id="自动引用计数-ARC"><a href="#自动引用计数-ARC" class="headerlink" title="自动引用计数 (ARC)"></a>自动引用计数 (ARC)</h3><p>手动引用计数需要程序员管理所有生成对象的所有权，在适当的地方插入 <code>retain</code> , <code>release</code> , <code>autorelease</code> 代码。自动引用计数会在编译时推断应在何处插入这些代码，并自动插入，不需要程序员自己管理。</p>
+<p>使用 ARC 并不意味着完全不需要管理内存了。ARC 只能管理 OC 对象，不能管理 <code>malloc</code> 申请的内存，需要程序员自己用 <code>free</code> 函数释放。</p>
+<p>使用 ARC，与引用计数相关的方法将被禁止使用，<code>NSAutoreleasePool</code> 也无法使用，但是仍可以使用 <code>@autoreleasepool{}</code> 。</p>
+<p>不能随意定义 <code>alloc/init/new/copy/mutableCopy</code> 开头的，且以所有权操作无关的方法。</p>
+<h3 id="什么时候需要用-autoreleasepool"><a href="#什么时候需要用-autoreleasepool" class="headerlink" title="什么时候需要用 @autoreleasepool"></a>什么时候需要用 @autoreleasepool</h3><p>多数情况我们不需要显示地使用 @autoreleasepool，因为 runloop 会自动创建自动释放池。</p>
+<p>但是在以下情况下需要使用：</p>
+<ul>
+<li>不基于 UI Framework 的程序，如控制台程序。因为没有 runloop 为我们创建自动释放池了。</li>
+<li>循环中大量创建临时变量，可能在 runloop 没结束时就已经耗尽内存。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int main() &#123;</div><div class="line">    for(int i = 0; i &lt;10000000; i++) &#123;</div><div class="line">        @autoreleasepool &#123;</div><div class="line">            NSNumber *num = [NSNumber numberWithInt:i];</div><div class="line">            NSString *str = [NSString stringWithFormat:@&quot;%d &quot;, i];</div><div class="line">            [NSString stringWithFormat:@&quot;%@%@&quot;, num, str]; //为什么这行是必要的？</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果不使用 autoreleasepool，内存将会激增。使用之后，则一直维持在一个很低的水平。注意，如果是在循环中实例化了类，就不会出现类似的问题。在作用域之外，系统会自动帮我们释放对象。</p>
+<p><strong>遗留的问题</strong> 为什么一定要使用 num 和 str ？如果把该行注释掉，就观察不到实验现象了。</p>
+<h3 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h3><p>为避免交叉引用导致内存泄漏，我们需要弱引用。弱引用指向对象，却不改变它的引用计数。弱引用会在它指向的对象被释放掉后自动变成 nil 从而避免出现野指针，这被称为自动 nil 化。</p>
+<p>使用 ARC 时应该尽量让对象之间的关系成树状结构，避免循环引用。如果一定要互相引用，一方面可以使用弱引用，另一方面也可以手动给一个引用赋值为 nil 从而打破循环。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Objective-C/">#Objective-C</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/02/28/Obj-C内存管理/">Obj-C内存管理</a>
+        </p>
+    
+        <p>
+            <a href="/2018/02/15/Java以空格分割字符串/">一个小坑-以空格分割字符串</a>
+        </p>
+    
+        <p>
+            <a href="/2018/01/29/使用PlutoSDR构建简易通信系统/">使用PlutoSDR构建简易通信系统</a>
+        </p>
+    
+        <p>
+            <a href="/2017/12/31/SQLite使用/">SQLite.Swift 简单使用</a>
+        </p>
+    
+        <p>
+            <a href="/2017/12/23/Swift集成友盟数据统计/">Swift集成友盟数据统计</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                wangluyuan@bingyan.net
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
