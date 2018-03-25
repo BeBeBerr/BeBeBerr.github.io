@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="动态规划法最长公共子序列题目：
+求两个字符串 X 和 Y 的最长公共子序列长度。例如：”abcbdab” 和 “bdcaba” 的最长公共子序列之一为 “bcba”，故应输出 4。
+思路：
+利用动态规划法，在二维数组 c[m+1][n+1] 中保存 $X_i$ 与 $Y_j$ 的最长公共子序列（LC">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="动态规划法"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>动态规划法 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">动态规划法</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-03-25</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="动态规划法"><a href="#动态规划法" class="headerlink" title="动态规划法"></a>动态规划法</h1><h3 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h3><p><strong>题目：</strong></p>
+<p>求两个字符串 X 和 Y 的最长公共子序列长度。例如：”abcbdab” 和 “bdcaba” 的最长公共子序列之一为 “bcba”，故应输出 4。</p>
+<p><strong>思路：</strong></p>
+<p>利用动态规划法，在二维数组 c[m+1][n+1] 中保存 $X_i$ 与 $Y_j$ 的最长公共子序列（LCS）的长度，其中 m 和 n 分别代表 X 和 Y 的长度。求解 c 的规则如下：</p>
+<ul>
+<li>如果 X[i] == Y[j]，那么 c[i][j] = c[i-1][j-1] + 1。试想：abcd 和 abcEd，因为 d == d，我们又知道 abc 和 abcE 的 LCS 长度为 3，所以这两个字符串的 LCS 长度应为 3+1=4。</li>
+<li>如果不等，则 c[i][j] = MAX(c[i-1][j], c[i][j-1])。当前的字符不相等，故为上一次计算结果中较大的那个。</li>
+<li>i == 0 或 j == 0 时，为 0。</li>
+</ul>
+<p><strong>Java 实现：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">getLongestCommonSubsequenceLength</span><span class="params">(String X, String Y)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> m = X.length();</div><div class="line">    <span class="keyword">int</span> n = Y.length();</div><div class="line">    X = <span class="string">" "</span> + X; <span class="comment">//在字符串前插入空格</span></div><div class="line">    Y = <span class="string">" "</span> + Y;</div><div class="line">    <span class="keyword">int</span> c[][] = <span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>][n+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</div><div class="line">        c[i][<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</div><div class="line">        c[<span class="number">0</span>][i] = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</div><div class="line">            <span class="keyword">if</span>(X.charAt(i) == Y.charAt(j)) &#123;</div><div class="line">                c[i][j] = c[i-<span class="number">1</span>][j-<span class="number">1</span>] + <span class="number">1</span>;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                c[i][j] = c[i-<span class="number">1</span>][j] &gt; c[i][j-<span class="number">1</span>] ? c[i-<span class="number">1</span>][j] : c[i][j-<span class="number">1</span>];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c[m][n];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>为什么要在字符串前插入一个无意义的空格，并把数组长度设为 m+1，n+1 呢？因为 0 列和 0 行被我们全部置零用于满足第三条条件了，所以需要多一行、一列的存储空间。当然不存，手动判断也是可以的。</p>
+<h3 id="硬币问题"><a href="#硬币问题" class="headerlink" title="硬币问题"></a>硬币问题</h3><p><strong>题目：</strong></p>
+<p>现有面值为 c1, c2, c3, … , cm 元的 m 种硬币，求支付 n 元时所需硬币的最少枚数。各面值的硬币可任意使用 n 次。</p>
+<p><strong>思路：</strong></p>
+<p>我们用 C[i] 表示第 i 种硬币的面值。用 T[i][j] 表示使用第 0 至第 i 种硬币支付 j 元时的最少硬币数。</p>
+<p>那么，给定某个需要支付的金额 j，求解 T[i][j] 时有两个选择，一时选用第 i 种硬币，二是不用第 i 种硬币，我们选这两者之间较小的方案即可。也就是 <code>T[i][j] = min(T[i-1][j], T[i][j-C[i]] + 1)</code> 。</p>
+<p>其中，<code>T[i-1][j]</code> 表示不使用，而 <code>T[i][j-C[i]]</code> 表示使用，所以还要多加上使用的这枚硬币。</p>
+<p>但是我们没必要给每种面值都记录一个最优枚数，只需要记录最小的就可以了。因此可化简为 <code>T[j] = min(T[j], T[j-C[i]]+1)</code> 。</p>
+<p><strong>Java 实现：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMinNumOfCoin</span><span class="params">(<span class="keyword">int</span>[] C, <span class="keyword">int</span> amout)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span>[] T = <span class="keyword">new</span> <span class="keyword">int</span>[amout+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;T.length; i++) &#123;</div><div class="line">        T[i] = Integer.MAX_VALUE;</div><div class="line">    &#125;</div><div class="line">    T[<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;C.length; i++) &#123;</div><div class="line">        <span class="comment">//外层循环遍历了使用第i种硬币 / 不使用第i种硬币的可能 我们只记录最小的情况</span></div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=C[i]; j&lt;=amout; j++) &#123;</div><div class="line">            T[j] = Integer.min(T[j], T[j-C[i]]+<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> T[amout];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h3><p><strong>题目：</strong></p>
+<p>现有价值分别为 $v_i$, 重量分别为 $w_i$ 的 N 块宝石。作为珠宝大盗的你，最多能背动总重量为 W 的背包。请问你这次盗窃的总收益最多为多少？</p>
+<p><strong>思路：</strong></p>
+<p>这道问题是每个物品选或不选的组合，因此被称为 0-1 背包问题。我们用 <code>C[i][w]</code> 表示前 i 个物品装入容量为 w 的背包时的总价值的最大值，递增背包容量 w 至最大值来求解。求出 <code>C[i][w]</code> 的值为以下二者中较大的一个：</p>
+<ul>
+<li><code>C[i-1][w - 物品i的重量] + 物品i的价值</code></li>
+<li><code>C[i-1][w]</code> </li>
+</ul>
+<p>第一种即选择 i 的情况，第二种为不选择 i 的情况。</p>
+<p><strong>Java 实现：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line"></div><div class="line">        Item[] items = <span class="keyword">new</span> Item[<span class="number">5</span>];</div><div class="line">        items[<span class="number">1</span>] = <span class="keyword">new</span> Item(<span class="number">4</span>,<span class="number">2</span>);</div><div class="line">        items[<span class="number">2</span>] = <span class="keyword">new</span> Item(<span class="number">5</span>,<span class="number">2</span>);</div><div class="line">        items[<span class="number">3</span>] = <span class="keyword">new</span> Item(<span class="number">2</span>,<span class="number">1</span>);</div><div class="line">        items[<span class="number">4</span>] = <span class="keyword">new</span> Item(<span class="number">8</span>,<span class="number">3</span>);</div><div class="line"></div><div class="line">        System.out.println(getMaxValue(items, <span class="number">5</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxValue</span><span class="params">(Item[] items, <span class="keyword">int</span> weight)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span>[][] C = <span class="keyword">new</span> <span class="keyword">int</span>[items.length][weight+<span class="number">1</span>];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;C.length; i++) &#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;C[i].length; j++) &#123;</div><div class="line">                C[i][j] = <span class="number">0</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;items.length; i++) &#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=weight; j++) &#123;</div><div class="line">                <span class="keyword">if</span>(items[i].weight &gt; j) &#123;</div><div class="line">                    <span class="comment">//不可能选择</span></div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    C[i][j] = Integer.max(C[i-<span class="number">1</span>][j], C[i-<span class="number">1</span>][j-items[i].weight] + items[i].value);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> C[items.length-<span class="number">1</span>][weight];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> value;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> weight;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Item</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> weight)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.value = value;</div><div class="line">        <span class="keyword">this</span>.weight = weight;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/03/25/动态规划法/">动态规划法</a>
+        </p>
+    
+        <p>
+            <a href="/2018/03/18/Swift-Tips/">Swift Tips</a>
+        </p>
+    
+        <p>
+            <a href="/2018/02/28/Obj-C内存管理/">Obj-C内存管理</a>
+        </p>
+    
+        <p>
+            <a href="/2018/02/15/Java以空格分割字符串/">一个小坑-以空格分割字符串</a>
+        </p>
+    
+        <p>
+            <a href="/2018/01/29/使用PlutoSDR构建简易通信系统/">使用PlutoSDR构建简易通信系统</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
