@@ -10,8 +10,8 @@
 
     <!--Description-->
     
-        <meta name="description" content="Objective-C 键值编程Objective-C 键值编程包括键值编码 KVC 和键值观察 KVO 两部分。
-键值编码对象内部的属性由于被封装起来，无法直接访问，而要用到属性的 getter 和 setter 方法。KVC 提供了一种用于访问属性的键值对机制，其中 key 是属性的名称，而 v">
+        <meta name="description" content="解决内存泄露分析导致的App闪退我们在解决应用内存泄露的问题时，常常要用到 Instruments 调试工具的 Leak Check 工具。然而，有时打开 Leak Check，应用就闪退了，导致无法调试。
+这似乎是 Xcode 的一个 bug。解决方法很简单：打开 Allocations 分析工具">
     
 
     <!--Author-->
@@ -21,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Obj-C键值编程"/>
+        <meta property="og:title" content="解决Leak分析闪退问题"/>
     
 
     <!--Open Graph Description-->
@@ -43,7 +43,7 @@
 
     <!-- Title -->
     
-    <title>Obj-C键值编程 - Berr</title>
+    <title>解决Leak分析闪退问题 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -111,8 +111,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">Obj-C键值编程</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-04-07</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">解决Leak分析闪退问题</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-04-27</p>
         </div>
     </div>
 
@@ -132,45 +132,20 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Obj-C/">#Obj-C</a>
+                                <a class="fw3 ph1 dib" href="/tags/Instruments/">#Instruments</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="Objective-C-键值编程"><a href="#Objective-C-键值编程" class="headerlink" title="Objective-C 键值编程"></a>Objective-C 键值编程</h1><p>Objective-C 键值编程包括键值编码 KVC 和键值观察 KVO 两部分。</p>
-<h3 id="键值编码"><a href="#键值编码" class="headerlink" title="键值编码"></a>键值编码</h3><p>对象内部的属性由于被封装起来，无法直接访问，而要用到属性的 getter 和 setter 方法。KVC 提供了一种用于访问属性的键值对机制，其中 key 是属性的名称，而 value 是属性的值。这种机制与访问字典条目的机制相同。如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[object valueForKey: @&quot;var1&quot;];</div><div class="line">[object setValue: @&quot;value&quot; forKey: @&quot;var1&quot;];</div></pre></td></tr></table></figure>
-<p>通过 KVC，可以用能在运行时改变的字符串来访问属性，从而动态而灵活地访问和操作对象的状态。</p>
-<p>也可以通过键路径来指明需要便利的对象属性序列，下面两行代码的功能是相同的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">person.name.firstName = @&quot;Bob&quot;;</div><div class="line">[person setValue: @&quot;Bob&quot; forKeyPath: @&quot;name.firstName&quot;];</div></pre></td></tr></table></figure>
-<p>还可以通过 <code>dictionaryWithValuesForKeys</code> 方法设置或获取多个属性的值。</p>
-<p>NSObject 遵守 NSKeyValueCoding 协议，因此它的所有子类都为键值编码提供了内置支持。</p>
-<p>你可以通过在类中重写 NSKeyValueCoding 的一些方法来控制类的行为。比如通过重写 <code>accessInstanceVariablesDirectly</code> 可以让类控制如果没有找到属性的访问方法，能不能直接让键值编码访问属性的支持变量。</p>
-<h3 id="键值搜索模式"><a href="#键值搜索模式" class="headerlink" title="键值搜索模式"></a>键值搜索模式</h3><p>KVC 如何来去获取和设置属性的值呢？</p>
-<ul>
-<li>KVC 首先会搜索目标类名称符合 set\<key> 的访问方法。例如，如果调用了 <code>setValue:forKey:</code> 方法，为 key 提供了参数 name，那么 KVC 就会搜索目标类中 <code>setName:</code> 的访问方法。</key></li>
-<li>如果没找到访问方法，且接收对象的类方法 <code>accessInstanceVariablesDirectly</code> 返回 YES（默认返回 YES，可以设置为 NO），KVC 就会搜索接收对象的类，寻找名称匹配 _key / _isKey / key / isKey 格式的实例变量。</li>
-<li>如果找到了，就会设置值。</li>
-<li>如果没找到，接收对象的 <code>setValue:forUndefinedKey:</code> 就会被调用。通过重写这些方法可以处理无法找到属性的情况。</li>
-</ul>
-<p>由此可见，写代码时应该遵循 Cocoa 的命名规范，这样才能让 KVC 正常工作。</p>
-<h3 id="集合操作符"><a href="#集合操作符" class="headerlink" title="集合操作符"></a>集合操作符</h3><p>KVC 也可以对集合类型的元素进行操作。格式为 <code>集合键路径.@操作符.属性键路径</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NSNumber *totalPrice = [orderItems valueForKeyPath: @&quot;@sum.price&quot;]; //计算总和</div><div class="line">NSNumber *totalItems = [orderItems valueForKeyPath: @&quot;@count&quot;]; //确定集合含有的对象数量</div><div class="line">NSArray *itemTypes = [orderItems valueForKeyPath: @&quot;@distinctUnionOfObjects.description&quot;]; //获取每个集合元素的描述</div></pre></td></tr></table></figure>
-<h3 id="键值观察"><a href="#键值观察" class="headerlink" title="键值观察"></a>键值观察</h3><p>KVO 是一种通知机制，它使对象能够在其他对象的属性发生更改时获得通知。</p>
-<p>通过 <code>addObserver:forKeyPath:options:context:</code> 方法，在观察对象和被观察对象之间建立联系。当被观察属性的值发生改变时，被观察对象就会调用观察对象中的 <code>observeValueForKeyPath:ofObject:change:context:</code> 方法。在该方法中，观察者类会实现用于处理被观察属性发生更改的逻辑。</p>
-<p>NSObject 遵守 NSKeyValueObserving 协议，因此它的所有子类都对键值观察提供了内置的支持。</p>
-<h3 id="键值观察和通知"><a href="#键值观察和通知" class="headerlink" title="键值观察和通知"></a>键值观察和通知</h3><p>键值观察和通知都提供了对象间的传递信息机制，功能有些类似。下面对两者进行比较。</p>
-<p>NSNotification 能够封装通用信息，可以为更广泛的系统事件提供支持。而 KVO 只能支持对象属性更改通知功能。</p>
-<p>通知使用交互的广播模型，信息会通过集中式通知中心分发，可以向多个对象发送消息。通知支持同步传递通知，也支持通过 NSNotificationQueue 来异步传递通知。KVO 使用点对点的交互模型，被观察对象会直接向已注册的观察着发送通知，且程序会一直处于阻塞状态，直到相应的处理执行完为止。通知的非阻塞交互模式可以提高应用程序的响应性。</p>
-<p>通知双方是分隔开的，而 KVO 会通过 addObserver 方法为观察对象建立一个强引用。因此在释放被观察对象前，应该先通过 removeObserver 删除观察对象。</p>
-<h3 id="KVO-的实现"><a href="#KVO-的实现" class="headerlink" title="KVO 的实现"></a>KVO 的实现</h3><p>键值观察是通过 Objective-C 的 Runtime 实现的。当你为对象注册观察者时，KVO 的基础设施会动态创建一个被观察对象的子类。然后，它将被观察对象的 isa 指针指向这个新建的子类，这样向原所属类发送的消息实际上就会被发送给这个子类。正常来说，isa 指针会指向对象的所属类，而该类拥有一个列出指针与该类中方法关系的分派表。这个新建的子类会拦截向被观察者发送的消息，向观察者发送通知等。以动态方式置换 isa 指针指向的类被称为 isa-swizzling。</p>
+                    <h1 id="解决内存泄露分析导致的App闪退"><a href="#解决内存泄露分析导致的App闪退" class="headerlink" title="解决内存泄露分析导致的App闪退"></a>解决内存泄露分析导致的App闪退</h1><p>我们在解决应用内存泄露的问题时，常常要用到 Instruments 调试工具的 Leak Check 工具。然而，有时打开 Leak Check，应用就闪退了，导致无法调试。</p>
+<p>这似乎是 Xcode 的一个 bug。解决方法很简单：打开 Allocations 分析工具（而不是 Leaks）、点击右上角 + 按钮添加 Leaks 工具就可以了。</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Obj-C/">#Obj-C</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Instruments/">#Instruments</a>
                         </div>
                     
 
