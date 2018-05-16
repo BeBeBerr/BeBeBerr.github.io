@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="设计模式-创建型模式对象模版模式对象模版模式是最简单的一种设计模式，即使用类和结构体创建对象，而不是使用零散的变量、变量数组或元组来保存信息。使用对象模版模式可以将数据与操作数据的方法封装在一起，从而隐藏接口的内部实现，松散耦合。
+原型模式原型模式是指用已有的对象作为原型，通过克隆的方式来创建新的对">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="设计模式-适配器模式"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>设计模式-适配器模式 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">设计模式-适配器模式</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-05-16</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/DesignPattern/">#DesignPattern</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="设计模式-创建型模式"><a href="#设计模式-创建型模式" class="headerlink" title="设计模式-创建型模式"></a>设计模式-创建型模式</h1><h3 id="对象模版模式"><a href="#对象模版模式" class="headerlink" title="对象模版模式"></a>对象模版模式</h3><p>对象模版模式是最简单的一种设计模式，即使用类和结构体创建对象，而不是使用零散的变量、变量数组或元组来保存信息。使用对象模版模式可以将数据与操作数据的方法封装在一起，从而隐藏接口的内部实现，松散耦合。</p>
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p>原型模式是指用已有的对象作为原型，通过克隆的方式来创建新的对象，而不是通过初始化函数。这样可以将创建对象的代码隐藏，无需知道创建新的对象需要用到哪些类或结构体。当初始化的开销很大，或是想要降低对模版的依赖时，就可以使用此模式。</p>
+<p>当使用值类型时，Swift 会自动使用原型模式。而当我们使用引用类型时，就需要让类继承 NSObject 并遵循 NSCopying 协议，实现其中的 <code>copyWithZone</code> 方法来定义如何复制对象。需要注意在复制对象时使用深拷贝还是浅拷贝。</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>单例模式可以确保某个类型的对象在应用程序中只出现一个实例。单例模式的实现与所使用的语言密切相关。</p>
+<p>在 Swift 中，可以使用全局常量来实现单例模式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Logger.swift</span></div><div class="line"><span class="keyword">let</span> globalLogger = <span class="type">Logger</span>()</div><div class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</div><div class="line">    fileprivate <span class="keyword">init</span>() &#123;</div><div class="line">        <span class="comment">//required to stop instances being created by code in other files.</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Swift 的全局常量是惰性初始化的，且能保证线程安全。只有在第一次访问全局常量时才会初始化，且只初始化一次。即使在另外的线程中读取，也只会创建一个实例。</p>
+<p>我们使用 final 关键字来修饰类，来防止子类的创建。把 init 函数前面加上 fileprivate 来阻止 Logger.swift 以外的地方的代码来创建实例。通过 let 关键字来声明对象，可以防止引用的指向被修改。这样就实现了一个单例。</p>
+<p>当然还有更简单的实现方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">let</span> sharedLogger = <span class="type">Logger</span>()</div><div class="line">    <span class="keyword">private</span> <span class="keyword">init</span>() &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Cocoa 中许多地方都使用了单例模式，比如 UIApplication 的 sharedApplication。</p>
+<h3 id="对象池模式"><a href="#对象池模式" class="headerlink" title="对象池模式"></a>对象池模式</h3><p>对象池模式是单例模式的一种变体，不同的是它提供了多个完全相同的对象，而非单个对象。使用时应该从对象池中取出对象，使用它完成任务后再归还给对象池。在归还以前，其他组件将不能使用它。</p>
+<p>举例来说明，图书馆中绝大多数书都不止一本，但是范围又是有限定的。创建或复制 Book 对象并不能使图书馆的藏书量真的增多，这个时候就应该使用对象池来管理图书。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pool</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> data = [<span class="type">T</span>]()</div><div class="line">    </div><div class="line">    <span class="keyword">init</span>(items: [<span class="type">T</span>]) &#123;</div><div class="line">        <span class="keyword">for</span> eachItem <span class="keyword">in</span> items &#123;</div><div class="line">            data.append(eachItem)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getFromPool</span><span class="params">()</span></span> -&gt; <span class="type">T</span>? &#123;</div><div class="line">        <span class="keyword">var</span> result: <span class="type">T</span>?</div><div class="line">        <span class="keyword">if</span> data.<span class="built_in">count</span> &gt; <span class="number">0</span> &#123;</div><div class="line">            result = data.removeAtIndex(<span class="number">0</span>)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> result</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">returnToPool</span><span class="params">(item: T)</span></span> &#123;</div><div class="line">        data.append(item)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们维护了一个队列来管理对象池。需要注意的是，如果程序中使用了多线程，则需要做好数据的保护。</p>
+<p>Cocoa 中，UITableView 维护了一个 UITableViewCell 的对象池来节省内存开销。</p>
+<h3 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h3><p>当多个类遵循同一个协议，或是继承自同一个基类，而我们需要根据条件选择一个类来初始化对象时，就可以使用工厂方法模式。工厂方法模式同意了实现类的选取逻辑，从而避免了相关逻辑散布在整个程序中，调用组件无需了解实现类即选取实现类的过程。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//RentalCar.swift</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RentalCar</span> </span>&#123;</div><div class="line">    fileprivate <span class="keyword">var</span> name = <span class="string">""</span></div><div class="line">    fileprivate <span class="keyword">var</span> passengers = <span class="number">0</span></div><div class="line">    </div><div class="line">    fileprivate <span class="keyword">init</span>(name: <span class="type">String</span>, passengers: <span class="type">Int</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.name = name</div><div class="line">        <span class="keyword">self</span>.passengers = passengers</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">final</span> <span class="keyword">var</span> name: <span class="type">String</span> &#123;</div><div class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> name &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">final</span> <span class="keyword">var</span> passengers: <span class="type">Int</span> &#123;</div><div class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> passengers &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">createRentalCar</span>(<span class="title">passengers</span>: <span class="title">Int</span>) -&gt; <span class="title">RentalCar</span>? </span>&#123;</div><div class="line">        <span class="keyword">var</span> car: <span class="type">RentalCar</span>?</div><div class="line">        <span class="keyword">switch</span> passengers &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">0</span>...<span class="number">3</span>:</div><div class="line">            	car = <span class="type">Compact</span>()</div><div class="line">            <span class="keyword">case</span> <span class="number">4</span>...<span class="number">8</span>:</div><div class="line">            	car = <span class="type">SUV</span>()</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">            	car = <span class="literal">nil</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> car</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Compact</span>: <span class="title">RentalCar</span> </span>&#123;</div><div class="line">    fileprivate <span class="keyword">init</span>() &#123;</div><div class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: <span class="string">"Golf"</span>, passengers: <span class="number">3</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SUV</span>: <span class="title">RentalCar</span> </span>&#123;</div><div class="line">    fileprivate <span class="keyword">init</span>() &#123;</div><div class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: <span class="string">"Range Rover"</span>, passengers: <span class="number">8</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//CarSelector.swift</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarSelector</span> </span>&#123;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">selectCar</span>(<span class="title">passengers</span>: <span class="title">Int</span>) -&gt; <span class="title">String</span>? </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="type">RentalCar</span>.createRentalCar(passengers)?.name</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><p>当调用组件需要一组互相协作的对象，又不需要关心这些对象的具体协作方式时，就可以使用抽象工厂模式。</p>
+<p>当调用抽象工厂去创建对象时，抽象工厂会检查请求，然后选择一个具体工厂，使用具体工厂创建对象并返回给调用组件。</p>
+<h3 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h3><p>建造者模式用于分离对象的创建和配置。调用组件负责提供配置对象的数据，把数据传给中间人建造者，建造者再去创建对象。这样调用者就无需过多掌握其使用的对象的信息，而默认配置可以集中放置在建造者中。如果创建对象需要进行复杂的配置，就可以使用这种模式。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Burger</span> </span>&#123;</div><div class="line">    <span class="keyword">let</span> pickles: <span class="type">Bool</span> <span class="comment">//泡菜</span></div><div class="line">    <span class="keyword">let</span> mayo: <span class="type">Bool</span> <span class="comment">//蛋黄酱</span></div><div class="line">    <span class="keyword">let</span> lettuce: <span class="type">Bool</span> <span class="comment">//生菜</span></div><div class="line">    <span class="keyword">let</span> ketchup: <span class="type">Bool</span></div><div class="line">   	</div><div class="line">    <span class="keyword">init</span>(pickles: <span class="type">Bool</span>, mayo: <span class="type">Bool</span>, lettuce: <span class="type">Bool</span>, ketchup: <span class="type">Bool</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.pickles = pickles</div><div class="line">        <span class="keyword">self</span>.mayo = mayo</div><div class="line">        <span class="keyword">self</span>.lettuce = lettuce</div><div class="line">        <span class="keyword">self</span>.ketchup = ketchup</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BurgerBuilder</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> pickles = <span class="literal">false</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> mayo = <span class="literal">false</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> lettuce = <span class="literal">true</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> ketchup = <span class="literal">true</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">setPickles</span><span class="params">(choice: Bool)</span></span> &#123;</div><div class="line">        <span class="keyword">self</span>.pickles = choice</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">setMayo</span><span class="params">(choice: Bool)</span></span> &#123;</div><div class="line">        <span class="keyword">self</span>.mayo = choice</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">setLettuce</span><span class="params">(choice: Bool)</span></span> &#123;</div><div class="line">        <span class="keyword">self</span>.lettuce = choice</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">setKetchup</span><span class="params">(choice: Bool)</span></span> &#123;</div><div class="line">        <span class="keyword">self</span>.ketchup = choice</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">buildBurger</span><span class="params">()</span></span> -&gt; <span class="type">Burger</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="type">Burget</span>(pickles: picklse, mayo: mayo, lettuce: lettuce, ketchup: ketchup)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/DesignPattern/">#DesignPattern</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/05/16/设计模式-适配器模式/">设计模式-适配器模式</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/02/iOS-Layout学习笔记/">iOS-Layout学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/04/27/解决Leak分析闪退问题/">解决Leak分析闪退问题</a>
+        </p>
+    
+        <p>
+            <a href="/2018/04/14/iOS多线程学习笔记/">iOS多线程学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/04/07/Obj-C键值编程/">Obj-C键值编程</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
