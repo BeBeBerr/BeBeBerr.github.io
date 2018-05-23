@@ -144,7 +144,7 @@ GestureRecognizer 的代理方法UIGestureRecognizerDelegate 中定义了以下�
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizerShouldBegin</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
 <p>当手势识别器的状态试图转换到 <code>UIGestureRecognizerStatePossible</code> 状态时调用，如果 return 了 false，则手势的状态会被转换到失败。</p>
 <p>手势识别器的状态机如下图：</p>
-<p><img src="/Users/wangluyuan/Desktop/img/iOS%E6%89%8B%E5%8A%BF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/stateMachine.png" alt="stateMachine"></p>
+<p><img src="/img/iOS%E6%89%8B%E5%8A%BF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/stateMachine.png" alt="stateMachine"></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
 <p>当两个手势可能会互相阻塞时会调用这个方法。如果返回 true，则两个手势可以同时响应。这个方法默认返回 false，即一般情况下响应了一个手势就不会响应另一个手势了。</p>
 <p>需要注意，返回 true 会保证两个手势能被同时响应，而返回 false 不能保证两个手势不能被同时响应。因为另一个手势的代理方法可能会返回 true，即“一真即真”。</p>
