@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS 手势学习笔记这次的主题是手势稍微高级一点的用法。
+GestureRecognizer 的代理方法UIGestureRecognizerDelegate 中定义了以下方法：
+1optional public func gestureRecognizerShouldBegin(_ gesture">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS手势学习笔记"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS手势学习笔记 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS手势学习笔记</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-05-23</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Gesture/">#Gesture</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS-手势学习笔记"><a href="#iOS-手势学习笔记" class="headerlink" title="iOS 手势学习笔记"></a>iOS 手势学习笔记</h1><p>这次的主题是手势稍微高级一点的用法。</p>
+<h3 id="GestureRecognizer-的代理方法"><a href="#GestureRecognizer-的代理方法" class="headerlink" title="GestureRecognizer 的代理方法"></a>GestureRecognizer 的代理方法</h3><p><code>UIGestureRecognizerDelegate</code> 中定义了以下方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizerShouldBegin</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>当手势识别器的状态试图转换到 <code>UIGestureRecognizerStatePossible</code> 状态时调用，如果 return 了 false，则手势的状态会被转换到失败。</p>
+<p>手势识别器的状态机如下图：</p>
+<p><img src="/Users/wangluyuan/Desktop/img/iOS%E6%89%8B%E5%8A%BF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/stateMachine.png" alt="stateMachine"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>当两个手势可能会互相阻塞时会调用这个方法。如果返回 true，则两个手势可以同时响应。这个方法默认返回 false，即一般情况下响应了一个手势就不会响应另一个手势了。</p>
+<p>需要注意，返回 true 会保证两个手势能被同时响应，而返回 false 不能保证两个手势不能被同时响应。因为另一个手势的代理方法可能会返回 true，即“一真即真”。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>每次试图去识别的时候都会调用，因此失败依赖可以惰性确定，并且可以设置给跨视图层级的识别器。</p>
+<p>与上面的方法类似，因为牵扯到两个识别器，因此还是一真即真。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>与上面的方法对称。如果返回 true，则在自己 fail 之前，otherGestureRecognizer 不能识别手势，要等待 gestureRecognizer fail 之后才可以。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>在 <code>touchesBegan</code> 之前就会调用，如果返回 false，则会阻止识别器接收 UITouch。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">optional</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">gestureRecognizer</span><span class="params">(<span class="number">_</span> gestureRecognizer: UIGestureRecognizer, shouldReceive press: UIPress)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>与上面类似，会阻止识别器接受 UIPress。</p>
+<p>那么 UIPress 是什么？直接 Google UIPress 并没有获得什么有用的资料，说明 UIPress 其实并不常用。苹果自己的文档写得也是让人看不懂，后来是看到了微软 Xamarin 的文档才稍微明白过来……原来它代表了远程控制器或游戏手柄上物理按钮按下的事件。UITouch - 屏幕触摸；UIPress - 按钮按下，名字起得还是可以的。</p>
+<h3 id="手势冲突怎么办"><a href="#手势冲突怎么办" class="headerlink" title="手势冲突怎么办"></a>手势冲突怎么办</h3><p>手势冲突确实是比较棘手的问题，最根本的方法还是尽量避免多个手势叠加在一起。</p>
+<p>如果真的有很多相似的手势要同时使用，我们可以使用上面的代理方法，优先识别一些手势，让另外的手势 fail 掉。</p>
+<p>还有，如果界面上有非常非常多的 view 需要响应手势，那么与其在每个 view 上都添加手势识别器，不如把要用的几种识别器添加到最底层的 view 上。之后我们自己根据 view 的层级来分发手势，不过要多写一些判断响应者的代码。</p>
+<h3 id="自定义手势识别器"><a href="#自定义手势识别器" class="headerlink" title="自定义手势识别器"></a>自定义手势识别器</h3><p>首先需要注意的是，当你编写一个 UIGestureRecognizer 的子类时，是需要 import 头文件 <code>UIGestureRecognizerSubclass.h</code> 的。这个头文件中定义了很可能需要覆写的属性和方法。如果是 Swift：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"><span class="keyword">import</span> UIKit.UIGestureRecognizerSubclass</div></pre></td></tr></table></figure>
+<p>接下来我们需要重写 touchesBegan 等方法，并设置 state 的属性，来控制状态机状态的跳转。下面是实现一个识别画圈的手势识别器的例子：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CircleGestureRecognizer</span>: <span class="title">UIGestureRecognizer</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> touchSamples = [<span class="type">CGPoint</span>]()</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> isCircle = <span class="literal">false</span></div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">touchesBegan</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.touchesBegan(touches, with: event)</div><div class="line">        <span class="keyword">guard</span> touches.<span class="built_in">count</span> == <span class="number">1</span> <span class="keyword">else</span> &#123;</div><div class="line">            state = .failed</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line">        state = .began</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">touchesMoved</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.touchesMoved(touches, with: event)</div><div class="line">        <span class="keyword">if</span> state == .failed &#123;</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">let</span> window = view?.window</div><div class="line">        </div><div class="line">        <span class="keyword">if</span> <span class="keyword">let</span> loc = touches.first?.location(<span class="keyword">in</span>: window) &#123;</div><div class="line">            touchSamples.append(loc)</div><div class="line">            state = .changed</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">touchesEnded</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.touchesEnded(touches, with: event)</div><div class="line">        </div><div class="line">        isCircle = checkCircle()</div><div class="line">        <span class="built_in">print</span>(isCircle)</div><div class="line">        </div><div class="line">        state = isCircle ? .ended : .failed</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">reset</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.reset()</div><div class="line">        isCircle = <span class="literal">false</span></div><div class="line">        touchSamples = []</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">checkCircle</span><span class="params">()</span></span> -&gt; <span class="type">Bool</span> &#123;</div><div class="line">        <span class="keyword">guard</span> touchSamples.<span class="built_in">count</span> &gt; <span class="number">4</span> <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">let</span> p1 = touchSamples.first!</div><div class="line">        <span class="keyword">let</span> p2 = touchSamples[touchSamples.<span class="built_in">count</span> / <span class="number">4</span>]</div><div class="line">        <span class="keyword">let</span> p3 = touchSamples[touchSamples.<span class="built_in">count</span> * <span class="number">2</span> / <span class="number">4</span>]</div><div class="line">        <span class="keyword">let</span> p4 = touchSamples[touchSamples.<span class="built_in">count</span> * <span class="number">3</span> / <span class="number">4</span>]</div><div class="line">        </div><div class="line">        <span class="keyword">let</span> centerX = (p1.x + p2.x + p3.x + p4.x) / <span class="number">4.0</span></div><div class="line">        <span class="keyword">let</span> centerY = (p1.y + p2.y + p3.y + p4.y) / <span class="number">4.0</span></div><div class="line">        <span class="keyword">let</span> center = <span class="type">CGPoint</span>(x: centerX, y: centerY)</div><div class="line">        <span class="keyword">let</span> radius = (getDistance(from: p1, to: center) + getDistance(from: p2, to: center) + getDistance(from: p3, to: center) + getDistance(from: p4, to: center)) / <span class="number">4.0</span></div><div class="line">        </div><div class="line">        <span class="keyword">var</span> <span class="built_in">count</span> = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> point <span class="keyword">in</span> touchSamples &#123;</div><div class="line">            <span class="keyword">if</span> <span class="built_in">abs</span>(getDistance(from: point, to: center) - radius) &lt; <span class="number">30</span> &#123;</div><div class="line">                <span class="built_in">count</span> += <span class="number">1</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="type">Double</span>(<span class="built_in">count</span>) / <span class="type">Double</span>(touchSamples.<span class="built_in">count</span>) &gt; <span class="number">0.8</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">getDistance</span><span class="params">(from point: CGPoint, to otherPoint: CGPoint)</span></span> -&gt; <span class="type">CGFloat</span> &#123;</div><div class="line">        <span class="keyword">return</span> sqrt((point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y))</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里判定是否是一个圆圈的算法比较简单。只是取了 4 个点，求出它们的平均坐标作为圆心，再求出它们到圆心的平均距离作为半径。接着，检查是否有足够多（大于 80% ）的点到圆心的距离误差小于某个值。当然这样的判断非常粗糙，如果想要达到比较精确的识别效果，应该使用更复杂的算法来做拟合。</p>
+<h3 id="小任务1：两个ScrollView-联动"><a href="#小任务1：两个ScrollView-联动" class="headerlink" title="小任务1：两个ScrollView 联动"></a>小任务1：两个ScrollView 联动</h3><p>最简单的想法肯定是在一个 scrollView 的 didScroll 方法里，把另一个 scrollView 的 offset 设置为和自己一样的值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidScroll</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView)</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> scrollView == leftScrollView &#123;</div><div class="line">        rightScrollView.contentOffset = leftScrollView.contentOffset</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这当然是一种可行的方法。但是当两个 scrollView 里面的内容不一样多时，就会出现一边还没滑完，另一边已经全部滑出去呈现一片空白的情况。如果需求不允许这样，当然就不行。仅仅是在 didScroll 里面再做限制的话，就会丧失回弹效果。虽然我感觉一般没有这么变态的需求……</p>
+<p>但接下来是开脑洞的时间：我们有没有别的方法呢？这里我想说的是，能不能把一个手势同时传递给两个 view 呢？</p>
+<p>我的第一反应是，既然触摸事件会从 superView 传递到 subView，那么我只要把第二个 scrollView 作为第一个 scrollView 的子视图，再允许两个手势同时响应就可以了。经过确认，两个 scrollView 确实可以同时响应手势，但由于把 scrollView 添加到另一个 scrollView 上了，它就也会跟着滚动。即它一边自己滚动，一边跟着底部的 scrollView 滚动。那如果我们想把它固定住，就要在 didScroll 方法里修改它的 frame…而且，scrollView 默认是 clipsToBounds 的，如果要让两个 scrollView 平行放置，还要自己去遮挡露出来的 content。这个想法似乎不是很好。</p>
+<p><strong>第二个想法</strong>是，我们还是让两个 scrollView 处于平行层级，利用 OC 强大的动态特性把手势传递过去。</p>
+<p>首先，我们要修改右边的 scrollView 的 hitTest 方法，让手指在左边的 scrollView 上滑动时，也能响应手势：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>? &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，现在无论在哪里滑动，右边的 scrollView 都能响应了。但是有视图响应手势，手势就不会继续派发给平行的视图了。我们就需要自己传递过去。</p>
+<p>我们知道 ScrollView 里面是内置了一个 panGestureRecognizer 的。ScrollView 这些滑动，包括滑动的各种物理效果，肯定也是在这个内置的 panGestureRecognizer 的 target 方法实现的。那么我们把这个 recognizer dump 出来看一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- &lt;UIScrollViewPanGestureRecognizer: 0x7ff5df417700; state = Possible; delaysTouchesEnded = NO; view = &lt;GestureAnimation.MyView 0x7ff5e081a400&gt;; target= &lt;(action=handlePan:, target=&lt;GestureAnimation.MyView 0x7ff5e081a400&gt;)&gt;&gt; #0</div><div class="line">  - super: UIPanGestureRecognizer</div><div class="line">    - super: UIGestureRecognizer</div><div class="line">      - super: NSObject</div></pre></td></tr></table></figure>
+<p>可以看到，内置的这个 panGestureRecognizer 的 target 是一个签名为 <code>handlePan:</code> 的方法。但这个方法是私有的，因此我们没有办法更改它的逻辑。但是不怕，我们可以通过 method swizzling 把这个方法替换成我们自己的方法。首先由于我们必须要保证方法只被替换一次，因此在 ViewController 里面写，而不要在 ScrollView 的子类 的 init 方法里写，因为替换的是整个类的实例方法，我们的程序中有两个 scrollView，会 init 两次：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> m1 = class_getInstanceMethod(<span class="type">MyView</span>.<span class="keyword">self</span>, <span class="type">Selector</span>(<span class="string">"handlePan:"</span>))</div><div class="line"><span class="keyword">let</span> m2 = class_getInstanceMethod(<span class="type">MyView</span>.<span class="keyword">self</span>, #selector(<span class="type">MyView</span>.myHandlePan(gesture:)))</div><div class="line">method_exchangeImplementations(m1!, m2!)</div></pre></td></tr></table></figure>
+<p>这里的 MyView 是我写的 UITextView 的子类。现在，我们已经把 MyView 的父类 UITextView 的父类 UIScrollView 的 handlePan 方法和我们自己的 myHandlePan 方法替换了。这时如果去滑动 scrollView，会发现它开始调用我们自己的方法了！</p>
+<p>UIScrollView 的回弹效果、减速效果等等是非常完美的，我们肯定不希望自己去实现这些效果，因此我们要做的是在我们的 myHandlePan 方法里再去调用原来的 handlePan 方法。这不过，这次我们又要调用右边的 scrollView 的 handlePan，又要调用左边的 handlePan，这样两个 scrollView 就能联动了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">myHandlePan</span><span class="params">(gesture: UIPanGestureRecognizer)</span></span> &#123;</div><div class="line">    <span class="keyword">self</span>.myHandlePan(gesture: gesture)</div><div class="line">    other?.myHandlePan(gesture: gesture) <span class="comment">//other 是左边的 scrollView 的引用</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>诶，这里为什么调用的是 myHandlePan 呢？不应该是通过 performSelector 方法调用 handlePan 吗？这样不会递归吗？别忘了，我们可是交换了 myHandlePan 和 handlePan 的，调用 myHandlePan 其实是在调用原来的 handlePan。</p>
+<p>但是这样写是不行的，我们会发现程序 crash 掉了，且完全没有报错信息！这是为什么呢？原来，仅仅标记了 @objc 的函数和属性并不能保证在运行时被调用，因为 swift 会做静态优化。现在，我们通过 dynamic 关键字来让它变成完全动态的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="function"><span class="keyword">func</span> <span class="title">myHandlePan</span><span class="params">(gesture: UIPanGestureRecognizer)</span></span> &#123;</div><div class="line">    <span class="keyword">self</span>.myHandlePan(gesture: gesture)</div><div class="line">    other?.myHandlePan(gesture: gesture)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行程序，我们会发现右边的 scrollView 正常的在滑动，而左边的一动不动！我们费了半天劲却又回到了原点。这是为什么呢？</p>
+<p>是因为 other 是 nil 吗？毕竟向 nil 发送消息不会有反应。但我们 print 一下发现 other 并不是 nil。这时，我<strong>猜测</strong>是苹果在实现 handlePan 的时候，做了判断，检查传入的参数是不是与自己内置的 panGestureRecoginzer 一致：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//我瞎猜的苹果的实现</div><div class="line">- (void)handlePan:(UIPanGestureRecognizer *)sender &#123;</div><div class="line">    if (sender != _panGestureRecognizer) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    //...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>嗯…苹果爸爸的代码还真是严谨呢。但是没关系，我们把左边的 panGestureRecognizer 属性也换掉就好了，即使它是 get-only 的又何妨，我们有 runtime：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">leftScrollView.setValue(rightScrollView.panGestureRecognizer, forKey: <span class="string">"panGestureRecognizer"</span>)</div></pre></td></tr></table></figure>
+<p>好了，现在运行程序——大功告成！两个 scrollView 完美地联动了！这也说明我上面瞎猜的应该是正确的。用这种方法也算是费尽周折，足足花了我大半天的事件各种调试。不过这波操作还比较骚，我喜欢。</p>
+<p>由此可见，OC 的动态特性确实是一件大杀器。不过，调用私有方法确实是不推荐的，除非万不得已，一般不要这样。当未来，UIKit 全部用 Swift 重写后，我们也可能会丧失这把利器吧！看 Swift 自己的 Runtime 怎么实现了。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Gesture/">#Gesture</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/05/23/iOS手势学习笔记/">iOS手势学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/20/Promise是什么/">Promise是什么</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/16/设计模式-创建型模式/">设计模式-创建型模式</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/02/iOS-Layout学习笔记/">iOS-Layout学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/04/27/解决Leak分析闪退问题/">解决Leak分析闪退问题</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
