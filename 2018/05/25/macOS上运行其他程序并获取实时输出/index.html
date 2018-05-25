@@ -10,10 +10,8 @@
 
     <!--Description-->
     
-        <meta name="description" content="iOS 为 TableView 左滑删除添加图片本文适用于 iOS11
-起因最近做的项目中，PM 和设计想把 TableView 左滑删除、分享等按钮的文字替换成图片。我想既然 iOS11 自带的邮件应用中就是这样的，那实现起来应该很容易，就一口答应了。
-
-开始开发的时候，我信心满满地在 Xcode">
+        <meta name="description" content="macOS 上唤起其他程序并获得实时输出在开发桌面端程序时，我们偶尔需要调用其他语言写的程序。桥接或者混编当然是比较好的方法，但会比较麻烦。如果可以，让我们自己的程序直接唤起另外一个程序 / 脚本，也是一种不错的选择。这个时候我们就需要两个进程之间互相通信。
+两个进程间通信，可以通过一个进程向控制台">
     
 
     <!--Author-->
@@ -23,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="iOS 为 TableView 左滑删除添加图片"/>
+        <meta property="og:title" content="macOS上唤起其他程序并获取实时输出"/>
     
 
     <!--Open Graph Description-->
@@ -45,7 +43,7 @@
 
     <!-- Title -->
     
-    <title>iOS 为 TableView 左滑删除添加图片 - Berr</title>
+    <title>macOS上唤起其他程序并获取实时输出 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -113,8 +111,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS 为 TableView 左滑删除添加图片</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-11-18</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">macOS上唤起其他程序并获取实时输出</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-05-25</p>
         </div>
     </div>
 
@@ -134,36 +132,46 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/UITableView/">#UITableView</a>
+                                <a class="fw3 ph1 dib" href="/tags/macOS/">#macOS</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="iOS-为-TableView-左滑删除添加图片"><a href="#iOS-为-TableView-左滑删除添加图片" class="headerlink" title="iOS 为 TableView 左滑删除添加图片"></a>iOS 为 TableView 左滑删除添加图片</h1><p><strong>本文适用于 iOS11</strong></p>
-<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>最近做的项目中，PM 和设计想把 TableView 左滑删除、分享等按钮的文字替换成图片。我想既然 iOS11 自带的邮件应用中就是这样的，那实现起来应该很容易，就一口答应了。</p>
-<p><img src="/img/左滑删除图片/leftswipe.PNG" style="zoom:40%"></p>
-<p>开始开发的时候，我信心满满地在 Xcode 中敲下了配置左滑编辑功能的代理方法：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView, editActionsForRowAt indexPath: IndexPath)</span></span> -&gt; [<span class="type">UITableViewRowAction</span>]? &#123;</div><div class="line">    <span class="keyword">let</span> stickAction = <span class="type">UITableViewRowAction</span>(style: .<span class="keyword">default</span>, title: <span class="string">"置顶"</span>) &#123; (<span class="number">_</span>, <span class="number">_</span>) <span class="keyword">in</span></div><div class="line">        <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">    stickAction.<span class="comment">//???</span></div><div class="line">    <span class="keyword">return</span> [stickAction]</div><div class="line">        </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后在自动补全中只看到了孤零零的 backgroundColor……什么！竟然没有配置图片的 API ！</p>
-<h3 id="寻找解决方案"><a href="#寻找解决方案" class="headerlink" title="寻找解决方案"></a>寻找解决方案</h3><p>要知道，左滑弹出的这些按钮无非也就是一些 Button，只要能拿到 Button，设置图片就很容易了。打开 Debug View Hierarchy，可以看到视图层级是这样的：</p>
-<p><img src="/img/左滑删除图片/hierarchy.png" style="zoom:40%"></p>
-<p>我们要找的按钮不就是这个 UISwipeActionStandardButton 类型的 Button 吗！只要拿到它就可以了。它的父视图是 UISwipeActionPullView 类型的 View，再往上一层就是我们的 UITableView 了。于是我到 Documents 上查了一下，想说看有没有调用的相关 API，发现竟然没有！震惊！看来又是私有属性！</p>
-<h3 id="强行拿到-Button"><a href="#强行拿到-Button" class="headerlink" title="强行拿到 Button"></a>强行拿到 Button</h3><p>我们已知视图的类型和层级关系，拿到它也不困难。只要遍历 TableView 的子视图，找到 UISwipeActionPullView 类型的视图就可以了。注意这个类型是私有的，所以只能通过名字反射（抱歉这里借用了 Java 中反射的概念）进去：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> each <span class="keyword">in</span> <span class="keyword">self</span>.tableView.subviews &#123;</div><div class="line">    <span class="keyword">if</span> each.isKind(of: <span class="type">NSClassFromString</span>(<span class="string">"UISwipeActionPullView"</span>)!) &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="built_in">dump</span>(each))</div><div class="line">        <span class="keyword">let</span> btn = each.subviews.first! <span class="keyword">as</span>! <span class="type">UIButton</span></div><div class="line">        btn.setImage(<span class="type">UIImage</span>(named: <span class="string">"test"</span>), <span class="keyword">for</span>: .normal)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>离大功告成还剩最后一步！</p>
-<h3 id="在合适的时机调用"><a href="#在合适的时机调用" class="headerlink" title="在合适的时机调用"></a>在合适的时机调用</h3><p>要想让代码成功执行，必须等待 TableView 已经配置好侧滑按钮。否则 UISwipeActionPullView 还没被实例化出来，肯定是找不到这个类型的变量的（我因为这个问题纠结了一个多小时，反应过来的时候想掐死自己）。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath)</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="keyword">self</span>.tableView.subviews &#123;</div><div class="line">        <span class="keyword">if</span> each.isKind(of: <span class="type">NSClassFromString</span>(<span class="string">"UISwipeActionPullView"</span>)!) &#123;</div><div class="line">            <span class="built_in">print</span>(<span class="built_in">dump</span>(each))</div><div class="line">            <span class="keyword">let</span> btn = each.subviews.first! <span class="keyword">as</span>! <span class="type">UIButton</span></div><div class="line">            btn.setImage(<span class="type">UIImage</span>(named: <span class="string">"test"</span>), <span class="keyword">for</span>: .normal)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>大功告成！</p>
-<p><img src="/img/左滑删除图片/finish.png" alt="finish"></p>
-<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>首先，调用私有 API 是一件非常有风险的事情。有可能在审核的时候被苹果拒绝不说（这里应该还好），这些 API 和属性都是非常不稳定的。比如，在 iOS10 中表现会不一样。想兼容 iOS10 的话就要编写额外的代码，很麻烦。而且随着系统更新，这些方法可能会被苹果更改从而不再有效。</p>
-<p>我不知道为什么这些很基本的东西苹果不愿意开放给开发者（类似的还有 UIAlertController，想自定义必须用 KVC 在运行时动态更改，而文档中明确写出不要继承它），但苹果自己却在使用。感觉很麻烦啊！唉。</p>
+                    <h1 id="macOS-上唤起其他程序并获得实时输出"><a href="#macOS-上唤起其他程序并获得实时输出" class="headerlink" title="macOS 上唤起其他程序并获得实时输出"></a>macOS 上唤起其他程序并获得实时输出</h1><p>在开发桌面端程序时，我们偶尔需要调用其他语言写的程序。桥接或者混编当然是比较好的方法，但会比较麻烦。如果可以，让我们自己的程序直接唤起另外一个程序 / 脚本，也是一种不错的选择。这个时候我们就需要两个进程之间互相通信。</p>
+<p>两个进程间通信，可以通过一个进程向控制台 print，另外一个从控制台 read 来完成。如果是用 Java 等语言实现，其实比较简单。这里我们谈的是使用 Swift / OC 开发原生应用时，如何实时地获取输出。</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>在这个例子中，我使用 Swift 开发 macOS 的原生应用，它需要调用一个 Python 脚本来跑一些算法。Python 脚本会经常 print 一些值，我们需要时时读取它们。</p>
+<h3 id="调用-Python-脚本"><a href="#调用-Python-脚本" class="headerlink" title="调用 Python 脚本"></a>调用 Python 脚本</h3><p>在工程文件夹新建一个 Python 文件 <code>/Scripts/main.py</code> ，在这里编写算法。这样我们可以通过 Bundle 来获取到这个文件。</p>
+<p>在 NSViewController 的 ViewDidLoad 方法中，通过 Process 类来执行其他程序：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> task = <span class="type">Process</span>()</div><div class="line">task.launchPath = <span class="string">"/usr/bin/python"</span></div><div class="line">task.arguments = [<span class="type">Bundle</span>.main.path(forResource: <span class="string">"main"</span>, ofType: <span class="string">"py"</span>)!]</div><div class="line">task.launch()</div></pre></td></tr></table></figure>
+<p>注意以下几点：</p>
+<ul>
+<li>NSTask 已经被弃用，应使用 Process。</li>
+<li>launchPath 是你在 terminal 中调用的命令（比如，运行 main.py 需要在 terminal 中键入 <code>python main.py</code>，python 是命令，main.py 是参数）。但这里需要绝对路径，python 命令一般在 <code>/usr/bin/</code> 中，这取决于你具体的环境。</li>
+<li>arguments 是参数。我们通过 Bundle 来获取脚本的绝对路径。</li>
+<li>调用 task.launch 启动任务。</li>
+</ul>
+<p>现在运行程序，可以看到 Python 脚本启动了，且在 Xcode 的控制台中源源不断地 print 信息。</p>
+<h3 id="实时获取输出"><a href="#实时获取输出" class="headerlink" title="实时获取输出"></a>实时获取输出</h3><p>网上的大多数教程只会提及如何获取输出。当然，多数情况我们调用的程序都会很快执行完毕，我们只要获得最后的结果就好了。但是现在，我们的 Python 脚本会一直运行，我们要实时获取输出。</p>
+<p>通过 Pipe 来为两个 process 建立一个单工的通信信道：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> outputPipe = <span class="type">Pipe</span>()</div><div class="line">task.standardOutput = outputPipe</div></pre></td></tr></table></figure>
+<p>现在，Python 脚本的 print 已经被转到了 pipe 中，在控制台看不到了。</p>
+<p>使用 FileHandle 来处理 Pipe 的输出。先在 NSViewController 类中添加一个新的变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> outFile = <span class="type">FileHandle</span>()</div></pre></td></tr></table></figure>
+<p>之后：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">outFile = outputPipe.fileHandleForReading</div></pre></td></tr></table></figure>
+<p>此时已经可以直接获取 outFile 的 data 了。但是我们要的是实时，所以每次 outFile 有数据，都要发送通知：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(onScriptOutputChanged), name: <span class="type">NSNotification</span>.<span class="type">Name</span>.<span class="type">NSFileHandleDataAvailable</span>, object: outFile)</div><div class="line">outFile.waitForDataInBackgroundAndNotify()</div></pre></td></tr></table></figure>
+<p>在 onScriptOutputChanged 函数中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">onScriptOutputChanged</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> data = outFile.availableData</div><div class="line">    <span class="keyword">let</span> str = <span class="type">String</span>(data: data, encoding: .utf8)</div><div class="line">    <span class="keyword">if</span> <span class="keyword">let</span> str = str &#123;</div><div class="line">        <span class="built_in">print</span>(str)</div><div class="line">    &#125;</div><div class="line">    outFile.waitForDataInBackgroundAndNotify()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意，每次接收到通知都要再告诉 outFile 等待并通知一次，否则将只发送一次通知就结束了。</p>
+<p>现在运行程序，就可以实时拿到 Python 脚本的输出了。</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/UITableView/">#UITableView</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/macOS/">#macOS</a>
                         </div>
                     
 
