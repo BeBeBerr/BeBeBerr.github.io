@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS 动画学习笔记这次的主题还有一项是关于一些高级点的动画。
+转场动画在这个例子中，我们实现一个通过轻扫手势控制的转场动画。呈现新界面时，会从底部滑动上来；返回时会滑动下去。
+1234567891011121314151617181920212223242526272829303132333435">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS动画学习笔记"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS动画学习笔记 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS动画学习笔记</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-05-28</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Animation/">#Animation</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS-动画学习笔记"><a href="#iOS-动画学习笔记" class="headerlink" title="iOS 动画学习笔记"></a>iOS 动画学习笔记</h1><p>这次的主题还有一项是关于一些高级点的动画。</p>
+<h3 id="转场动画"><a href="#转场动画" class="headerlink" title="转场动画"></a>转场动画</h3><p>在这个例子中，我们实现一个通过轻扫手势控制的转场动画。呈现新界面时，会从底部滑动上来；返回时会滑动下去。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TransitionAnimator</span>: <span class="title">NSObject</span>, <span class="title">UIViewControllerAnimatedTransitioning</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">let</span> duration = <span class="number">0.5</span></div><div class="line">    </div><div class="line">    <span class="keyword">var</span> isPresenting = <span class="literal">false</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">transitionDuration</span><span class="params">(using transitionContext: UIViewControllerContextTransitioning?)</span></span> -&gt; <span class="type">TimeInterval</span> &#123;</div><div class="line">        <span class="keyword">return</span> duration</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animateTransition</span><span class="params">(using transitionContext: UIViewControllerContextTransitioning)</span></span> &#123;</div><div class="line">        <span class="keyword">let</span> container = transitionContext.containerView</div><div class="line">        <span class="keyword">let</span> fromView = transitionContext.view(forKey: .from)!</div><div class="line">        <span class="keyword">let</span> toView = transitionContext.view(forKey: .to)!</div><div class="line">        container.addSubview(toView)</div><div class="line">        </div><div class="line">        <span class="keyword">var</span> animation = &#123;&#125;</div><div class="line">       </div><div class="line">        <span class="keyword">if</span> isPresenting &#123;</div><div class="line">            toView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: toView.bounds.height, width: toView.bounds.width, height: toView.bounds.height)</div><div class="line">            animation = &#123;</div><div class="line">                toView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: toView.bounds.width, height: toView.bounds.height)</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            toView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: -toView.bounds.height, width: toView.bounds.width, height: toView.bounds.height)</div><div class="line">            animation = &#123;</div><div class="line">                toView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: toView.bounds.width, height: toView.bounds.height)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="type">UIView</span>.animate(withDuration: duration, animations: &#123;</div><div class="line">            animation()</div><div class="line">        &#125;) &#123; <span class="number">_</span> <span class="keyword">in</span></div><div class="line">            <span class="comment">//⚠️注意，这里一定要通知动画完成，否则动画不结束，第二个VC将失去响应。</span></div><div class="line">            transitionContext.completeTransition(<span class="literal">true</span>) </div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TransViewController</span>: <span class="title">UIViewController</span>, <span class="title">UIViewControllerTransitioningDelegate</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">let</span> animator = <span class="type">TransitionAnimator</span>()</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.viewDidLoad()</div><div class="line">        view.backgroundColor = <span class="type">UIColor</span>.red</div><div class="line">        </div><div class="line">        </div><div class="line">        <span class="keyword">let</span> swipe = <span class="type">UISwipeGestureRecognizer</span>(target: <span class="keyword">self</span>, action: #selector(handleSwipe(sender:)))</div><div class="line">        swipe.direction = .up</div><div class="line">        view.addGestureRecognizer(swipe)</div><div class="line">        </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animationController</span><span class="params">(forDismissed dismissed: UIViewController)</span></span> -&gt; <span class="type">UIViewControllerAnimatedTransitioning</span>? &#123;</div><div class="line">        animator.isPresenting = <span class="literal">false</span></div><div class="line">        <span class="keyword">return</span> animator</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">animationController</span><span class="params">(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController)</span></span> -&gt; <span class="type">UIViewControllerAnimatedTransitioning</span>? &#123;</div><div class="line">        animator.isPresenting = <span class="literal">true</span></div><div class="line">        <span class="keyword">return</span> animator</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">handleSwipe</span><span class="params">(sender: UISwipeGestureRecognizer)</span></span> &#123;</div><div class="line">        <span class="keyword">let</span> vc = <span class="type">SecondVC</span>()</div><div class="line">        vc.transitioningDelegate = <span class="keyword">self</span></div><div class="line">        present(vc, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">        </div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecondVC</span>: <span class="title">UIViewController</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        view.backgroundColor = <span class="type">UIColor</span>.yellow</div><div class="line">        </div><div class="line">        <span class="keyword">let</span> swipe = <span class="type">UISwipeGestureRecognizer</span>(target: <span class="keyword">self</span>, action: #selector(handleSwipe(sender:)))</div><div class="line">        swipe.direction = .down</div><div class="line">        view.addGestureRecognizer(swipe)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">handleSwipe</span><span class="params">(sender: UISwipeGestureRecognizer)</span></span> &#123;</div><div class="line">        dismiss(animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个例子比较简单，由于是 swipe 手势，因此是不支持交互式转场的。不过苹果也为我们提供了交互式转场动画的 API，可以参见<a href="https://blog.devtang.com/2016/03/13/iOS-transition-guide/" target="_blank" rel="external">唐巧大大的博客</a>，或苹果的<a href="https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/index.html#//apple_ref/doc/uid/TP40007457-CH2-SW1" target="_blank" rel="external">官方教程</a>。</p>
+<h3 id="UIKit-力学"><a href="#UIKit-力学" class="headerlink" title="UIKit 力学"></a>UIKit 力学</h3><p>苹果在 iOS7 中将一个轻量级 2D 物理引擎引入到了 UIKit 中，因此我们在 UIKit 中也可以很方便地去实现一些物理效果，而不必使用游戏引擎。</p>
+<p>UIDynamic 提供了几种基本的规则：重力、碰撞、锚定、链接等。可以很方便的实现一些用其他方法难以实现的特效。它同样可以和 CollectionView 配合起来，实现一些炫酷的效果。</p>
+<p>不过我在使用 UIDynamic 的时候遇到了一点问题：我试图去实现一个弹球的小游戏——用户通过手势拖动底部的横杆，小球碰到横杆会反弹，碰到屏幕边缘同样反弹（就像打砖块那样）。小球一开始可以受到一个方向随机的瞬时推力，产生初始速度。之后，可以通过 override <code>collisionBoundingPath</code> 属性来指定小球的碰撞边界是圆形，而不是默认的方形。但是：如何让小球无损地反弹？</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">collision.translatesReferenceBoundsIntoBoundary = <span class="literal">true</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> itemBehavior = <span class="type">UIDynamicItemBehavior</span>(items: [ball])</div><div class="line">itemBehavior.elasticity = <span class="number">1.0</span></div><div class="line">animator.addBehavior(itemBehavior)</div></pre></td></tr></table></figure>
+<p>我们先让小球遇到 view 的四壁全部反弹，之后，指定碰撞为完全弹性碰撞。这个时候，小球不应该损失任何能量，但是我们可以看到小球还是在碰撞几次之后，速度逐渐减慢了下来。</p>
+<p>或许是设置 boundary 的问题？毕竟我们没有给 boundary 设置 elasticity 属性。那我们转变一个思路，使用另一个物体当作边界，并把它锚定：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> floorBehavior = <span class="type">UIDynamicItemBehavior</span>(items: [floor])</div><div class="line">floorBehavior.elasticity = <span class="number">1.0</span></div><div class="line">floorBehavior.isAnchored = <span class="literal">true</span></div><div class="line">animator.addBehavior(floorBehavior)</div></pre></td></tr></table></figure>
+<p>然而效果还是一样的。</p>
+<p>这个问题导致我的想法最终失败了。查了一圈，也没有发现解决方案或类似问题。我不知道是还有什么隐藏的 API 我没有发现，或是我的思路是错误的，还是说 UIDynamic 并不支持这样的操作。看来做游戏（哪怕是如此简单的小游戏），还是乖乖用游戏引擎吧！</p>
+<h3 id="小任务：水波纹进度条"><a href="#小任务：水波纹进度条" class="headerlink" title="小任务：水波纹进度条"></a>小任务：水波纹进度条</h3><p>先来看一下效果：</p>
+<p><img src="/img/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/screenshot.gif" alt="screenshot"></p>
+<p>过于细节的地方无需赘述，主要讲述一下思路：</p>
+<p>首先，我们用 sin 函数来模拟水波纹的形状。我们通过贝塞尔曲线画出几个周期的 sin 函数，这里 dx 取的 0.5，因为步长越小，结果会越精确，但是别忘了屏幕像素是有限的，太过精确只会浪费性能而没有意义：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateWaveLayer</span><span class="params">()</span></span> -&gt; <span class="type">CAShapeLayer</span> &#123;</div><div class="line">    <span class="keyword">let</span> width = <span class="keyword">self</span>.bounds.width</div><div class="line">    <span class="keyword">let</span> height = <span class="keyword">self</span>.bounds.height</div><div class="line">        </div><div class="line">    <span class="keyword">var</span> currentX: <span class="type">CGFloat</span> = <span class="number">0.0</span></div><div class="line">    <span class="keyword">let</span> dx: <span class="type">CGFloat</span> = <span class="number">0.5</span></div><div class="line">    <span class="keyword">let</span> totalLength = width * <span class="number">2.0</span></div><div class="line">        </div><div class="line">    <span class="keyword">let</span> wavePath = <span class="type">UIBezierPath</span>()</div><div class="line">    wavePath.move(to: <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>))</div><div class="line">    <span class="keyword">while</span> currentX &lt;= totalLength &#123;</div><div class="line">        <span class="keyword">let</span> y = <span class="number">5.0</span> * sin(currentX * (<span class="number">8.0</span> * <span class="type">CGFloat</span>.pi / totalLength))</div><div class="line">        wavePath.addLine(to: <span class="type">CGPoint</span>(x: currentX, y: y))</div><div class="line">        currentX += dx</div><div class="line">    &#125;</div><div class="line">        </div><div class="line">    wavePath.addLine(to: <span class="type">CGPoint</span>(x: totalLength, y: height))</div><div class="line">    wavePath.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: height))</div><div class="line">    wavePath.close()</div><div class="line">        </div><div class="line">    <span class="keyword">let</span> waveLayer = <span class="type">CAShapeLayer</span>()</div><div class="line">    waveLayer.path = wavePath.cgPath</div><div class="line">    waveLayer.fillColor = <span class="type">UIColor</span>(red: <span class="number">30.0</span>/<span class="number">255.0</span>, green: <span class="number">144.0</span>/<span class="number">255.0</span>, blue: <span class="number">255.0</span>/<span class="number">255.0</span>, alpha: <span class="number">1.0</span>).cgColor</div><div class="line">        </div><div class="line">    <span class="keyword">return</span> waveLayer</div><div class="line">        </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以看到，这里的 layer 是比自己的 view 要宽的。这是因为对它做一个无限循环的平移动画就可以模拟水面的波动效果了。由于 sin 是周期函数，所以动画结束瞬间回到原点重复动画在用户看来就是连续的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">addWaveAnimation</span><span class="params">(to animateLayer: CAShapeLayer)</span></span> &#123;</div><div class="line">    <span class="keyword">let</span> animation = <span class="type">CABasicAnimation</span>(keyPath: <span class="string">"position.x"</span>)</div><div class="line">    animation.duration = <span class="number">3.0</span></div><div class="line">    animation.fromValue = <span class="number">0.0</span></div><div class="line">    animation.toValue = <span class="keyword">self</span>.bounds.width</div><div class="line">    animation.repeatCount = <span class="type">MAXFLOAT</span></div><div class="line">        </div><div class="line">    animateLayer.add(animation, forKey: <span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>修改水平面，其实就是在调节 frame.y。但是 layer 是在播放动画的，为了修改 frame 和动画本身产生冲突，我们给这个 layer 单独一个 view ：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.addSubview(visibleView)</div><div class="line">visibleView.frame = <span class="keyword">self</span>.bounds</div><div class="line">        </div><div class="line">waveLayer = generateWaveLayer()</div><div class="line">waveLayer.frame = <span class="type">CGRect</span>(x: -<span class="keyword">self</span>.bounds.width, y: <span class="number">0</span>, width: <span class="keyword">self</span>.bounds.width * <span class="number">2.0</span>, height: <span class="keyword">self</span>.bounds.height)</div><div class="line">        </div><div class="line">visibleView.layer.addSublayer(waveLayer)</div><div class="line">addWaveAnimation(to: waveLayer)</div></pre></td></tr></table></figure>
+<p>然后调节 visibleView 的 frame：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeWaterLevel</span><span class="params">(to relativeLevel: CGFloat)</span></span> &#123;</div><div class="line">    visibleView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: (<span class="number">1.0</span> - relativeLevel) * <span class="keyword">self</span>.bounds.height, width: <span class="keyword">self</span>.bounds.width, height: <span class="keyword">self</span>.bounds.height)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Animation/">#Animation</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/05/28/iOS动画学习笔记/">iOS动画学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/25/macOS上运行其他程序并获取实时输出/">macOS上唤起其他程序并获取实时输出</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/23/iOS手势学习笔记/">iOS手势学习笔记</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/20/Promise是什么/">Promise是什么</a>
+        </p>
+    
+        <p>
+            <a href="/2018/05/16/设计模式-创建型模式/">设计模式-创建型模式</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
