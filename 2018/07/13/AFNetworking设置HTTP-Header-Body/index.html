@@ -10,8 +10,7 @@
 
     <!--Description-->
     
-        <meta name="description" content="让 Xcode 控制台打印彩色文字让控制台打印彩色文字可以帮助我们更清晰地调试程序，但 Xcode 本身是不支持这一特性的。我们需要借助 XcodeColors 这款插件。
-安装插件去 Github 上找到 XcodeColors 并把项目下载下来。用 Xcode 把工程打开，run 一下 Xcod">
+        <meta name="description" content="AFNetworking 设置 HTTP Header / Body多数情况下，我们并不需要特别设置 HTTP 的 header 和 body，使用 AFNetworking 的 paramters 参数就够了。但是有些时候，我们需要用 Header 来放置一些授权码，或者 Body 来放置二进制数">
     
 
     <!--Author-->
@@ -21,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="让Xcode控制台打印彩色文字"/>
+        <meta property="og:title" content="AFNetworking设置HTTP的Header和Body"/>
     
 
     <!--Open Graph Description-->
@@ -43,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>让Xcode控制台打印彩色文字 - Berr</title>
+    <title>AFNetworking设置HTTP的Header和Body - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -111,8 +110,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">让Xcode控制台打印彩色文字</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-06-15</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">AFNetworking设置HTTP的Header和Body</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-07-13</p>
         </div>
     </div>
 
@@ -132,44 +131,29 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Xcode/">#Xcode</a>
+                                <a class="fw3 ph1 dib" href="/tags/AFNetworking/">#AFNetworking</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="让-Xcode-控制台打印彩色文字"><a href="#让-Xcode-控制台打印彩色文字" class="headerlink" title="让 Xcode 控制台打印彩色文字"></a>让 Xcode 控制台打印彩色文字</h1><p>让控制台打印彩色文字可以帮助我们更清晰地调试程序，但 Xcode 本身是不支持这一特性的。我们需要借助 XcodeColors 这款插件。</p>
-<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>去 Github 上找到 <a href="https://github.com/robbiehanson/XcodeColors" target="_blank" rel="external">XcodeColors</a> 并把项目下载下来。用 Xcode 把工程打开，run 一下 XcodeColors target，插件就会自动被安装好。这个时候重启 Xcode，把 target 切换到 TestXcodeColors，再 run 一次来测试插件是否被成功安装了。这个时候我们会发现并没有打印出来带有颜色的信息，而是打印了许多掺杂了转义字符的字符串。虽然尝试没有成功，但我们得以知道它的原理就是利用转义字符来确定字符串的颜色，所以我们后续的使用中只要向字符串中也添加上这些转义字符，就可以控制打印的颜色了。</p>
-<h3 id="让插件可用"><a href="#让插件可用" class="headerlink" title="让插件可用"></a>让插件可用</h3><p>由于之前曾经出现过有人利用 Xcode 插件添加恶意代码的行为，苹果自 Xcode8 起，就禁用了第三方插件功能。如果一定要用的话，就需要利用一些工具手动打开。这个过程较为繁琐，也可能会导致 Xcode 不安全。不过我们可以用 update_xcode_plugins 工具来简化流程。</p>
-<p>首先要升级一下 ruby 环境：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L https://get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
-<p>之后列出最新的 ruby 版本：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rvm list known</div></pre></td></tr></table></figure>
-<p>在列表中，可以看到当前最新的 ruby 版本是 2.4.1。接下来安装该版本的 ruby：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rvm install 2.4.1</div></pre></td></tr></table></figure>
-<p>成功后，通过 Gem 安装 update_xcode_plugins：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gem install update_xcode_plugins</div></pre></td></tr></table></figure>
-<p>之后就可以更新已经安装过的插件了。虽然之前的插件不能运行，但其实是已经安装成功了的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update_xcode_plugins</div></pre></td></tr></table></figure>
-<p>最后，解除掉 Xcode 的签名：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update_xcode_plugins --unsign</div></pre></td></tr></table></figure>
-<p>这可能会导致 Xcode 没有办法进行上架操作。需要上架时，应当恢复 Xcode 的签名(未尝试)：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update_xcode_plugins --restore</div></pre></td></tr></table></figure>
-<p>这个时候再重启 Xcode，就会询问师傅哦加载插件包，选择 Load Bundle 即可。</p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>先打开 XcodeColors：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setenv(&quot;XcodeColors&quot;, &quot;YES&quot;, 0);</div></pre></td></tr></table></figure>
-<p>然后可以定义一些宏来帮助我们打印颜色信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#define XCODE_COLORS_ESCAPE @&quot;\033[&quot;</div><div class="line">#define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @&quot;;&quot;</div><div class="line">#define LogRed(frmt, ...) NSLog((XCODE_COLORS_ESCAPE @&quot;fg255,0,0;&quot; frmt XCODE_COLORS_RESET), ##__VA_ARGS__)</div></pre></td></tr></table></figure>
-<p>就可以像 NSLog 一样使用了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LogRed(@&quot;Sprocket error: %@&quot;, error);</div></pre></td></tr></table></figure>
-<p>我们可以看到，控制台打印的文字颜色变为红色了。</p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>虽然打印带有颜色的信息会非常清晰，但我们可以看到，第一非常麻烦，尤其是上架时还需要把 Xcode 签名恢复。二是这会带来安全风险，之前正是由于 XcodeGhost 等事件才让苹果封杀第三方插件的。总体来说，并不推荐这么做。</p>
+                    <h1 id="AFNetworking-设置-HTTP-Header-Body"><a href="#AFNetworking-设置-HTTP-Header-Body" class="headerlink" title="AFNetworking 设置 HTTP Header / Body"></a>AFNetworking 设置 HTTP Header / Body</h1><p>多数情况下，我们并不需要特别设置 HTTP 的 header 和 body，使用 AFNetworking 的 paramters 参数就够了。但是有些时候，我们需要用 Header 来放置一些授权码，或者 Body 来放置二进制数据，这个时候就要自己设置 Header 和 Body 了。</p>
+<h2 id="如何设置-Header"><a href="#如何设置-Header" class="headerlink" title="如何设置 Header"></a>如何设置 Header</h2><p>设置 Header 较为简单，只需要：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];</div><div class="line">[manager.requestSerializer setValue:<span class="string">@"Fri, 13 Jul 2018 07:28:11 GMT"</span> forHTTPHeaderField:<span class="string">@"Date"</span>];</div></pre></td></tr></table></figure>
+<p>就可以了。之后，就可以按照我们熟悉的方式来发送请求，比如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[manager GET:<span class="string">@"https://your.url"</span> parameters:<span class="literal">nil</span> progress:<span class="literal">nil</span> success:^(<span class="built_in">NSURLSessionDataTask</span> * _Nonnull task, <span class="keyword">id</span>  _Nullable responseObject) &#123;</div><div class="line">        <span class="comment">//...</span></div><div class="line">    &#125; failure:^(<span class="built_in">NSURLSessionDataTask</span> * _Nullable task, <span class="built_in">NSError</span> * _Nonnull error) &#123;</div><div class="line">        <span class="comment">//...</span></div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+<h2 id="如何设置-Body"><a href="#如何设置-Body" class="headerlink" title="如何设置 Body"></a>如何设置 Body</h2><p>如果你想故伎重演，就会发现刚刚的 <code>setValueForHeader</code> 方法并没有对应 <code>setValueForBody</code> 的方法。但是，AFNetworking 的请求函数里是提供了这样的参数的：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.manager POST:<span class="string">@"http://your.url"</span> parameters:<span class="literal">nil</span> constructingBodyWithBlock:^(<span class="keyword">id</span>&lt;AFMultipartFormData&gt;  _Nonnull formData) &#123;</div><div class="line">        [formData appendPartWithFormData:yourData name:<span class="string">@"yourDataName"</span>]; <span class="comment">//设置form-data</span></div><div class="line">    &#125; progress:<span class="literal">nil</span> success:^(<span class="built_in">NSURLSessionDataTask</span> * _Nonnull task, <span class="keyword">id</span>  _Nullable responseObject) &#123;</div><div class="line">        <span class="comment">//...</span></div><div class="line">    &#125; failure:^(<span class="built_in">NSURLSessionDataTask</span> * _Nullable task, <span class="built_in">NSError</span> * _Nonnull error) &#123;</div><div class="line">        <span class="comment">//...</span></div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+<p>它可以让你用一个 block 来设置 body 的 form-data，这当然是没问题的。但是，一旦你通过这种方式设置了 form-data，那么你的 HTTP Header 中 <code>Content-Type</code> 属性就会被设置为 <code>multipart/form-data</code> （否则，服务端怎么解析呢？）。而有些场景下，我们需要指定自己的 Content-Type。</p>
+<p>比如，在腾讯云的有些接口中，需要使用 protobuf 来交互数据。那就需要我们把 Content-Type 设置为 <code>application/x-protobuf</code>，并把 protobuf 生成的二进制数据放倒 body 中。按照上述的操作，自己设置的 Content-Type 就会被覆盖，导致上传失败。有没有什么办法能干干净净地设置 body 呢？</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration]];</div><div class="line"><span class="built_in">NSMutableURLRequest</span> *request = [AFHTTPRequestSerializer.serializer requestWithMethod:<span class="string">@"POST"</span> URLString:<span class="string">@"http://your.url"</span> parameters:<span class="literal">nil</span> error:<span class="literal">nil</span>];</div><div class="line">[request setValue:<span class="string">@"application/x-protobuf"</span> forHTTPHeaderField:<span class="string">@"Content-Type"</span>]; <span class="comment">//设置Header，和之前的方法类似</span></div><div class="line">[request setHTTPBody:protoBufData]; <span class="comment">//设置Body</span></div><div class="line">[[<span class="keyword">self</span>.manager dataTaskWithRequest:request uploadProgress:<span class="literal">nil</span> downloadProgress:<span class="literal">nil</span> completionHandler:^(<span class="built_in">NSURLResponse</span> * _Nonnull response, <span class="keyword">id</span>  _Nullable responseObject, <span class="built_in">NSError</span> * _Nullable error) &#123;</div><div class="line">        <span class="comment">//...</span></div><div class="line">    &#125;] resume]; <span class="comment">//发送请求，注意一定要调用 resume 方法来开始。</span></div></pre></td></tr></table></figure>
+<p>这样就可以啦！</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Xcode/">#Xcode</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/AFNetworking/">#AFNetworking</a>
                         </div>
                     
 
