@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="iOS图片裁剪、旋转、格式转换在使用 CoreML 对图片进行识别时，有时模型需要接收特定格式的图片，这就需要我们先对图片做好处理，再传递给模型。比如，我在一个识别人脸面部表情的程序中，就需要先裁剪出人脸区域，做成适当大小的灰度图，再交给 MLModel 进行识别。
+此篇文章汇总了一些对图片进行处理">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS图片裁剪、旋转、格式转换"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>iOS图片裁剪、旋转、格式转换 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">iOS图片裁剪、旋转、格式转换</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-07-20</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/iOS/">#iOS</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="iOS图片裁剪、旋转、格式转换"><a href="#iOS图片裁剪、旋转、格式转换" class="headerlink" title="iOS图片裁剪、旋转、格式转换"></a>iOS图片裁剪、旋转、格式转换</h1><p>在使用 CoreML 对图片进行识别时，有时模型需要接收特定格式的图片，这就需要我们先对图片做好处理，再传递给模型。比如，我在一个识别人脸面部表情的程序中，就需要先裁剪出人脸区域，做成适当大小的灰度图，再交给 MLModel 进行识别。</p>
+<p>此篇文章汇总了一些对图片进行处理的函数。</p>
+<h2 id="CMSampleBufferRef-转-UIImage"><a href="#CMSampleBufferRef-转-UIImage" class="headerlink" title="CMSampleBufferRef 转 UIImage"></a>CMSampleBufferRef 转 UIImage</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIImage</span> *)getImageFromSampleBuffer:(<span class="built_in">CMSampleBufferRef</span>) buffer &#123;</div><div class="line">    CVImageBufferRef imageBuffer = <span class="built_in">CMSampleBufferGetImageBuffer</span>(buffer);</div><div class="line">    CVPixelBufferLockBaseAddress(imageBuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">void</span> *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);</div><div class="line">    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);</div><div class="line">    size_t width = CVPixelBufferGetWidth(imageBuffer);</div><div class="line">    size_t height = CVPixelBufferGetHeight(imageBuffer);</div><div class="line">    <span class="built_in">CGColorSpaceRef</span> colorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">CGBitmapContextCreate</span>(baseAddress, width, height, <span class="number">8</span>, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);</div><div class="line">    <span class="built_in">CGImageRef</span> quartzImage = <span class="built_in">CGBitmapContextCreateImage</span>(context);</div><div class="line">    CVPixelBufferUnlockBaseAddress(imageBuffer, <span class="number">0</span>);</div><div class="line">    <span class="built_in">CGContextRelease</span>(context);</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(colorSpace);</div><div class="line">    <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageWithCGImage:quartzImage];</div><div class="line">    <span class="built_in">CGImageRelease</span>(quartzImage);</div><div class="line">    <span class="keyword">return</span> image;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="CGImageRef-转-CVPixelBufferRef"><a href="#CGImageRef-转-CVPixelBufferRef" class="headerlink" title="CGImageRef 转 CVPixelBufferRef"></a>CGImageRef 转 CVPixelBufferRef</h2><p>这个函数中对图像做了一些翻转变化，而且还将图片转为了 8 位的灰度图，请注意色彩空间等地方。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">- (CVPixelBufferRef) pixelBufferFromCGImage: (<span class="built_in">CGImageRef</span>) image &#123;</div><div class="line">    <span class="built_in">NSDictionary</span> *options = @&#123;</div><div class="line">                              (<span class="built_in">NSString</span>*)kCVPixelBufferCGImageCompatibilityKey : @YES,</div><div class="line">                              (<span class="built_in">NSString</span>*)kCVPixelBufferCGBitmapContextCompatibilityKey : @YES,</div><div class="line">                              &#125;;</div><div class="line">    </div><div class="line">    CVPixelBufferRef pxbuffer = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, <span class="built_in">CGImageGetWidth</span>(image),</div><div class="line">                                          <span class="built_in">CGImageGetHeight</span>(image), kCVPixelFormatType_OneComponent8, (__bridge <span class="built_in">CFDictionaryRef</span>) options,</div><div class="line">                                          &amp;pxbuffer);</div><div class="line">    <span class="keyword">if</span> (status!=kCVReturnSuccess) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Operation failed"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">NSParameterAssert</span>(status == kCVReturnSuccess &amp;&amp; pxbuffer != <span class="literal">NULL</span>);</div><div class="line">    </div><div class="line">    CVPixelBufferLockBaseAddress(pxbuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">void</span> *pxdata = CVPixelBufferGetBaseAddress(pxbuffer);</div><div class="line">    </div><div class="line">    <span class="built_in">CGColorSpaceRef</span> rgbColorSpace = <span class="built_in">CGColorSpaceCreateDeviceGray</span>(); <span class="comment">//灰度</span></div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">CGBitmapContextCreate</span>(pxdata, <span class="built_in">CGImageGetWidth</span>(image),</div><div class="line">                                                 <span class="built_in">CGImageGetHeight</span>(image), <span class="number">8</span>, CVPixelBufferGetBytesPerRow(pxbuffer), rgbColorSpace,</div><div class="line">                                                 kCGImageAlphaNone);</div><div class="line"></div><div class="line">    <span class="built_in">NSParameterAssert</span>(context);</div><div class="line"></div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(context, <span class="built_in">CGAffineTransformMakeRotation</span>(<span class="number">0</span>));</div><div class="line">    <span class="comment">//CGAffineTransform flipVertical = CGAffineTransformMake( 1, 0, 0, -1, 0, CGImageGetHeight(image) );</span></div><div class="line">    <span class="comment">//CGContextConcatCTM(context, flipVertical);</span></div><div class="line">    <span class="built_in">CGAffineTransform</span> flipHorizontal = <span class="built_in">CGAffineTransformMake</span>( <span class="number">-1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="built_in">CGImageGetWidth</span>(image), <span class="number">0.0</span> );</div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(context, flipHorizontal);</div><div class="line">    <span class="built_in">CGContextDrawImage</span>(context, <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="built_in">CGImageGetWidth</span>(image),</div><div class="line">                                           <span class="built_in">CGImageGetHeight</span>(image)), image);</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(rgbColorSpace);</div><div class="line">    <span class="built_in">CGContextRelease</span>(context);</div><div class="line">    CVPixelBufferUnlockBaseAddress(pxbuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> pxbuffer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="CVPixelBufferRef-转-UIImage"><a href="#CVPixelBufferRef-转-UIImage" class="headerlink" title="CVPixelBufferRef 转 UIImage"></a>CVPixelBufferRef 转 UIImage</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIImage</span> *)imageFromPixelBuffer:(CVPixelBufferRef)pixelBufferRef &#123;</div><div class="line">    CVImageBufferRef imageBuffer =  pixelBufferRef;</div><div class="line">    </div><div class="line">    CVPixelBufferLockBaseAddress(imageBuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">void</span> *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);</div><div class="line">    size_t width = CVPixelBufferGetWidth(imageBuffer);</div><div class="line">    size_t height = CVPixelBufferGetHeight(imageBuffer);</div><div class="line">    size_t bufferSize = CVPixelBufferGetDataSize(imageBuffer);</div><div class="line">    size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, <span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="built_in">CGColorSpaceRef</span> rgbColorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    <span class="built_in">CGDataProviderRef</span> provider = <span class="built_in">CGDataProviderCreateWithData</span>(<span class="literal">NULL</span>, baseAddress, bufferSize, <span class="literal">NULL</span>);</div><div class="line">    </div><div class="line">    <span class="built_in">CGImageRef</span> cgImage = <span class="built_in">CGImageCreate</span>(width, height, <span class="number">8</span>, <span class="number">32</span>, bytesPerRow, rgbColorSpace, kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrderDefault, provider, <span class="literal">NULL</span>, <span class="literal">true</span>, kCGRenderingIntentDefault);</div><div class="line">    <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageWithCGImage:cgImage];</div><div class="line">    <span class="built_in">CGImageRelease</span>(cgImage);</div><div class="line">    <span class="built_in">CGDataProviderRelease</span>(provider);</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(rgbColorSpace);</div><div class="line">    </div><div class="line">    CVPixelBufferUnlockBaseAddress(imageBuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> image;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="生成灰度图"><a href="#生成灰度图" class="headerlink" title="生成灰度图"></a>生成灰度图</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIImage</span>*)grayImage:(<span class="built_in">UIImage</span>*)sourceImage &#123;</div><div class="line">    <span class="keyword">int</span> width = sourceImage.size.width;</div><div class="line">    <span class="keyword">int</span> height = sourceImage.size.height;</div><div class="line">    <span class="built_in">CGColorSpaceRef</span> colorSpace = <span class="built_in">CGColorSpaceCreateDeviceGray</span>();</div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">CGBitmapContextCreate</span> (<span class="literal">nil</span>, width, height,<span class="number">8</span>,<span class="number">0</span>, colorSpace,kCGImageAlphaNone);</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(colorSpace);</div><div class="line">    <span class="keyword">if</span> (context ==<span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">CGContextDrawImage</span>(context,<span class="built_in">CGRectMake</span>(<span class="number">0</span>,<span class="number">0</span>, width, height), sourceImage.CGImage);</div><div class="line">    <span class="built_in">UIImage</span> *grayImage = [<span class="built_in">UIImage</span> imageWithCGImage:<span class="built_in">CGBitmapContextCreateImage</span>(context)];</div><div class="line">    <span class="built_in">CGContextRelease</span>(context);</div><div class="line">    <span class="keyword">return</span> grayImage;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="图片裁剪"><a href="#图片裁剪" class="headerlink" title="图片裁剪"></a>图片裁剪</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIImage</span>*)getSubImage:(<span class="built_in">CGRect</span>)rect cgImage:(<span class="built_in">CGImageRef</span>)cgImage &#123;</div><div class="line">    <span class="built_in">CGImageRef</span> subImageRef = <span class="built_in">CGImageCreateWithImageInRect</span>(cgImage, rect);</div><div class="line">    <span class="built_in">CGRect</span> smallBounds = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="built_in">CGImageGetWidth</span>(subImageRef), <span class="built_in">CGImageGetHeight</span>(subImageRef));</div><div class="line">    </div><div class="line">    <span class="built_in">UIGraphicsBeginImageContext</span>(smallBounds.size);</div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</div><div class="line">    <span class="built_in">CGContextDrawImage</span>(context, smallBounds, subImageRef);</div><div class="line">    <span class="built_in">UIImage</span>* smallImage = [<span class="built_in">UIImage</span> imageWithCGImage:subImageRef];</div><div class="line">    <span class="built_in">UIGraphicsEndImageContext</span>();</div><div class="line">    <span class="built_in">CGImageRelease</span>(subImageRef);</div><div class="line">    <span class="keyword">return</span> smallImage;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="图片旋转"><a href="#图片旋转" class="headerlink" title="图片旋转"></a>图片旋转</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIImage</span>*)rotateImageWithAngle:(<span class="built_in">UIImage</span>*)vImg Angle:(<span class="built_in">CGFloat</span>)vAngle IsExpand:(<span class="built_in">BOOL</span>)vIsExpand &#123;</div><div class="line">    <span class="built_in">CGSize</span> imgSize = <span class="built_in">CGSizeMake</span>(vImg.size.width * vImg.scale, vImg.size.height * vImg.scale);</div><div class="line">    </div><div class="line">    <span class="built_in">CGSize</span> outputSize = imgSize;</div><div class="line">    <span class="keyword">if</span> (vIsExpand) &#123;</div><div class="line">        <span class="built_in">CGRect</span> rect = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, imgSize.width, imgSize.height);</div><div class="line">        <span class="comment">//旋转</span></div><div class="line">        rect = <span class="built_in">CGRectApplyAffineTransform</span>(rect, <span class="built_in">CGAffineTransformMakeRotation</span>(vAngle*M_PI/<span class="number">180.0</span>));</div><div class="line"></div><div class="line">        outputSize = <span class="built_in">CGSizeMake</span>(<span class="built_in">CGRectGetWidth</span>(rect), <span class="built_in">CGRectGetHeight</span>(rect));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="built_in">UIGraphicsBeginImageContext</span>(outputSize);</div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextTranslateCTM</span>(context, outputSize.width / <span class="number">2</span>, outputSize.height / <span class="number">2</span>);</div><div class="line">    <span class="built_in">CGContextRotateCTM</span>(context, vAngle*M_PI/<span class="number">180.0</span>);</div><div class="line">    <span class="built_in">CGContextTranslateCTM</span>(context, -imgSize.width / <span class="number">2</span>, -imgSize.height / <span class="number">2</span>);</div><div class="line">    </div><div class="line">    [vImg drawInRect:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, imgSize.width, imgSize.height)];</div><div class="line">    </div><div class="line">    <span class="built_in">UIImage</span> *image = <span class="built_in">UIGraphicsGetImageFromCurrentImageContext</span>();</div><div class="line">    <span class="built_in">UIGraphicsEndImageContext</span>();</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> image;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="CGImageRef-转-CVPixelBufferRef-1"><a href="#CGImageRef-转-CVPixelBufferRef-1" class="headerlink" title="CGImageRef 转 CVPixelBufferRef"></a>CGImageRef 转 CVPixelBufferRef</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">- (CVPixelBufferRef) pixelBufferColorfulFromCGImage: (<span class="built_in">CGImageRef</span>) image</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSDictionary</span> *options = @&#123;</div><div class="line">                              (<span class="built_in">NSString</span>*)kCVPixelBufferCGImageCompatibilityKey : @YES,</div><div class="line">                              (<span class="built_in">NSString</span>*)kCVPixelBufferCGBitmapContextCompatibilityKey : @YES,</div><div class="line">                              (<span class="built_in">NSString</span>*)kCVPixelBufferIOSurfacePropertiesKey: [<span class="built_in">NSDictionary</span> dictionary]</div><div class="line">                              &#125;;</div><div class="line">    CVPixelBufferRef pxbuffer = <span class="literal">NULL</span>;</div><div class="line">    </div><div class="line">    <span class="built_in">CGFloat</span> frameWidth = <span class="built_in">CGImageGetWidth</span>(image);</div><div class="line">    <span class="built_in">CGFloat</span> frameHeight = <span class="built_in">CGImageGetHeight</span>(image);</div><div class="line">    </div><div class="line">    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault,</div><div class="line">                                          frameWidth,</div><div class="line">                                          frameHeight,</div><div class="line">                                          kCVPixelFormatType_32BGRA,</div><div class="line">                                          (__bridge <span class="built_in">CFDictionaryRef</span>) options,</div><div class="line">                                          &amp;pxbuffer);</div><div class="line">    </div><div class="line">    <span class="built_in">NSParameterAssert</span>(status == kCVReturnSuccess &amp;&amp; pxbuffer != <span class="literal">NULL</span>);</div><div class="line">    </div><div class="line">    CVPixelBufferLockBaseAddress(pxbuffer, <span class="number">0</span>);</div><div class="line">    <span class="keyword">void</span> *pxdata = CVPixelBufferGetBaseAddress(pxbuffer);</div><div class="line">    <span class="built_in">NSParameterAssert</span>(pxdata != <span class="literal">NULL</span>);</div><div class="line">    </div><div class="line">    <span class="built_in">CGColorSpaceRef</span> rgbColorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">CGBitmapContextCreate</span>(pxdata,</div><div class="line">                                                 frameWidth,</div><div class="line">                                                 frameHeight,</div><div class="line">                                                 <span class="number">8</span>,</div><div class="line">                                                 CVPixelBufferGetBytesPerRow(pxbuffer),</div><div class="line">                                                 rgbColorSpace,</div><div class="line">                                                 (<span class="built_in">CGBitmapInfo</span>)kCGImageAlphaNoneSkipFirst);</div><div class="line">    <span class="built_in">NSParameterAssert</span>(context);</div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(context, <span class="built_in">CGAffineTransformIdentity</span>);</div><div class="line">    <span class="built_in">CGContextDrawImage</span>(context, <span class="built_in">CGRectMake</span>(<span class="number">0</span>,</div><div class="line">                                           <span class="number">0</span>,</div><div class="line">                                           frameWidth,</div><div class="line">                                           frameHeight),</div><div class="line">                       image);</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(rgbColorSpace);</div><div class="line">    <span class="built_in">CGContextRelease</span>(context);</div><div class="line">    </div><div class="line">    CVPixelBufferUnlockBaseAddress(pxbuffer, <span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> pxbuffer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上各个函数基本都要操作指针，所以一定要注意手动释放内存，否则会造成非常严重的内存泄漏。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/iOS/">#iOS</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/07/20/iOS图片裁剪旋转格式转换/">iOS图片裁剪、旋转、格式转换</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/13/解决Unacceptable-Content-Type/">解决Unacceptable Content-Type问题</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/13/AFNetworking设置HTTP-Header-Body/">AFNetworking设置HTTP的Header和Body</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/11/Flutter-for-iOS-dev-翻译/">Flutter for iOS devs 翻译</a>
+        </p>
+    
+        <p>
+            <a href="/2018/06/15/让Xcode控制台打印彩色文字/">让Xcode控制台打印彩色文字</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
