@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="JavaScript 基础分享
+Any application that can be written in JavaScript, will eventually be written in JavaScript.
+
+JS 简介JavaScript 是一门动态的、弱类型的、基于原型（而不是基于类）">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="JavaScript基础分享"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>JavaScript基础分享 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">JavaScript基础分享</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-07-26</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="JavaScript-基础分享"><a href="#JavaScript-基础分享" class="headerlink" title="JavaScript 基础分享"></a>JavaScript 基础分享</h1><blockquote>
+<p>Any application that can be written in JavaScript, will eventually be written in JavaScript.</p>
+</blockquote>
+<h2 id="JS-简介"><a href="#JS-简介" class="headerlink" title="JS 简介"></a>JS 简介</h2><p>JavaScript 是一门动态的、弱类型的、基于原型（而不是基于类）的解释型（或 JIT 编译型）语言。它是一门多范式语言，支持命令式、面向对象，以及函数式编程。语言本身不支持 I/O 操作，而是依赖于宿主环境。现在，JS 不仅可以在浏览器中运行，也可以运行在 Node 等非浏览器环境中。</p>
+<p>JS 是一门单线程语言，这意味着在浏览器中，JS 代码只能在 JS 引擎线程中执行。但这并不意味着耗时操作（如 HTTP 请求）会把界面卡死，因为浏览器本身是可以开启多线程的。在 HTML 5 中，可以通过 Web Workers 来在多个线程中执行 JS 代码，但这和“JS 是单线程语言”并不冲突。因为多个 worker 之间并不共享资源，而只能通过 message 来通信。</p>
+<p>JavaScript 已由 ECMA 进行了标准化，这个标准被称为 ECMAScript。JavaScript 是 ECMAScript 的一种实现，但在绝大多数情况下，这两个词是可以互换的。每年的 6 月，ECMA 都会发布一个新标准，不过大家通常使用 ES6 来指代 ES2015 及以后的版本，泛指“下一代 JavaScript”。在《JavaScript 高级程序设计》这本书中，讲解的是 ES5。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>JavaScript 的变量是松散类型的，一个变量可以用来保存任意类型的值。如果没有被初始化，那么变量就会保存一个特殊的值 <code>undefined</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a;</div><div class="line"><span class="built_in">console</span>.log(a); <span class="comment">//undefined</span></div><div class="line">a = <span class="number">5</span>;</div><div class="line"><span class="built_in">console</span>.log(a); <span class="comment">//5</span></div><div class="line">a = <span class="string">'hello world!'</span>;</div><div class="line"><span class="built_in">console</span>.log(a); <span class="comment">//hello world!</span></div></pre></td></tr></table></figure>
+<p>声明变量需要使用 var 操作符，但是如果不使用，不仅不会报错，反而变量会变成全局变量，不鼓励这种行为。</p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>JavaScript 中有 5 种基本数据类型：</p>
+<ul>
+<li>Undefined</li>
+<li>Null</li>
+<li>Boolean</li>
+<li>Number</li>
+<li>String</li>
+</ul>
+<p>和一种复杂类型：</p>
+<ul>
+<li>Object</li>
+</ul>
+<p>之前提到，JavaScript 不是基于类的，因此它也不支持创建自定义的类型。所有值都将是上述的 6 种类型之一。虽然在 ES6 中引入了 <code>class</code>，但这只是语法糖而已。</p>
+<p>可以使用 <code>typeof</code> 操作符来判断类型。typeof 操作符会返回一些字符串：</p>
+<ul>
+<li>“undefined”</li>
+<li>“boolean”</li>
+<li>“string”</li>
+<li>“number”</li>
+<li>“object”</li>
+<li>“function”</li>
+</ul>
+<p>函数在 JS 中也是对象，但是 typeof 操作符还是会把函数和普通对象作出区分。</p>
+<p>还有比较神奇的一点是，虽然 Null 类型只有一个特殊的值 null，但是 <code>typeof null</code> 返回的却是 <code>&quot;object&quot;</code>，这是因为 null 表示一个<strong>空对象</strong>指针。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="string">"hello?"</span>); <span class="comment">//"string"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> foo); <span class="comment">//"function"</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">null</span>)); <span class="comment">//"object"</span></div></pre></td></tr></table></figure>
+<h3 id="关系操作符"><a href="#关系操作符" class="headerlink" title="关系操作符"></a>关系操作符</h3><p>关系操作符遇到非数值类型时，会发生一些比较神奇的事情，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">"23"</span> &lt; <span class="string">"3"</span> <span class="comment">//true</span></div><div class="line"><span class="string">"23"</span> &lt; <span class="number">3</span> <span class="comment">//false</span></div><div class="line"><span class="string">"a"</span> &lt; <span class="number">3</span> <span class="comment">//false</span></div><div class="line"><span class="string">"a"</span> &gt;= <span class="number">3</span> <span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>首先，两个字符串比较的是字符编码值。字符”2”的编码值小于”3”，因此是 true。</p>
+<p>但是，如果一边是数值，则另一边会被转化成数值再做比较。”23” 会被转化成 23，所以返回 false。</p>
+<p>但是第三行和第四行中，”a” 转化成数值会变成 NaN。NaN 与任何数值比较都会返回 false，所以会出现既不大于，也不等于，还不小于的情况。</p>
+<p>如果操作数是对象，则会先调用 <code>valueOf()</code> 方法。如果没有这个方法，则会调用 <code>toString()</code> 再根据之前的标准比较。</p>
+<h3 id="相等操作符"><a href="#相等操作符" class="headerlink" title="相等操作符"></a>相等操作符</h3><p>JavaScript 中有两种比较：<code>==</code> 和 <code>===</code>。</p>
+<p>使用 <code>==</code>，会在比较前先做类型转换，而 <code>===</code> 直接比较。由于 JS 臭名昭著的蜜汁类型转换会带来各种各样的奇怪现象，强烈建议经常使用 === 做全等判断。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">5</span> == <span class="string">'5'</span> <span class="comment">//true</span></div><div class="line"><span class="literal">null</span> == <span class="literal">undefined</span> <span class="comment">//true</span></div><div class="line"><span class="literal">true</span> == <span class="number">1</span> <span class="comment">//true</span></div><div class="line"><span class="literal">true</span> == <span class="number">2</span> <span class="comment">//false</span></div><div class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>想彻底搞懂？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[&#123;&#125;] + [] === <span class="string">"[object Object]"</span> <span class="comment">//true 😊</span></div><div class="line"></div><div class="line"><span class="number">25</span>[[[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">0</span>] + [[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">1</span>]+ [[] + []][<span class="number">0</span>][([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">5</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[][<span class="number">0</span>]+[]][<span class="number">0</span>][<span class="number">1</span>]) + ([[[] == []][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">3</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">0</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[][<span class="number">0</span>]+[]][<span class="number">0</span>][<span class="number">0</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">5</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">0</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">1</span>])][[[][<span class="number">0</span>]+[]][<span class="number">0</span>][<span class="number">1</span>] + [[[] == []][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">1</span>] + [<span class="number">0</span>[([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">5</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[][<span class="number">0</span>]+[]][<span class="number">0</span>][<span class="number">1</span>]) + ([[[] == []][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">3</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">0</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[][<span class="number">0</span>]+[]][<span class="number">0</span>][<span class="number">0</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">5</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">0</span>]) + ([[&#123;&#125;] + []][<span class="number">0</span>][<span class="number">1</span>]) + ([[+[] == +[]][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">1</span>])]+[]][<span class="number">0</span>][<span class="number">11</span>] +  [[[] == []][<span class="number">0</span>] + []][<span class="number">0</span>][<span class="number">4</span>]]](<span class="number">30</span>) <span class="comment">//"p"</span></div></pre></td></tr></table></figure>
+<h3 id="for-in"><a href="#for-in" class="headerlink" title="for-in"></a>for-in</h3><p>和其他语言不一样，我们可以使用 for-in 循环来遍历对象的属性名，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person.name = <span class="string">"Luyuan Wang"</span>;</div><div class="line">person.age = <span class="number">20</span>;</div><div class="line">person.school = <span class="string">"Huazhong University of Science and Technology"</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> propName <span class="keyword">in</span> person) &#123;</div><div class="line">    <span class="built_in">console</span>.log(propName);</div><div class="line">&#125;</div><div class="line"><span class="comment">//name</span></div><div class="line"><span class="comment">//age</span></div><div class="line"><span class="comment">//school</span></div></pre></td></tr></table></figure>
+<p>这个顺序是不保证的。</p>
+<p>如果遍历的对象是数组，那么取出来的是数组下标，而不是元素，这个跟 Objective-C 或者 Swift 等语言都不一样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> list = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> each <span class="keyword">in</span> list) &#123;</div><div class="line">    <span class="built_in">console</span>.log(each);</div><div class="line">&#125;</div><div class="line"><span class="comment">//0</span></div><div class="line"><span class="comment">//1</span></div><div class="line"><span class="comment">//2</span></div></pre></td></tr></table></figure>
+<p>因此，上面代码的 each 更应该被命名为 index。</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>JavaScript 的函数不用定义返回值类型，甚至有没有返回值都不是确定的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">divide</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (b === <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> a / b;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(divide(<span class="number">1</span>, <span class="number">0</span>)); <span class="comment">//undefined</span></div></pre></td></tr></table></figure>
+<p>JavaScript 函数的参数是通过数组来访问的（只是类似数组，但并不是 Array 的实例），因此它并不关心你传入多少个变量，更不关心变量的类型。你甚至可以通过 arguments + 下标来访问参数，参数名其实只是一种便利：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>[<span class="number">0</span>]); <span class="comment">//很像数组</span></div><div class="line">&#125;</div><div class="line">foo(<span class="string">'hello world!'</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> array = [];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(array)); <span class="comment">//true</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(<span class="built_in">arguments</span>)); <span class="comment">//false 并不是Array的实例</span></div><div class="line">&#125;</div><div class="line">foo();</div></pre></td></tr></table></figure>
+<p>这和 OC 中用函数参数名、参数类型等作为函数签名有很大区别。需要注意的是，JavaScript 的参数传递的永远是值，而不是引用（这点在后面会再次提及）。</p>
+<p>JavaScript 中的函数不支持重载，但是可以利用 <code>arguments.length</code> 判断参数个数，从而表现出不同的行为。</p>
+<h2 id="变量、作用域和内存问题"><a href="#变量、作用域和内存问题" class="headerlink" title="变量、作用域和内存问题"></a>变量、作用域和内存问题</h2><h3 id="基本类型和引用类型的值"><a href="#基本类型和引用类型的值" class="headerlink" title="基本类型和引用类型的值"></a>基本类型和引用类型的值</h3><p>尽管 JavaScript 是松散类型的，但变量的值还是分为基本类型的值和引用类型的值。前面提到的 5 种基本类型是按值访问的，而 Object 类型操作的是引用。和许多其他的语言不同，String 是基本类型值，而不是引用，这和 Swift 很像。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> num = <span class="number">5</span>;</div><div class="line"><span class="keyword">var</span> num2 = num;</div><div class="line">num2 += <span class="number">1</span>;</div><div class="line"><span class="built_in">console</span>.log(num); <span class="comment">//5</span></div><div class="line"><span class="built_in">console</span>.log(num2); <span class="comment">//6</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">obj.value = <span class="number">5</span>;</div><div class="line"><span class="keyword">var</span> obj2 = obj;</div><div class="line">obj2.value += <span class="number">1</span>;</div><div class="line"><span class="built_in">console</span>.log(obj.value); <span class="comment">//6</span></div><div class="line"><span class="built_in">console</span>.log(obj2.value); <span class="comment">//6</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"123"</span>;</div><div class="line"><span class="keyword">var</span> str2 = str;</div><div class="line">str2 += <span class="string">"4"</span>;</div><div class="line"><span class="built_in">console</span>.log(str); <span class="comment">//"123"</span></div><div class="line"><span class="built_in">console</span>.log(str2); <span class="comment">//"1234" 和Swift一样，String不是引用类型</span></div></pre></td></tr></table></figure>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>之前提到，JavaScript 中函数的参数是以值来传递的，而永远不是引用。那么，下面这个例子应该输出什么呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeSchool</span>(<span class="params">person</span>) </span>&#123;</div><div class="line">    person.school = <span class="string">"Mizzou"</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> luyuanwang = &#123;</div><div class="line">    <span class="attr">school</span>: <span class="string">"HUST"</span></div><div class="line">&#125;</div><div class="line">changeSchool(luyuanwang);</div><div class="line"><span class="built_in">console</span>.log(luyuanwang.school);</div></pre></td></tr></table></figure>
+<p>答案是“Mizzou”。看起来很奇怪，似乎不符合我们说传递的是值，而更像是在传递引用？其实，这里传递的值，是指把“对象”复制一遍。这里的对象是一个引用，那么就把这个指针复制了，因此这里是两个不同的、指向同一个地址的引用。所谓的传递的是值，并不是指把内存中的对象复制一遍，这里要搞清楚。</p>
+<h3 id="没有块级作用域"><a href="#没有块级作用域" class="headerlink" title="没有块级作用域"></a>没有块级作用域</h3><p>虽然函数会创建局部的执行环境，但是花括号封闭的代码块并没有自己的执行环境：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> flag = <span class="literal">true</span>;</div><div class="line"><span class="keyword">if</span> (flag) &#123;</div><div class="line">    <span class="keyword">var</span> num = <span class="number">10</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(num); <span class="comment">//10 仍有定义</span></div></pre></td></tr></table></figure>
+<p>这和一般的语言都不同。如果想要“正常一点”，可以使用 ES6 中引入的关键字 let：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> flag = <span class="literal">true</span>;</div><div class="line"><span class="keyword">if</span> (flag) &#123;</div><div class="line">    <span class="keyword">let</span> num = <span class="number">10</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(num); <span class="comment">//ReferenceError: num is not defined</span></div></pre></td></tr></table></figure>
+<h3 id="垃圾收集"><a href="#垃圾收集" class="headerlink" title="垃圾收集"></a>垃圾收集</h3><p>JavaScript 是有 GC 的，通过“标记清除“的方式，周期性地回收垃圾。有些浏览器也曾经使用过引用计数，不过发现有循环引用的问题后，后来就又放弃了。所以一般情况下，我们都不必操心内存的事情。</p>
+<p>通过标记清除算法，GC 将会从根对象开始（根对象是一个全局对象），开始寻找根对象引用的对象，并递归地寻找下去。那些无法触达的对象，将被认为是垃圾对象，会被 GC 回收。从 2012 年开始，所有现代浏览器都使用了标记清除或其改进型算法，即使产生循环引用，照样可以被清除掉。</p>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>之前提到过，JavaScript 是基于原型的语言，这和我们所熟悉的其他语言都不一样。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>在 JS 中，可以使用<strong>原型模式</strong>来创建一个对象（尽管这不是唯一的方法）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Employer</span>(<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line">Employer.prototype.name = <span class="string">"Lei, Jun"</span>;</div><div class="line">Employer.prototype.company = <span class="string">"Xiao Mi"</span>;</div><div class="line">Employer.prototype.makeSpeech = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"Are u ok?"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Employer();</div><div class="line">person.makeSpeech(); <span class="comment">//Are u ok?</span></div></pre></td></tr></table></figure>
+<p>Employer 和普通的方法没有任何区别，但是如果在调用的时候使用了 new 关键字，就会成为一个构造函数。每个函数都有一个 <code>prototype</code> 属性，这个属性指向的就是创造出来的实例的原型对象。</p>
+<h3 id="原型对象"><a href="#原型对象" class="headerlink" title="原型对象"></a>原型对象</h3><p>原型最初会包含一个 constructor，指向它的构造函数。也就是 Employer.prototype.constructor 就是 Employer。每个对象也都有一个 <code>[[Prototype]]</code> 属性来指向原型对象，但这个属性是私有的，不能通过外界访问。不过在有一些浏览器（比如 Safari 和 Chrome 中），提供了一个 <code>__proto__</code> 属性来访问原型。</p>
+<p>如果你修改属性的值，其实只是对变量创建了一个新的属性，屏蔽掉了在对象原型中查找的操作。在多数情况下，这都没什么问题，但如果原型对象中放置了一个引用类型的属性，那么原型共享的特性就会导致问题了。为了解决这个问题，可以用普通的构造函数构造属性，而用原型构造方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Employer</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">&#125;</div><div class="line">Employer.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: Employer,</div><div class="line">    <span class="attr">makeSpeech</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">'Are u ok?'</span>)&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Employer(<span class="string">'Lei, Jun'</span>);</div><div class="line">person.makeSpeech();</div></pre></td></tr></table></figure>
+<h3 id="终于来到原型链"><a href="#终于来到原型链" class="headerlink" title="终于来到原型链"></a>终于来到原型链</h3><p>如果我们修改掉 prototype，把它指向一个实例，那么在搜索属性和方法的时候，就会一层一层地搜索下去，也就间接地实现了继承。每个对象都有原型对象，原型对象又有自己的原型对象，从而构成了一个原型链。原型链的最后一环是 null，null 没有原型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Father</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.sex = <span class="string">"male"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Son</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.job = <span class="string">"programmer"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Son.prototype = <span class="keyword">new</span> Father();</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Son();</div><div class="line"><span class="built_in">console</span>.log(person.sex); <span class="comment">//male 通过查找原型的属性找到</span></div><div class="line"><span class="built_in">console</span>.log(person.job); <span class="comment">//programmer 自己的属性</span></div></pre></td></tr></table></figure>
+<p>不过直接使用原型链是有缺陷的。首先，由于原型是共享的，那么含有引用类型属性的原型就会出问题。而且，不能在子类中向父类的构造函数中传递参数。为了解决这些问题，程序员们想出了很多方法。不过，现在我们有个 ES6，可以使用 ES6 的新关键字 <code>class</code> 来定义类了。但这只是语法糖，并没有改变 JS 基于原型的事实。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>() &#123;</div><div class="line">        <span class="keyword">this</span>.sex = <span class="string">"male"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(job) &#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.job = job;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Son(<span class="string">"programmer"</span>);</div><div class="line"><span class="built_in">console</span>.log(person.sex); <span class="comment">//male</span></div><div class="line"><span class="built_in">console</span>.log(person.job); <span class="comment">//programmer</span></div></pre></td></tr></table></figure>
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2018/07/26/JavaScript基础分享/">JavaScript基础分享</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/20/iOS图片裁剪旋转格式转换/">iOS图片裁剪、旋转、格式转换</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/13/解决Unacceptable-Content-Type/">解决Unacceptable Content-Type问题</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/13/AFNetworking设置HTTP-Header-Body/">AFNetworking设置HTTP的Header和Body</a>
+        </p>
+    
+        <p>
+            <a href="/2018/07/11/Flutter-for-iOS-dev-翻译/">Flutter for iOS devs 翻译</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
