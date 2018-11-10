@@ -10,10 +10,10 @@
 
     <!--Description-->
     
-        <meta name="description" content="用 Swift 写算法——搜索线性搜索简介：
-线性搜索是从数组的头开始顺次访问各元素，检查该元素值是否与目标值相等。一旦相等就返回该元素位置并结束搜索。线性搜索算法的效率很低，但适用于任何形式的数据。
-Swift 实现：
-12345678func linearSearch(array: [Int],">
+        <meta name="description" content="V-REP 实现 Bubble Rebound 算法V-REP 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。
+首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。
+
+模型建">
     
 
     <!--Author-->
@@ -23,7 +23,7 @@ Swift 实现：
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="用Swift写算法-搜索"/>
+        <meta property="og:title" content="V-REP实现Bubble Rebound算法"/>
     
 
     <!--Open Graph Description-->
@@ -45,7 +45,7 @@ Swift 实现：
 
     <!-- Title -->
     
-    <title>用Swift写算法-搜索 - Berr</title>
+    <title>V-REP实现Bubble Rebound算法 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -113,8 +113,8 @@ Swift 实现：
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">用Swift写算法-搜索</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-07-12</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">V-REP实现Bubble Rebound算法</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-11-10</p>
         </div>
     </div>
 
@@ -134,62 +134,27 @@ Swift 实现：
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                                <a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="用-Swift-写算法——搜索"><a href="#用-Swift-写算法——搜索" class="headerlink" title="用 Swift 写算法——搜索"></a>用 Swift 写算法——搜索</h1><h3 id="线性搜索"><a href="#线性搜索" class="headerlink" title="线性搜索"></a>线性搜索</h3><p><strong>简介：</strong></p>
-<p>线性搜索是从数组的头开始顺次访问各元素，检查该元素值是否与目标值相等。一旦相等就返回该元素位置并结束搜索。线性搜索算法的效率很低，但适用于任何形式的数据。</p>
-<p><strong>Swift 实现：</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">linearSearch</span><span class="params">(array: [Int], key: Int)</span></span> -&gt; <span class="type">Int</span>? &#123;</div><div class="line">    <span class="keyword">for</span> (i, each) <span class="keyword">in</span> array.enumerated() &#123;</div><div class="line">        <span class="keyword">if</span> each == key &#123;</div><div class="line">            <span class="keyword">return</span> i</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>分析：</strong></p>
-<p>线性搜索的时间复杂度为 $O(n)$ 。</p>
-<h3 id="二分搜索"><a href="#二分搜索" class="headerlink" title="二分搜索"></a>二分搜索</h3><p><strong>简介：</strong></p>
-<p>二分搜索可以利用数据的大小进行高速搜索。每执行一次，搜索的范围都会减半，因此可以在极短的时间内完成搜索，不过需要数据有序。</p>
-<p><strong>Swift 实现：</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">binarySearch</span><span class="params">(array: [Int], key: Int)</span></span> -&gt; <span class="type">Int</span>? &#123;</div><div class="line">    <span class="keyword">var</span> leftIndex = <span class="number">0</span></div><div class="line">    <span class="keyword">var</span> rightIndex = array.<span class="built_in">count</span> - <span class="number">1</span></div><div class="line">    <span class="keyword">while</span> leftIndex &lt;= rightIndex &#123;</div><div class="line">        <span class="keyword">let</span> midIndex = (rightIndex + leftIndex) / <span class="number">2</span></div><div class="line">        <span class="keyword">if</span> array[midIndex] &gt; key &#123;</div><div class="line">            rightIndex = midIndex - <span class="number">1</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> array[midIndex] &lt; key &#123;</div><div class="line">            leftIndex = midIndex + <span class="number">1</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">return</span> midIndex</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>分析：</strong></p>
-<p>二分查找法每次搜索范围都会减半，在最坏的情况下大概需要 $log_2n$ 次，时间复杂度为 $O(logn)$ 。</p>
-<p>在最坏的情况下，对比线性搜索和二分搜索：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">元素数</th>
-<th style="text-align:center">线性搜索次数</th>
-<th style="text-align:center">二分搜索次数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">100</td>
-<td style="text-align:center">100</td>
-<td style="text-align:center">7</td>
-</tr>
-<tr>
-<td style="text-align:center">10000</td>
-<td style="text-align:center">10000</td>
-<td style="text-align:center">14</td>
-</tr>
-<tr>
-<td style="text-align:center">1000000</td>
-<td style="text-align:center">1000000</td>
-<td style="text-align:center">20</td>
-</tr>
-</tbody>
-</table>
-<p>这里默认传入的数组有序。在一般情况下，可以考虑先对数组排序，然后进行二分搜索。不过，考虑到数据的体积，一般需要使用高等排序法。</p>
-<h3 id="散列法"><a href="#散列法" class="headerlink" title="散列法"></a>散列法</h3><p><strong>简介：</strong></p>
-<p>在散列法中，各元素存储的位置由散列函数决定。这种算法只需要将元素的关键字代入散列函数，就可以计算出它的位置。对特定形式的数据有极高的搜索效率。</p>
-<p><strong>分析：</strong></p>
-<p>散列法的要点在于散列函数的选取和冲突时的处理方法。如果忽略冲突的情况，时间复杂度仅为 $O(1)$。</p>
+                    <h1 id="V-REP-实现-Bubble-Rebound-算法"><a href="#V-REP-实现-Bubble-Rebound-算法" class="headerlink" title="V-REP 实现 Bubble Rebound 算法"></a>V-REP 实现 Bubble Rebound 算法</h1><p><a href="http://www.coppeliarobotics.com" target="_blank" rel="external">V-REP</a> 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。</p>
+<p>首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。</p>
+<p><img src="/img/bubble_rebound/bb1.png" alt="bb1"></p>
+<p>模型建立好了之后，就可以开始着手实现 Bubble Rebound 避障算法了。Bubble Rebound 是一个很简单的避障算法，该论文可以在 <a href="https://ieeexplore.ieee.org/document/5524302" target="_blank" rel="external">IEEE Xplore</a> 上找到。简单来说，首先对距离传感器进行编号。以上图为例，最左边的传感器为 3 号，向右依次为 2，1，-1，-2，-3 。论文的插图给出了一侧四个传感器的例子：</p>
+<p><img src="/img/bubble_rebound/bb2.png" alt="bb2"></p>
+<p>之后，根据文章中给出的公式可以计算出机器人应该旋转的角度。大体思路是，如果左边有障碍物，那么正数部分就会因为距离较小而较小，从而计算得到一个负数的角度。在机器人 z 轴向上的情况下，旋转一个负数的角度即转向没有障碍物的右侧。</p>
+<p>但是在 V-REP 中使用内建的 Lua 脚本控制机器人旋转某个角度的实现中，有一点需要注意。旋转某个角度的思路大概如下：在一个循环中，给机器人的两个轮子施加不同的速度，不断对比当前的转角与目标转角，直至达到目标。需要注意的是，如果新建的是非多线程脚本，那么这个循环就会阻塞住仿真线程。仿真过程被阻塞住，也就无法让机器人旋转；机器人不旋转，我们的循环就无法退出，从而造成机器人不转、仿真不进行的尴尬局面。</p>
+<p>为了解决这个问题，就要使用多线程脚本。同时，也可以调用 <code>sim.switchThread()</code> 提前切换线程来得到更好的性能。进一步地说，Lua 本身并不是使用的多线程来进行的并行操作，而是使用了协程（coroutine）。多个协程在同一个线程中，可在子程序内部中断，去执行其他子程序，再返回，而不是函数调用（函数调用也可以算作协程的一种特殊状态）。因为是在同一个线程中，且由程序自身控制切换（线程、进程的切换由调度器来进行，程序员干预较少），因此效率非常高，没有线程转换的开销；不需要担心资源抢占，无需锁机制。多个子程序协作完成任务（而非抢占），故称为协程（co-routine）。</p>
+<p>完整代码可参见我的 GitHub。</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Algorithm/">#Algorithm</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
                         </div>
                     
 
