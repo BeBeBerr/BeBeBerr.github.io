@@ -10,10 +10,17 @@
 
     <!--Description-->
     
-        <meta name="description" content="V-REP 实现 Bubble Rebound 算法V-REP 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。
-首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。
+        <meta name="description" content="Python import 崩溃问题最近遇到了一个比较诡异的问题，在一个 Python 文件中，我 import 了如下几个库：
 
-模型建">
+turtle
+time
+numpy
+
+在另一个 Python navigation.py 中，我 import 了另外几个库：
+
+numpy
+skfuzzy
+from ">
     
 
     <!--Author-->
@@ -23,7 +30,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="V-REP实现Bubble Rebound算法"/>
+        <meta property="og:title" content="Python import 崩溃问题"/>
     
 
     <!--Open Graph Description-->
@@ -45,7 +52,7 @@
 
     <!-- Title -->
     
-    <title>V-REP实现Bubble Rebound算法 - Berr</title>
+    <title>Python import 崩溃问题 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -113,8 +120,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">V-REP实现Bubble Rebound算法</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-11-10</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">Python import 崩溃问题</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-12-12</p>
         </div>
     </div>
 
@@ -132,30 +139,33 @@
                 <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
                     <!-- Tags Vertical -->
                     
-                        <div class="tags-container-vertical">
-                            <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
-                            </div>
-                        </div>
-                    
 
                     <!-- Main Post Content -->
-                    <h1 id="V-REP-实现-Bubble-Rebound-算法"><a href="#V-REP-实现-Bubble-Rebound-算法" class="headerlink" title="V-REP 实现 Bubble Rebound 算法"></a>V-REP 实现 Bubble Rebound 算法</h1><p><a href="http://www.coppeliarobotics.com" target="_blank" rel="external">V-REP</a> 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。</p>
-<p>首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。</p>
-<p><img src="/img/bubble_rebound/bb1.png" alt="bb1"></p>
-<p>模型建立好了之后，就可以开始着手实现 Bubble Rebound 避障算法了。Bubble Rebound 是一个很简单的避障算法，该论文可以在 <a href="https://ieeexplore.ieee.org/document/5524302" target="_blank" rel="external">IEEE Xplore</a> 上找到。简单来说，首先对距离传感器进行编号。以上图为例，最左边的传感器为 3 号，向右依次为 2，1，-1，-2，-3 。论文的插图给出了一侧四个传感器的例子：</p>
-<p><img src="/img/bubble_rebound/bb2.png" alt="bb2"></p>
-<p>之后，根据文章中给出的公式可以计算出机器人应该旋转的角度。大体思路是，如果左边有障碍物，那么正数部分就会因为距离较小而较小，从而计算得到一个负数的角度。在机器人 z 轴向上的情况下，旋转一个负数的角度即转向没有障碍物的右侧。</p>
-<p>但是在 V-REP 中使用内建的 Lua 脚本控制机器人旋转某个角度的实现中，有一点需要注意。旋转某个角度的思路大概如下：在一个循环中，给机器人的两个轮子施加不同的速度，不断对比当前的转角与目标转角，直至达到目标。需要注意的是，如果新建的是非多线程脚本，那么这个循环就会阻塞住仿真线程。仿真过程被阻塞住，也就无法让机器人旋转；机器人不旋转，我们的循环就无法退出，从而造成机器人不转、仿真不进行的尴尬局面。</p>
-<p>为了解决这个问题，就要使用多线程脚本。同时，也可以调用 <code>sim.switchThread()</code> 提前切换线程来得到更好的性能。进一步地说，Lua 本身并不是使用的多线程来进行的并行操作，而是使用了协程（coroutine）。多个协程在同一个线程中，可在子程序内部中断，去执行其他子程序，再返回，而不是函数调用（函数调用也可以算作协程的一种特殊状态）。因为是在同一个线程中，且由程序自身控制切换（线程、进程的切换由调度器来进行，程序员干预较少），因此效率非常高，没有线程转换的开销；不需要担心资源抢占，无需锁机制。多个子程序协作完成任务（而非抢占），故称为协程（co-routine）。</p>
-<p>完整代码可参见我的 GitHub。</p>
+                    <h1 id="Python-import-崩溃问题"><a href="#Python-import-崩溃问题" class="headerlink" title="Python import 崩溃问题"></a>Python import 崩溃问题</h1><p>最近遇到了一个比较诡异的问题，在一个 Python 文件中，我 import 了如下几个库：</p>
+<ul>
+<li>turtle</li>
+<li>time</li>
+<li>numpy</li>
+</ul>
+<p>在另一个 Python <code>navigation.py</code> 中，我 import 了另外几个库：</p>
+<ul>
+<li>numpy</li>
+<li>skfuzzy</li>
+<li>from skfuzzy import control</li>
+<li>matplotlib.pyplot</li>
+</ul>
+<p>两个文件分别运行时，都非常正常。但是，我在第一个文件中一旦 import <code>navigation.py</code> 文件（我想使用其中定义的函数），就会收到操作系统抛出的终端异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Terminating app due to uncaught exception &apos;NSInvalidArgumentException&apos;, reason: &apos;-[NSApplication _setup:]: unrecognized selector sent to instance 0x114c65a40&apos;</div></pre></td></tr></table></figure>
+<p>可以看到，这个异常是 macOS 给出来的，而并不是 Python 报给我的。</p>
+<p>经过测试，我发现如下情况可以让程序执行：不调用 turtle 的绘图语句，或者，同时注释掉 <code>from skfuzzy import control</code> 和 <code>import matplotlib.pyplot</code> 。这就让问题显得十分诡异。</p>
+<p>最终的解决方案是，在程序的最开始添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> platform <span class="keyword">as</span> sys_pf</div><div class="line"><span class="keyword">if</span> sys_pf == <span class="string">'darwin'</span>:</div><div class="line">    <span class="keyword">import</span> matplotlib</div><div class="line">    matplotlib.use(<span class="string">"TkAgg"</span>)</div></pre></td></tr></table></figure>
+<p>这应该是 matplotlib 的一个 bug，在 macOS 环境下，要显示指明使用 TkAgg 作为界面库。崩溃的原因或许是 turtle 和 matplotlib 绘图的机制有所冲突？</p>
+<h2 id="附记"><a href="#附记" class="headerlink" title="附记"></a>附记</h2><p>使用 <code>skfuzzy</code> （scikit-fuzzy）库的时候，直接调用 <code>view()</code> 方法画 membership function 的曲线图无效（图片不显示），必须要先 <code>import matplotlib.pyplot as plt</code> 然后调用 <code>plt.show()</code> 才可以显示。也是个很奇怪的问题呢……</p>
+<p>本来只是想把 Python 当作一个顺手的工具，没想到越是着急写东西越是遇到大坑，由此可见把底层原理搞明白有多么重要。</p>
 
                     
                     <!-- Tags Bottom -->
-                    
-                        <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
-                        </div>
                     
 
                     <!-- Comments -->
