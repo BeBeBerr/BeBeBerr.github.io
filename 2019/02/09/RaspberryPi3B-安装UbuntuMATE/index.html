@@ -10,9 +10,7 @@
 
     <!--Description-->
     
-        <meta name="description" content="Swift 集成友盟数据统计友盟是比较有名的数据统计服务提供商，但其 SDK 是用 OC 写的，开发文档中暂时也没有给出 Swift 的接入教程。不过其实用 Swift 集成友盟还是非常简单的。
-获取 App Key注册友盟账号，在 U-App 中创建新应用，就可以获取到 App Key 了。
-安装">
+        <meta name="description" content="Raspberry Pi 3B+ 安装 Ubuntu MATE在实验室当 Undergraduate Researcher，需要多个树莓派和主机之间互相通信，果断考虑使用 ROS。采购时，本着电子产品买新不买旧的原则，选择了树莓派 3B+ 型号。Ubuntu 下安装 ROS 较为方便，于是打算安装 ">
     
 
     <!--Author-->
@@ -22,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Swift集成友盟数据统计"/>
+        <meta property="og:title" content="Raspberry Pi 3B+ 安装 Ubuntu MATE"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>Swift集成友盟数据统计 - Berr</title>
+    <title>Raspberry Pi 3B+ 安装 Ubuntu MATE - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -112,8 +110,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">Swift集成友盟数据统计</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-12-23</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">Raspberry Pi 3B+ 安装 Ubuntu MATE</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-02-09</p>
         </div>
     </div>
 
@@ -131,28 +129,43 @@
                 <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
                     <!-- Tags Vertical -->
                     
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/RaspberryPi/">#RaspberryPi</a>
+                            </div>
+                        </div>
+                    
 
                     <!-- Main Post Content -->
-                    <h1 id="Swift-集成友盟数据统计"><a href="#Swift-集成友盟数据统计" class="headerlink" title="Swift 集成友盟数据统计"></a>Swift 集成友盟数据统计</h1><p><a href="umeng.com">友盟</a>是比较有名的数据统计服务提供商，但其 SDK 是用 OC 写的，开发文档中暂时也没有给出 Swift 的接入教程。不过其实用 Swift 集成友盟还是非常简单的。</p>
-<h3 id="获取-App-Key"><a href="#获取-App-Key" class="headerlink" title="获取 App Key"></a>获取 App Key</h3><p>注册友盟账号，在 U-App 中创建新应用，就可以获取到 App Key 了。</p>
-<h3 id="安装-SDK"><a href="#安装-SDK" class="headerlink" title="安装 SDK"></a>安装 SDK</h3><p>虽然目前在 iOS 的文档中没有写明，但友盟已经支持使用 CocoaPods 进行安装了。在 Podfile 里添加：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod '<span class="type">UMengAnalytics'</span></div></pre></td></tr></table></figure>
-<p>或</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod '<span class="type">UMengAnalytics</span>-<span class="type">NO</span>-<span class="type">IDFA'</span></div></pre></td></tr></table></figure>
-<p>上面的是标准 SDK，下面的是无 IDFA 版本的。IDFA 是苹果的广告标识符，用于保护用户隐私的同时让商家可以最终广告效果。友盟使用 IDFA 是为了防止今后苹果可能会禁用 open-UDID 而造成数据异常。不过苹果禁止没有广告而获取 IDFA 的应用上架，因此审核期间可能会有风险。这里我选择了不采集 IDFA 的版本。</p>
-<h3 id="构建桥接文件"><a href="#构建桥接文件" class="headerlink" title="构建桥接文件"></a>构建桥接文件</h3><p>由于友盟的 SDK 是用 OC 编写的，因此在 Swift 项目中需要桥接文件来完成混编。好在 Swift 调用 OC 是非常方便的。</p>
-<ol>
-<li><code>Command + N</code> 呼出新建文件窗口，选择 <code>Header File</code>，命名为 <code>YourAppName-Bridging-Header.h</code>。（如果你已经引用过 OC 的代码，无视这一步）</li>
-<li>在其中插入你需要的组件的头文件，如 <code>#import &quot;UMMobClick/MobClick.h&quot;</code>。</li>
-<li>在工程的 Build Settings 中，找到 Swift Compiler - General （如果没有，记得勾选上方的 All，或者直接搜索）。在 Objective-C Bridging Header 项填入刚刚桥接文件的路径。也可以双击该项使它处于可编辑状态，把文件直接从文件树中拖过来，就会自动填充路径。</li>
-</ol>
-<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><p>桥接文件构建完成，就可以按照官方文档用 Swift 调用友盟的 api 了。在 <code>AppDelegate.swift</code>中，找到 <code>application(_:didFinishLaunchingWithOptions:)</code> 函数，开始配置。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(<span class="number">_</span> application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)</span></span> -&gt; <span class="type">Bool</span> &#123; </div><div class="line">    <span class="keyword">let</span> <span class="type">UMConfig</span> = <span class="type">UMAnalyticsConfig</span>()</div><div class="line">    <span class="type">UMConfig</span>.appKey = <span class="string">"Your App Key"</span></div><div class="line">    <span class="type">UMConfig</span>.channelId = <span class="string">"App Store"</span></div><div class="line">    <span class="type">MobClick</span>.start(withConfigure: <span class="type">UMConfig</span>)</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>现在，在真机或模拟器中启动程序，如果你在友盟的统计页面中看到相应的信息，就说明已经配置成功了！</p>
-<p>如果不想污染数据，可以使用友盟的集成调试功能。具体的内容可以参考开发文档。</p>
+                    <h1 id="Raspberry-Pi-3B-安装-Ubuntu-MATE"><a href="#Raspberry-Pi-3B-安装-Ubuntu-MATE" class="headerlink" title="Raspberry Pi 3B+ 安装 Ubuntu MATE"></a>Raspberry Pi 3B+ 安装 Ubuntu MATE</h1><p>在实验室当 Undergraduate Researcher，需要多个树莓派和主机之间互相通信，果断考虑使用 ROS。采购时，本着电子产品买新不买旧的原则，选择了树莓派 3B+ 型号。Ubuntu 下安装 ROS 较为方便，于是打算安装 Ubuntu MATE 作为操作系统。没想到，Ubuntu Mate 竟然还没有官方支持最新的 Pi 3B+。好在最后经过一番折腾，最终还是安装成功了。</p>
+<h2 id="第一步-烧录-Ubuntu-MATE"><a href="#第一步-烧录-Ubuntu-MATE" class="headerlink" title="第一步 烧录 Ubuntu MATE"></a>第一步 烧录 Ubuntu MATE</h2><p>先前往 Ubuntu MATE 官网 <a href="https://ubuntu-mate.org/download/" target="_blank" rel="external">https://ubuntu-mate.org/download/</a> 下载镜像。</p>
+<p>下载完毕后，安装 <code>ddrescue</code> 工具并拷贝镜像到 SD 卡：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install gddrescue xz-utils</div><div class="line">unxz ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz</div><div class="line">sudo ddrescue -D --force ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img /dev/sdx</div></pre></td></tr></table></figure>
+<p>注意，这里的 <code>sdx</code> 需要被替换成你的 SD 卡文件。使用 <code>lsblk</code> 命令可以看到所有块设备的信息，以及他们的依赖关系。一般根据 SD 卡的容量就可以看出那个文件是 SD 卡了。当然用 Linux 自带的设备管理程序也可以看到。比如，在我实际操作过程中，我的 SD 卡在 <code>/dev/sdb</code> 下。</p>
+<p>经过漫长的等待，就可以看到镜像已经烧录成功了。SD 卡被分成了两个区，BOOT 和 ROOT。</p>
+<h2 id="第二步-更改-boot-loader"><a href="#第二步-更改-boot-loader" class="headerlink" title="第二步 更改 boot loader"></a>第二步 更改 boot loader</h2><p>由于 Raspberry Pi 3B+ 把处理器换成了 Cortex-A53 (ARMv8)，如果这个时候直接把 SD 卡插入树莓派，是 boot 不起来的。表现为树莓派红灯闪烁，绿灯不亮，接上显示器只有彩虹屏。</p>
+<p>解决方法是，下载最新的树莓派固件：<a href="https://github.com/raspberrypi/firmware" target="_blank" rel="external">https://github.com/raspberrypi/firmware</a></p>
+<p>把 SD 卡中 Boot 区所有文件替换成该固件 boot 文件夹的内容。把 Root 区 lib/modules 下所有文件替换成该固件 modules 文件夹的内容。GUI 界面下拖拽文件可能无效，因为是只读权限。可以命令行下在 sudo 权限下复制文件。</p>
+<p>插入 SD 卡，树莓派已经可以运行 Ubuntu MATE 了。但是还没结束……</p>
+<h2 id="第三步-Wifi-怎么办"><a href="#第三步-Wifi-怎么办" class="headerlink" title="第三步 Wifi 怎么办"></a>第三步 Wifi 怎么办</h2><p>Ubuntu 下，似乎直接在 boot 分区里增加 <code>wpa_config</code> 文件配置 Wifi 无效。所以还是要给树莓派接上鼠标、键盘、显示器来操作。但是，内置的 Wifi 不工作，怀疑是这个版本的 Ubuntu MATE 的 Wifi 驱动不支持新的树莓派。现在我的临时解决方案是给树莓派接上了一个 USB 的无线网卡。</p>
+<h2 id="第四步-扩展存储空间"><a href="#第四步-扩展存储空间" class="headerlink" title="第四步 扩展存储空间"></a>第四步 扩展存储空间</h2><p>Ubuntu MATE 的默认文件系统空间很小，远远没有占满整个 SD 卡。我们需要 resize file system。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo fdisk /dev/mmcblk0</div></pre></td></tr></table></figure>
+<p>出现 fdisk 的界面后，依次输入 <code>d</code> <code>2</code> <code>n</code> <code>p</code> <code>2</code> ，然后按两次空的回车，然后输入 <code>w</code> 。然后 reboot。</p>
+<p>重启完成后，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo resize2fs /dev/mmcblk0p2</div></pre></td></tr></table></figure>
+<p>现在，文件系统已经是整个 SD 卡的大小了。</p>
+<h2 id="第五步-设置自动登录"><a href="#第五步-设置自动登录" class="headerlink" title="第五步 设置自动登录"></a>第五步 设置自动登录</h2><p>如果不设置自动登录，每次树莓派上电后会卡在输入密码的页面，连接不上 Wifi。在 <code>/usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf</code> 文件里增加一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">autologin-user=yourUserName</div></pre></td></tr></table></figure>
+<p>就可以自动登录了。</p>
+<p>现在打开 SSH 服务，就可以愉快的玩耍树莓派了。如果需要配置静态 IP 地址，去路由器的 LAN 设置中，给树莓派的 MAC 地址分配一个固定 IP 就可以了。毕竟使用 DHCP 不能保证树莓派的 IP 永远不变，这在实验室里会造成麻烦。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以看到给 3B+ 安装 Ubuntu MATE 还是比较麻烦的。如果没有安装 ROS 的需求，还是建议安装 Raspbian。或者如果没有特别高的性能要求，购买老款的树莓派也会省事不少。关于内置 Wifi 不可用的问题，我还在继续寻找解决方案。</p>
 
                     
                     <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/RaspberryPi/">#RaspberryPi</a>
+                        </div>
                     
 
                     <!-- Comments -->
