@@ -10,10 +10,10 @@
 
     <!--Description-->
     
-        <meta name="description" content="V-REP 实现 Bubble Rebound 算法V-REP 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。
-首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。
+        <meta name="description" content="调试 JSCore 小技巧在编写 iOS 和 JavaScript 交互的代码时，调试起来实在令人头大。但其实有一个小技巧可以帮助我们调试：
 
-模型建">
+打开 Safari，点击“开发”选项。如果没有顶部菜单栏没有开发选项，则先去“偏好设置”，“高级”中打开“显示开发菜单”。
+选择“模拟器”，点击“自动显示 ">
     
 
     <!--Author-->
@@ -23,7 +23,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="V-REP实现Bubble Rebound算法"/>
+        <meta property="og:title" content="调试JSCore小技巧"/>
     
 
     <!--Open Graph Description-->
@@ -45,7 +45,7 @@
 
     <!-- Title -->
     
-    <title>V-REP实现Bubble Rebound算法 - Berr</title>
+    <title>调试JSCore小技巧 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -113,8 +113,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">V-REP实现Bubble Rebound算法</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-11-10</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">调试JSCore小技巧</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-02-10</p>
         </div>
     </div>
 
@@ -134,27 +134,25 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
+                                <a class="fw3 ph1 dib" href="/tags/JSCore/">#JSCore</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="V-REP-实现-Bubble-Rebound-算法"><a href="#V-REP-实现-Bubble-Rebound-算法" class="headerlink" title="V-REP 实现 Bubble Rebound 算法"></a>V-REP 实现 Bubble Rebound 算法</h1><p><a href="http://www.coppeliarobotics.com" target="_blank" rel="external">V-REP</a> 是一款较为易用的机器人仿真软件。它拥有 4 个不同的物理引擎，可以较好地进行动力学仿真。</p>
-<p>首先，参考官方教程建立 bubbleRob 机器人模型。为了方便实现 Bubble Rebound 算法，还要添加几个额外的接近传感器。</p>
-<p><img src="/img/bubble_rebound/bb1.png" alt="bb1"></p>
-<p>模型建立好了之后，就可以开始着手实现 Bubble Rebound 避障算法了。Bubble Rebound 是一个很简单的避障算法，该论文可以在 <a href="https://ieeexplore.ieee.org/document/5524302" target="_blank" rel="external">IEEE Xplore</a> 上找到。简单来说，首先对距离传感器进行编号。以上图为例，最左边的传感器为 3 号，向右依次为 2，1，-1，-2，-3 。论文的插图给出了一侧四个传感器的例子：</p>
-<p><img src="/img/bubble_rebound/bb2.png" alt="bb2"></p>
-<p>之后，根据文章中给出的公式可以计算出机器人应该旋转的角度。大体思路是，如果左边有障碍物，那么正数部分就会因为距离较小而较小，从而计算得到一个负数的角度。在机器人 z 轴向上的情况下，旋转一个负数的角度即转向没有障碍物的右侧。</p>
-<p>但是在 V-REP 中使用内建的 Lua 脚本控制机器人旋转某个角度的实现中，有一点需要注意。旋转某个角度的思路大概如下：在一个循环中，给机器人的两个轮子施加不同的速度，不断对比当前的转角与目标转角，直至达到目标。需要注意的是，如果新建的是非多线程脚本，那么这个循环就会阻塞住仿真线程。仿真过程被阻塞住，也就无法让机器人旋转；机器人不旋转，我们的循环就无法退出，从而造成机器人不转、仿真不进行的尴尬局面。</p>
-<p>为了解决这个问题，就要使用多线程脚本。同时，也可以调用 <code>sim.switchThread()</code> 提前切换线程来得到更好的性能。进一步地说，Lua 本身并不是使用的多线程来进行的并行操作，而是使用了协程（coroutine）。多个协程在同一个线程中，可在子程序内部中断，去执行其他子程序，再返回，而不是函数调用（函数调用也可以算作协程的一种特殊状态）。因为是在同一个线程中，且由程序自身控制切换（线程、进程的切换由调度器来进行，程序员干预较少），因此效率非常高，没有线程转换的开销；不需要担心资源抢占，无需锁机制。多个子程序协作完成任务（而非抢占），故称为协程（co-routine）。</p>
-<p>完整代码可参见我的 GitHub。</p>
+                    <h1 id="调试-JSCore-小技巧"><a href="#调试-JSCore-小技巧" class="headerlink" title="调试 JSCore 小技巧"></a>调试 JSCore 小技巧</h1><p>在编写 iOS 和 JavaScript 交互的代码时，调试起来实在令人头大。但其实有一个小技巧可以帮助我们调试：</p>
+<ol>
+<li>打开 Safari，点击“开发”选项。如果没有顶部菜单栏没有开发选项，则先去“偏好设置”，“高级”中打开“显示开发菜单”。</li>
+<li>选择“模拟器”，点击“自动显示 JSContext 的网页检查器”。</li>
+<li>重新运行程序，检查器就会自动弹出来了。</li>
+</ol>
+<p>苹果爸爸太给力了！！</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Robotics/">#Robotics</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/JSCore/">#JSCore</a>
                         </div>
                     
 
