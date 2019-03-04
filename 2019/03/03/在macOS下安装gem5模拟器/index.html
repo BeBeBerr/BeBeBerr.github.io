@@ -10,8 +10,11 @@
 
     <!--Description-->
     
-        <meta name="description" content="解决内存泄露分析导致的App闪退我们在解决应用内存泄露的问题时，常常要用到 Instruments 调试工具的 Leak Check 工具。然而，有时打开 Leak Check，应用就闪退了，导致无法调试。
-这似乎是 Xcode 的一个 bug。解决方法很简单：打开 Allocations 分析工具">
+        <meta name="description" content="在 macOS 下安装 gem5 模拟器Gem5 是一款 CPU 模拟器，一般用于计算机体系架构的研究工作。Gem5 可以用来模拟多种 CPU 架构，如 Alpha，ARM，SPARC，MIPS，当然还有x86。它同时支持 Linux / macOS 系统。
+依赖以下为必要的依赖：
+
+g++
+Pyt">
     
 
     <!--Author-->
@@ -21,7 +24,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="解决Leak分析闪退问题"/>
+        <meta property="og:title" content="在macOS下安装gem5模拟器"/>
     
 
     <!--Open Graph Description-->
@@ -43,7 +46,7 @@
 
     <!-- Title -->
     
-    <title>解决Leak分析闪退问题 - Berr</title>
+    <title>在macOS下安装gem5模拟器 - Berr</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -111,8 +114,8 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">解决Leak分析闪退问题</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-04-27</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">在macOS下安装gem5模拟器</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-03-03</p>
         </div>
     </div>
 
@@ -132,20 +135,50 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/Instruments/">#Instruments</a>
+                                <a class="fw3 ph1 dib" href="/tags/gem5/">#gem5</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="解决内存泄露分析导致的App闪退"><a href="#解决内存泄露分析导致的App闪退" class="headerlink" title="解决内存泄露分析导致的App闪退"></a>解决内存泄露分析导致的App闪退</h1><p>我们在解决应用内存泄露的问题时，常常要用到 Instruments 调试工具的 Leak Check 工具。然而，有时打开 Leak Check，应用就闪退了，导致无法调试。</p>
-<p>这似乎是 Xcode 的一个 bug。解决方法很简单：打开 Allocations 分析工具（而不是 Leaks）、点击右上角 + 按钮添加 Leaks 工具就可以了。</p>
+                    <h1 id="在-macOS-下安装-gem5-模拟器"><a href="#在-macOS-下安装-gem5-模拟器" class="headerlink" title="在 macOS 下安装 gem5 模拟器"></a>在 macOS 下安装 gem5 模拟器</h1><p>Gem5 是一款 CPU 模拟器，一般用于计算机体系架构的研究工作。Gem5 可以用来模拟多种 CPU 架构，如 Alpha，ARM，SPARC，MIPS，当然还有x86。它同时支持 Linux / macOS 系统。</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>以下为必要的依赖：</p>
+<ul>
+<li>g++</li>
+<li>Python 2.7</li>
+<li>SCons 这是一个 build 管理工具，类似于 make</li>
+<li>zlib 这是一个数据压缩库。如果已经安装了 Xcode 命令行工具就已经包含了。如果没有，运行 <code>xcode-select --install</code> 安装 Xcode 命令行工具。</li>
+<li>GNU m4 宏处理器</li>
+</ul>
+<p>以下为推荐安装的依赖：</p>
+<ul>
+<li>protobuf</li>
+<li>pydot</li>
+</ul>
+<p>在 Mac 下，使用 homebrew 安装这些依赖较为简单。基本上 <code>brew install &lt;name&gt;</code> 就可以搞定了。</p>
+<h2 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h2><p>Gem5 模拟器开放了源代码，且需要我们自己编译。通过 Git 把源码下载下来：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://gem5.googlesource.com/public/gem5</div></pre></td></tr></table></figure>
+<p>当然也可以使用其他的版本控制工具下载。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>Gem5 使用 SCons 作为 build 管理工具。用法是 <code>build/&lt;config&gt;/&lt;binary&gt;</code> 。Gem5 提供了多种版本，比如：</p>
+<ul>
+<li>debug</li>
+<li>opt</li>
+<li>prof</li>
+<li>perf</li>
+<li>fast</li>
+</ul>
+<p>一般常用的是 opt 版本，这是带 debugging 和优化的版本。prof 和 perf 版本提供了性能分析支持，不过一般不常用。而且，编译 prof 版本可以成功，但是运行时会抛出 <code>__dyld section not supported</code> 异常。这是因为新版的 LLVM 已经不再支持 dyld 了。所以还是建议使用 opt 版本。如果我们需要 x86 架构的话：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scons build/X86/gem5.opt</div></pre></td></tr></table></figure>
+<p>编译耗时还是比较久的，需要耐心等待，可以去健个身之类的。</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>最后可以跑一下自带的 hello world 程序，来验证 gem5 是否可用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build/X86/gem5.opt configs/example/se.py -c tests/test-progs/hello/bin/x86/linux/hello</div></pre></td></tr></table></figure>
+<p>如果屏幕上成功打印出 <code>Hello world!</code> 就代表可以正常使用 gem5 模拟器了。</p>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Instruments/">#Instruments</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/gem5/">#gem5</a>
                         </div>
                     
 
