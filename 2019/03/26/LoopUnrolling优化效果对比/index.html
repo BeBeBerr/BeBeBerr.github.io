@@ -148,7 +148,7 @@
 <p>使用 LLVM 进行编译，选择 O0 优化，即最低优化级别：</p>
 <p><code>clang -O0 -S -emit-llvm unrolling.c</code></p>
 <p>部分汇编代码如下：</p>
-<p><img src="/Users/wangluyuan/Desktop/ll0.png" alt="ll0"></p>
+<p><img src="/img/LoopUnrolling/ll0.png" alt="ll0"></p>
 <p>这里的代码不是真正的汇编代码，而是 LLVM 的中间语言（IR）。clang 作为 LLVM 的前端，负责解析 C 代码，之后 LLVM 会生成 IR 代码并作优化，最后由 IR 再翻译成平台相关的汇编代码。</p>
 <p>这里 970815 （我的生日）是一个 magic number，通过这个数字我们可以迅速定位到循环的位置。可以看到，并没有什么稀奇之处，这个加法运算只出现了一次。</p>
 <p>如果使用 O3，即最高级别优化：</p>
