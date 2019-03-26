@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Loop Unrolling 优化效果对比循环是计算机程序中非常重要的结构。如果对循环加以优化，就可以大幅提高程序的运行速度。本文通过一段简单的小程序，对比了 Loop Unrolling 前后的性能差异。
+什么是 Loop Unrolling简单来说，循环展开就是把循环中的内容复制多次，然后减少循">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="LoopUnrolling优化效果对比"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>LoopUnrolling优化效果对比 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">LoopUnrolling优化效果对比</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-03-26</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Computer-Organization/">#Computer Organization</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="Loop-Unrolling-优化效果对比"><a href="#Loop-Unrolling-优化效果对比" class="headerlink" title="Loop Unrolling 优化效果对比"></a>Loop Unrolling 优化效果对比</h1><p>循环是计算机程序中非常重要的结构。如果对循环加以优化，就可以大幅提高程序的运行速度。本文通过一段简单的小程序，对比了 Loop Unrolling 前后的性能差异。</p>
+<h2 id="什么是-Loop-Unrolling"><a href="#什么是-Loop-Unrolling" class="headerlink" title="什么是 Loop Unrolling"></a>什么是 Loop Unrolling</h2><p>简单来说，循环展开就是把循环中的内容复制多次，然后减少循环次数。这是一种牺牲程序占用空间换取执行时间的优化方法。Loop Unrolling 有利于指令级并行，也有利于 pipeline 调度。</p>
+<p>指令级并行（multiple issue）是在同一时刻执行多条指令。这建立在 CPU 的结构”冗余”上。例如，如果我们有两个 ALU，我们就可以同时执行两个 ALU 运算操作。</p>
+<p>Loop Unrolling 可以由编译器自动优化。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>为了测试 Loop Unrolling，我编写了如下的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">1000000</span>];</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"tick: %ld\n"</span>, clock());</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;<span class="number">100000</span>; j++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">1000000</span>; i++) &#123;</div><div class="line">           <span class="built_in">array</span>[i] += <span class="number">970815</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以想像，如果存在 Loop Unrolling，中间的加法运算就会被复制多次，而循环次数也对应减少。</p>
+<p>使用 LLVM 进行编译，选择 O0 优化，即最低优化级别：</p>
+<p><code>clang -O0 -S -emit-llvm unrolling.c</code></p>
+<p>部分汇编代码如下：</p>
+<p><img src="/Users/wangluyuan/Desktop/ll0.png" alt="ll0"></p>
+<p>这里的代码不是真正的汇编代码，而是 LLVM 的中间语言（IR）。clang 作为 LLVM 的前端，负责解析 C 代码，之后 LLVM 会生成 IR 代码并作优化，最后由 IR 再翻译成平台相关的汇编代码。</p>
+<p>这里 970815 （我的生日）是一个 magic number，通过这个数字我们可以迅速定位到循环的位置。可以看到，并没有什么稀奇之处，这个加法运算只出现了一次。</p>
+<p>如果使用 O3，即最高级别优化：</p>
+<p><code>clang -O0 -S -emit-llvm unrolling.c</code></p>
+<p>可以看到 IR 代码如下：</p>
+<p><img src="/img/LoopUnrolling/ll3.png" alt="ll3"></p>
+<p>这里可以很明显的看到，相加运算被复制了很多很多次，即编译器做了 Loop Unrolling 优化。当然，真实的代码可能会和 IR 有所出入，因为在 IR 中，寄存器的数量是无限制的，而真正的 CPU 的寄存器数量很少，所以会有所变动。不过可以确定的是，在 LLVM O3 级别的优化下，确实产生了 Loop Unrolling 现象。</p>
+<h2 id="使用-gperftools-测试性能"><a href="#使用-gperftools-测试性能" class="headerlink" title="使用 gperftools 测试性能"></a>使用 gperftools 测试性能</h2><p>Linux 下有很多性能分析工具，这里我选择了可以配合 clang 使用的 Google gperftools。注意，gperftools 每隔 10ms 做一次采样，因此我设置的循环次数较大，这样才能有足够的时间来统计采样次数。而采样次数也就反映了程序的运行时间。</p>
+<p><img src="/img/LoopUnrolling/unrolling_vs.png" alt="unrolling_vs"></p>
+<p>这张图中，纵坐标是 gperftools 的采样次数（与程序耗时成正比），前三组数据使用 O0 优化，而后三组数据使用 O3 优化。在 clang 中，即使是 O0 级别也是会做出一些基本的优化的。如果想要完全不优化，则需要自己更改 clang 的源代码。（逃</p>
+<p>不过根据前面的 IR 代码可以知道，O0 是没有 Loop Unrolling 的。</p>
+<p>通过这组数据可以看出，在有 Loop Unrolling 的情况下，性能的提升是显著的。虽然 O3 级别优化肯定也会对其他地方进行优化，但是在如此简单的情景下，可以假定对影响程序时间起主要作用的就是对循环作出的优化。</p>
+<h2 id="使用-gem5-模拟器分析"><a href="#使用-gem5-模拟器分析" class="headerlink" title="使用 gem5 模拟器分析"></a>使用 gem5 模拟器分析</h2><p>在刚才的分析中，我是使用了 VMWare 的 Linux 虚拟机来做的测试。然而，这样的测试变量较多，如系统的负载在不同时刻不一致等。使用 CPU 模拟器，可以得到非常精确的结果。</p>
+<p>Gem5 有两种运行模式，SE 和 FS。SE 是 system emulation 的缩写，即模拟了 system call，而并没有真实的操作系统。这是一种较低层次的虚拟化技术。SE 模式下可以运行一些简单的静态编译程序（Linux 格式）。所以，在编译完成后，我将可执行文件从 Linux 虚拟机拷贝回宿主 macOS 上，并交给 gem5 执行。为了静态链接，需要在编译时添加 <code>--static</code> 参数。</p>
+<p><code>clang -O3 unrolling.c -o unrolling_3 --static</code></p>
+<p>未优化时，消耗的 CPU tick 数为：43233500。优化后为：40620500。可以看到优化后性能有所提高。提升没有之前显著的原因是，我将循环次数减少了数万至数十万倍。这是因为 gem5 效率更低，在之前的循环数量下会消耗过长的时间进行仿真。</p>
+<p>使用 gem5 仿真的命令是：</p>
+<p><code>build/X86/gem5.opt configs/turtorial/two-level.py</code></p>
+<p>这里，使用 opt 模式 X86 架构的模拟器，而后一半是自行编写的 CPU 配置脚本。通过自定义配置脚本，可以指定 CPU 参数，cache 系统等。当然，gem5 本身也提供了一些现成的配置供我们使用。</p>
+<p>运行完毕后，gem5 会在 <code>m5out</code> 文件夹下生成 <code>stats.txt</code> 文件展示统计信息。通过统计信息可以看到 cache 命中率等信息。</p>
+<p>下面是优化后的缓存 miss rate：</p>
+<p><img src="/img/LoopUnrolling/dmissw.png" alt="dmissw"></p>
+<p><img src="/img/LoopUnrolling/imissw.png" alt="imissw"></p>
+<p>下面是未优化的：</p>
+<p><img src="/img/LoopUnrolling/dmisswo.png" alt="dmisswo"></p>
+<p><img src="/img/LoopUnrolling/imisswo.png" alt="dmisswo"></p>
+<p>可以看到缓存 miss 比率在优化后反而升高了。这不能解释我们观察到的性能提升现象。（为什么 cache 反而命中率低了？我目前没有想到合理的解释）</p>
+<p>使用现有的配置文件，gem5 可以可视化的展示 CPU pipeline。不过要知道，静态链接后程序会变得非常臃肿。而且，真实的汇编代码可读性很低，所以需要找到办法在完整的 pipeline 中找到我们感兴趣的循环部分。</p>
+<p>为了定位循环的位置，首先阅读一下真实的汇编代码：</p>
+<p><img src="/img/LoopUnrolling/asm_0.png" alt="asm_0"></p>
+<p>通过 magic number 970815 可以看到对应的 addl 指令位置。而这个立即数的 16 进制值为 <code>imm = 0xED03F</code>。</p>
+<p>通过 objdump 工具可以反汇编出可执行文件的结构：</p>
+<p><code>objdump -d unrolling_3 &gt; obj.txt</code></p>
+<p>输出的结果默认是打在控制台上的，但由于静态链接后程序体积非常大，我把输出结果重定向在 obj.txt 文件中，方便查看。</p>
+<p><img src="/img/LoopUnrolling/dump.png" alt="dump"></p>
+<p>搜索 magic number 0xed03f 可以快速定位到位置。可以看到 address 是 <code>0x400b5d</code> 。由于这里是 SE 模式模拟，可以理解为程序在裸的 CPU 上运行，所以可以假象运行时的 PC 值就是这个地址。</p>
+<p>使用 gem5 提供的 CPU 配置和可视化工具，可以检查 pipeline。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build/X86/gem5.opt --debug-flags=O3PipeView --debug-start=1 --debug-file=trace.out configs/example/se.py --cpu-type=DerivO3CPU --caches -c /Users/wangluyuan/Desktop/COProject/test/unrolling_0</div></pre></td></tr></table></figure>
+<p>这里需要注意的是，官网教程中，向 <code>se.py</code> 传入的参数是 <code>--cpu-type=detailed</code> 。然而实际上 se.py 并不支持这个参数，可能是教程太过于陈旧了。需要传入的参数实际是 <code>DerivO3CPU</code>。</p>
+<p>之后把输出结果格式进行转换：</p>
+<p><code>./util/o3-pipeview.py -c 250 -o pipeview.out --color m5out/trace.out</code></p>
+<p>最后打开：</p>
+<p><code>less -r pipeview.out</code></p>
+<p>这里的颜色是通过逃逸字符实现的，所以一般的文本编辑器打开是看不到颜色，而只能看到逃逸字符本身。所以最好使用 less 打开。</p>
+<p>通过之前的 address 可以在完整的 pipeline 中找到加法对应的位置。当然，如果不想查看完整的 pipeline （太长了），可以在运行时指定参数 <code>--debug-start</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build/X86/gem5.opt --debug-flags=O3PipeView --debug-start=33800000 --debug-file=trace.out configs/example/se.py --cpu-type=DerivO3CPU --caches -c /Users/wangluyuan/Desktop/COProject/test/unrolling_3</div></pre></td></tr></table></figure>
+<p>优化前：</p>
+<p><img src="/img/LoopUnrolling/pipewo.png" alt="pipewo"></p>
+<p>优化后：</p>
+<p><img src="/img/LoopUnrolling/pipew.png" alt="pipew"></p>
+<p>优化后，ADD 指令连续出现了多次。这里，不同的字母代表流水线的不同 stage：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f = fetch, d = decode, n = rename, p = dispatch, i = issue, c = complete, r = retire, s = store-complete</div></pre></td></tr></table></figure>
+<p>X86 的流水线比 MIPS 的五段（fetch, decode, exe, mem, wb）流水线复杂很多。但直观上来看，优化后的流水线似乎更满、更完整。或许是这个原因导致的运行速度更快。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Computer-Organization/">#Computer Organization</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/03/26/LoopUnrolling优化效果对比/">LoopUnrolling优化效果对比</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/23/Linux下使用gperftools/">Linux下使用gperftools</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/03/在macOS下安装gem5模拟器/">在macOS下安装gem5模拟器</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/15/JS调用Swift造成卡顿问题/">JS调用Swift造成卡顿问题</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/10/调试JSCore小技巧/">调试JSCore小技巧</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
