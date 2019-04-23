@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Wi-Fi 监听 UDP 包最近遇到一个需求，一个被远程控制的小车需要在多个网络中无缝漫游。如果按照我们熟悉的方式，搭建一个 Wi-Fi 网络，小车上的树莓派就可能在网络切换时掉线 1 至 2 秒钟。鉴于小车是被实时远程控制的，我们需要网络切换时间极短，而不同 Wi-Fi 之间的切换速度就不符合要求">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="WiFi监听UDP包"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>WiFi监听UDP包 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">WiFi监听UDP包</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-04-22</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/network/">#network</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="Wi-Fi-监听-UDP-包"><a href="#Wi-Fi-监听-UDP-包" class="headerlink" title="Wi-Fi 监听 UDP 包"></a>Wi-Fi 监听 UDP 包</h1><p>最近遇到一个需求，一个被远程控制的小车需要在多个网络中无缝漫游。如果按照我们熟悉的方式，搭建一个 Wi-Fi 网络，小车上的树莓派就可能在网络切换时掉线 1 至 2 秒钟。鉴于小车是被实时远程控制的，我们需要网络切换时间极短，而不同 Wi-Fi 之间的切换速度就不符合要求。</p>
+<p>我认为，与其想办法加快在不同网络之间切换的速度，不如干脆不接入任何一个网络了——让树莓派嗅探空气中的所有数据包，并解析出自己需要的包来获取控制信息。不接入网络，自然就不存在基站切换的耗时问题。这相当于在以广播的形式通信。</p>
+<p>我也考虑了使用其他的通信方式，比如蓝牙、Zigbee 等，最终还是更加倾向于 Wi-Fi。</p>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p>多台树莓派充当 AP，通过 UDP 协议广播数据。小车车载树莓派监听所有数据包，并筛选自己需要的数据。这需要车载树莓派进入 monitor mode。普通的 managed mode 下，网卡会过滤掉目的地址不是自身的包。由于我们不希望小车接入网络，所以在这种模式下就收不到包了。monitor mode 不同于 promiscuous mode（混杂模式），它不需要和 AP 建立连接（太好了）。</p>
+<h2 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h2><p>不是所有的无线网卡都支持 monitor mode。Raspberry Pi 3 B+ 板载网卡就默认不支持，因此需要额外购买合适的网卡。但社区也提供了支持 monitor mode 的布丁 <a href="https://github.com/seemoo-lab/nexmon" target="_blank" rel="external">nexmon</a> 。</p>
+<h2 id="进入-monitor-mode"><a href="#进入-monitor-mode" class="headerlink" title="进入 monitor mode"></a>进入 monitor mode</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo ifconfig &lt;your interface&gt; down</div><div class="line">$ sudo iwconfig &lt;your interface&gt; mode monitor</div><div class="line">$ sudo ifconfig &lt;your interface&gt; up</div><div class="line">$ sudo iwconfig &lt;your interface&gt; channel &lt;your channel number&gt;</div></pre></td></tr></table></figure>
+<p>这里，需要指定网卡工作的频率。虽然 Wi-Fi 信道有重叠，但最好还是要和路由器的工作频率匹配。比如，我就设置路由器（或者其他作为 AP 的树莓派）的工作信道设置成了 channel 5 。当然，如果许多热点在同时工作，则最好工作在不同的频段防止干扰，再不断切换车载 Wi-Fi 频道。虽然 Wi-Fi 有载波监听、冲突避免等机制，但仍会大幅降低传输效率。</p>
+<p>Wi-Fi 最好不要设置密码——否则数据包会被加密，如何解包又是一个问题。</p>
+<p>如果使用 Wireshark 抓包，则要在 Wireshark 里面也勾选上 monitor mode。</p>
+<h2 id="捕捉-UDP-数据包"><a href="#捕捉-UDP-数据包" class="headerlink" title="捕捉 UDP 数据包"></a>捕捉 UDP 数据包</h2><p>和 Wireshark 一样，我们要使用 libpcap 来抓包。libpcap 有一个 python 的封装 <a href="https://github.com/helpsystems/pcapy" target="_blank" rel="external">pcapy</a> ，这样编写 python 代码就更方便了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> pcapy</div><div class="line"><span class="keyword">import</span> socket</div><div class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> *</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_packet</span><span class="params">(packet)</span>:</span></div><div class="line">    wifi_length = <span class="number">0x32</span> //【<span class="number">1</span>】</div><div class="line"></div><div class="line">    <span class="keyword">if</span> len(packet) &lt; wifi_length:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">None</span></div><div class="line"></div><div class="line">    wifi_protocol = packet[<span class="number">0x30</span> : wifi_length] </div><div class="line">    </div><div class="line">    wifi_protocol = unpack(<span class="string">'!h'</span> , wifi_protocol) //【<span class="number">2</span>】</div><div class="line">    wifi_protocol = wifi_protocol[<span class="number">0</span>]</div><div class="line">    </div><div class="line">    <span class="comment"># ip protocol</span></div><div class="line">    <span class="keyword">if</span> wifi_protocol == <span class="number">0x0800</span>:</div><div class="line">        ip_header = packet[wifi_length : <span class="number">20</span>+wifi_length]</div><div class="line">        iph = unpack(<span class="string">'!BBHHHBBH4s4s'</span>, ip_header)</div><div class="line">        version_ihl = iph[<span class="number">0</span>]</div><div class="line">        version = version_ihl &gt;&gt; <span class="number">4</span></div><div class="line">        ihl = version_ihl &amp; <span class="number">0xF</span></div><div class="line"></div><div class="line"></div><div class="line">        iph_length = ihl * <span class="number">4</span></div><div class="line"></div><div class="line">        protocol = iph[<span class="number">6</span>]</div><div class="line">        s_addr = socket.inet_ntoa(iph[<span class="number">8</span>])</div><div class="line">        d_addr = socket.inet_ntoa(iph[<span class="number">9</span>])</div><div class="line"></div><div class="line">        <span class="comment">#udp</span></div><div class="line">        <span class="keyword">if</span> protocol == <span class="number">17</span>:</div><div class="line">            u = iph_length + wifi_length</div><div class="line">            udph_length = <span class="number">8</span></div><div class="line">            udp_header = packet[u : u+<span class="number">8</span>]</div><div class="line"></div><div class="line">            udph = unpack(<span class="string">'!HHHH'</span> , udp_header)</div><div class="line">            source_port = udph[<span class="number">0</span>]</div><div class="line">            dest_port = udph[<span class="number">1</span>]</div><div class="line">            length = udph[<span class="number">2</span>]</div><div class="line">            checksum = udph[<span class="number">3</span>]</div><div class="line"></div><div class="line">            h_size = wifi_length + iph_length + udph_length</div><div class="line">            data_size = len(packet) - h_size</div><div class="line">			</div><div class="line">						<span class="comment">#get data from the packet</span></div><div class="line">            data = packet[h_size:]</div><div class="line"></div><div class="line">            print(<span class="string">"Data: "</span>) + data</div><div class="line"></div><div class="line">          </div><div class="line">pcap = pcapy.open_live(<span class="string">"wlx000f00906ff3"</span>, <span class="number">65536</span>, <span class="number">1</span>, <span class="number">0</span>) //【<span class="number">3</span>】</div><div class="line"></div><div class="line"><span class="keyword">while</span> (<span class="number">1</span>):</div><div class="line">    (header, packet) = pcap.next()</div><div class="line">    parse_packet(packet)</div></pre></td></tr></table></figure>
+<p>【1】802.11 协议比较复杂，事实上，在 IP 层外不止封装了一层。通过 Wireshark 捕捉 UDP 包可以看到格式，这里我直接把 IPv4 协议上层封装全作为一层处理了。</p>
+<p>【2】<code>unpack</code> 函数可以把一个字符串（python 里字符数组亦被用来存储原始二进制数据，毕竟一个 char 正好对应一个字节）按照格式解析，并返回一个元组。最前面的感叹号代表网络字节序。网络字节序是大字节序，和我们  x86 上常见的小字节序相反，要特别小心。从大字节序转换成小字节序可以用 <code>ntohs</code> 函数，当然也可以自己反转。</p>
+<p>【3】wlx000f00906ff3 是我的网卡 interface 的名字。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>编写一个 shell 脚本来测试程序是否能抓到 UDP 包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for i in &#123;1..1000&#125;</div><div class="line">do </div><div class="line">	echo -n "hello world!" | ncat -u 192.168.1.255 8080</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>使用 ncat 来向广播地址发送简单的 UDP 包。当然这里不一定是广播地址，毕竟什么包都能抓到……</p>
+<p>我测试时，主机通过以太网连接无线路由器，主机未接入无线局域网，但是程序可以通过无线网卡抓到包。使用另一台树莓派作为 AP 发送 UDP 包，同样可以抓到。</p>
+<h2 id="Alternate-Choice"><a href="#Alternate-Choice" class="headerlink" title="Alternate Choice"></a>Alternate Choice</h2><p>也可以考虑简历一个虚拟网卡，让小车同时接入两个网络。这样在发生切换时，保证另一个网络仍是畅通的。如果 Wi-Fi 网络不加密，建立连接的速度也会比较快。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/network/">#network</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>华中科技大学 冰岩作坊<br>wangluyuan@bingyan.net<br>e@wangluyuan.cc</a>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/04/22/WiFi监听UDP包/">WiFi监听UDP包</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/26/LoopUnrolling优化效果对比/">LoopUnrolling优化效果对比</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/23/Linux下使用gperftools/">Linux下使用gperftools</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/03/在macOS下安装gem5模拟器/">在macOS下安装gem5模拟器</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/15/JS调用Swift造成卡顿问题/">JS调用Swift造成卡顿问题</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:wangluyuan@bingyan.net" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
