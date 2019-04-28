@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="LLVM 循环优化LLVM 是一个广为使用的编译器套件，也是苹果官方的编译器。LLVM 前端可以把高级代码转换成 LLVM 自身的中间代码（IR），而后端再把 IR 翻译为目标平台的机器码。而 LLVM 提供的优化器 opt 可以优化 IR 代码，并生成优化过的 IR 代码。在之前的博客中，我已经探">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="王路远">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="LLVM循环优化"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Berr"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>LLVM循环优化 - Berr</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Berr">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png" class="dib h3" alt="Berr">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="首页">
+                    首页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="归档">
+                    归档
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about" 
+                    title="关于">
+                    关于
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact" 
+                    title="联系我">
+                    联系我
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">LLVM循环优化</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-04-27</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/Computer-Organization/">#Computer Organization</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="LLVM-循环优化"><a href="#LLVM-循环优化" class="headerlink" title="LLVM 循环优化"></a>LLVM 循环优化</h1><p>LLVM 是一个广为使用的编译器套件，也是苹果官方的编译器。LLVM 前端可以把高级代码转换成 LLVM 自身的中间代码（IR），而后端再把 IR 翻译为目标平台的机器码。而 LLVM 提供的优化器 opt 可以优化 IR 代码，并生成优化过的 IR 代码。在之前的博客中，我已经探索过使用 clang 来优化一个简单的程序。在那个简单的循环程序中，较为影响性能的就是 Loop Unrolling 优化。我也做出了一些性能测试。</p>
+<p>但是，单纯的用 <code>clang -O3</code> 来分析 Loop Unrolling 的性能影响是不科学的。在一个较为复杂的程序中，会有很多处可以优化的地方。而如果想要对比某一种优化策略带来的效果，则最好只做这一种优化（控制变量）。比如，用下面的命令来做 Loop Unrolling 优化，则带来的副作用就少得多：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">opt -mem2reg -simplifycfg -loops -lcssa -loop-simplify -loop-rotate -loop-</div><div class="line">unroll -unroll-count=4 -unroll-allow-partial input.ll -S -o output.ll</div></pre></td></tr></table></figure>
+<h2 id="编译-LLVM"><a href="#编译-LLVM" class="headerlink" title="编译 LLVM"></a>编译 LLVM</h2><p>指定 LLVM opt 要运行的 pass 来控制优化种类没有想象中的那么直观，经常会得不到想要的结果。如果在输入命令的时候带上 <code>-debug</code> 或者 <code>-debug-only=&lt;pass name&gt;</code> 标签，就可以获得一些 debug 的信息，会非常有帮助。然而，直接下载安装的 LLVM 是默认关闭这个选项的。这就需要我们自己编译 LLVM，并在编译时指定打开 assertion <code>-DLLVM_ENABLE_ASSERTIONS=On</code>。</p>
+<p>下载最新版本的 LLVM：</p>
+<p><code>git clone https://github.com/llvm/llvm-project.git</code></p>
+<p>clone 后，cd 进入 llvm-project 文件夹。</p>
+<p>LLVM 不支持直接在工程文件夹下编译，需要我们自己新建一个构建文件夹：</p>
+<p><code>mkdir build</code></p>
+<p><code>cd build</code></p>
+<p>然后开始生成编译所需的文件：</p>
+<p><code>cmake -G &lt;generator&gt; [options] ../llvm</code></p>
+<p>多数开发者都会选择用 Ninja 来编译。所以，要先安装 Ninja。如果在 macOS 下，可以用 brew 来安装：</p>
+<p><code>brew install ninja</code></p>
+<p>一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmake -G &apos;Ninja&apos; -DLLVM_ENABLE_PROJECTS=&apos;clang;&lt;other build targets&gt;&apos; -DCMAKE_INSTALL_PREFIX=&lt;your install path&gt; -DLLVM_ENABLE_ASSERTIONS=On</div></pre></td></tr></table></figure>
+<p>稍等一段时间后，就会生成所需要的文件。然后就可以用 Ninja 来编译了：</p>
+<p><code>ninja</code></p>
+<p>编译花费的时间比较久，可能需要几个小时。编译完成之后，就可以用 Ninja 来安装了，安装地址就是之前指定的地址。</p>
+<p><code>ninja install</code></p>
+<p>Ref: <a href="http://llvm.org/docs/GettingStarted.html#getting-started-quickly-a-summary" target="_blank" rel="external">http://llvm.org/docs/GettingStarted.html#getting-started-quickly-a-summary</a></p>
+<h2 id="Loop-Interchange"><a href="#Loop-Interchange" class="headerlink" title="Loop Interchange"></a>Loop Interchange</h2><p>下面的代码可用来测试 Loop Interchange：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> j=<span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> a[<span class="number">333</span>][<span class="number">222</span>];</div><div class="line">	<span class="keyword">for</span> (i=<span class="number">0</span>; i &lt;<span class="number">222</span>; i++) &#123;</div><div class="line">    		<span class="keyword">for</span> (j=<span class="number">0</span>; j &lt;<span class="number">333</span>; j++) &#123;</div><div class="line">            		a[j][i] = a[j][i] + <span class="number">970815</span>;</div><div class="line">    		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于二维数组在内存中仍是线性排列，因此先在行内循环效率更优。这是因为行内元素的距离更近，符合空间局部性原理，缓存命中率会更高。在上面的程序中，先做了列内循环，所以可能会被 Loop Interchange 优化循环顺序。</p>
+<p>生成 IR 代码，为下一步优化做准备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -O3 -mllvm -disable-llvm-optzns interchange.c -emit-llvm -S -o interchange.ll</div></pre></td></tr></table></figure>
+<p>这里用 O3 是因为，如果是 O0 的话，LLVM 就会阻止后面的优化器进行优化（可参见 LLVM 源码）。所以后面又先暂时禁止了 opt 直接自动优化。</p>
+<p>之后开始使用 opt 进行优化。虽然 LLVM 的 pass 依赖会自动管理，但有些必要的准备工作还是不可避免的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">opt -mem2reg interchange.ll -S -o  interchange.ll</div><div class="line">opt -loop-rotate interchange.ll -S -o interchange.ll</div><div class="line">opt -loop-interchange interchange.ll -S -o opt.ll</div></pre></td></tr></table></figure>
+<p>这样就生成了 <code>interchange.ll</code> 和 <code>opt.ll</code> 两个 IR 代码文件。用 llc 来将他们转换成汇编代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">llc interchange.ll -o un.s</div><div class="line">llc opt.ll -o opt.s</div></pre></td></tr></table></figure>
+<p><img src="/img/LLVM循环优化/nointerchange.jpg" alt="nointerchange"></p>
+<p>在未优化的汇编代码中，可以看到循环和 C 语言中的一样，内层为 333 次，而外层为 222 次。</p>
+<p><img src="/img/LLVM循环优化/interchange.png" alt="interchange"></p>
+<p>而在 Loop Interchange 之后，我们可以发现两个循环的顺序被颠倒了。</p>
+<p>将汇编代码编译为可执行文件。为了让 gem5 模拟器运行，需要静态链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">clang opt.s -o interchange --static</div><div class="line">clang un.s -o interchange_no --static</div></pre></td></tr></table></figure>
+<p>经过 gem5 模拟，优化前执行了 1837199000 个 tick，优化后是 1767821000 个 tick。可以发现优化后程序运行的时间变短了。之前提到过，interchange 可以提高 cache 的命中率。优化前的数据：</p>
+<p><img src="/img/LLVM循环优化/no_interchange_cache.png" alt="no_interchange_cache"></p>
+<p>优化后：</p>
+<p><img src="/img/LLVM循环优化/interchange_cache.png" alt="interchange_cache"></p>
+<p>我们可以看到 data cache 的 miss rate 确实下降了一点，好像不是很明显，但是，miss 次数确实是大幅下降了的。</p>
+<h2 id="Loop-Unswitch"><a href="#Loop-Unswitch" class="headerlink" title="Loop Unswitch"></a>Loop Unswitch</h2><p>下面的代码可以用来测试 Loop Unswitch：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i=<span class="number">0</span>, a[<span class="number">1024</span>];</div><div class="line">    <span class="keyword">int</span> w = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">1024</span>; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (w == <span class="number">999</span>) &#123;</div><div class="line">            a[i] = <span class="number">555</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            a[i] = <span class="number">666</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Loop Unswitch 可以将循环内的条件判断语句移到循环外部，从而在不影响运行结果的前提下节约不必要的判断语句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">clang -O3 -mllvm -disable-llvm-optzns unswitch.c -emit-llvm -S -o unswitch.ll</div><div class="line">opt -mem2reg unswitch.ll -S -o unswitch.ll</div><div class="line">opt -loop-unswitch unswitch.ll -S -o opt.ll</div></pre></td></tr></table></figure>
+<p>未优化时的 IR 代码如下：</p>
+<p><img src="/img/LLVM循环优化/nounswitch.jpg" alt="nounswitch"></p>
+<p>可以看到判断语句和 C 语言中的一致，在循环内部。而优化后：</p>
+<p><img src="/img/LLVM循环优化/unswitch.jpg" alt="unswitch"></p>
+<p>原来的循环被拆成了两个独立的循环（判断语句在循环外）。我有时展示 IR 代码，有时展示汇编代码的原因是，有时 IR 代码更加易读，有时汇编代码更易读。但由于汇编代码时从 IR 代码翻译来的，所以本质上是一致的。</p>
+<p>经 gem5 模拟，未优化时用了 101847000 个 tick，而优化后使用了 93526000 个 tick。程序耗时减少了。</p>
+<h2 id="Loop-Reduce"><a href="#Loop-Reduce" class="headerlink" title="Loop Reduce"></a>Loop Reduce</h2><p>下面的代码可以用来测试 Loop Reduce：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> a[<span class="number">1024</span>];</div><div class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> c = <span class="number">97</span>;</div><div class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">1024</span>; i++) &#123;</div><div class="line">        a[i] = i * c;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 CPU 指令中，有的指令更加耗时。比较耗时的指令一般有 load, store, 以及乘除法等等。Loop Reduce 可以把一些较为耗时的代码转化为更快的指令。比如，这里的乘法就可以优化为累加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">clang -O3 -mllvm -disable-llvm-optzns reduce.c -emit-llvm -S -o reduce.ll</div><div class="line">opt -mem2reg -loop-reduce reduce.ll -S -o opt.ll</div></pre></td></tr></table></figure>
+<p>未优化时：</p>
+<p><img src="/img/LLVM循环优化/noreduce.png" alt="noreduce"></p>
+<p>可以看大 IR 代码中使用了 mul 指令。这是比较耗时的。</p>
+<p>而优化后：</p>
+<p><img src="/img/LLVM循环优化/reduce.png" alt="reduce"></p>
+<p>可以看到 LLVM 把乘法转换成了加法。而加法操作就要快多了。</p>
+<p>经过 gem5 模拟，未优化时消耗了 115056000 个 tick，而优化后只用了 98250000 个 tick。还是加快了许多的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>LLVM 还有很多循环优化选项，亦有 polly 循环优化器可以执行更多的优化操作。然而，直接选择优化级别进行优化较为简单，而想要具体指定优化 pass 就较为困难了。一开始我以为是有相关的依赖，但是经过发送邮件询问 LLVM 社区，有人回答 pass 依赖是自动被管理的。想要知道具体的步骤还是较为困难的，我目前也没有找到什么特别好的方法。所以虽然对一些其他的优化很感兴趣，但也没有机会尝试了。有点遗憾。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Computer-Organization/">#Computer Organization</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    <span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="王路远">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            王路远<br>Luyuan Wang<br>www.wangluyuan.cc<br>e@wangluyuan.cc
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/04/27/LLVM循环优化/">LLVM循环优化</a>
+        </p>
+    
+        <p>
+            <a href="/2019/04/22/WiFi监听UDP包/">WiFi监听UDP包</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/26/LoopUnrolling优化效果对比/">LoopUnrolling优化效果对比</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/23/Linux下使用gperftools/">Linux下使用gperftools</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/03/在macOS下安装gem5模拟器/">在macOS下安装gem5模拟器</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://www.wangluyuan.cc" target="_blank">
+                            <i class="fa fa-globe"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://git.bingyan.net/u/BeBeBerr" target="_blank">
+                            <i class="fa fa-gitlab"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="http://weibo.com/BeBeBerr" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:e@wangluyuan.cc" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                www.wangluyuan.cc
+            </div>
+            
+        </div>
+    </div>
+
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
