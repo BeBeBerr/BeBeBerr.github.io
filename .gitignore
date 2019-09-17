@@ -1,0 +1,5 @@
+.DS_Store
+hexo/*.log
+hexo/node_modules/
+hexo/public/
+hexo/.deploy_git

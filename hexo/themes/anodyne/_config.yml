@@ -1,0 +1,68 @@
+# Logo
+#logo_image_source: http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg
+logo_image_source: https://ooo.0o0.ooo/2017/04/22/58fac3a2c7b05.png
+
+# Index Page
+index_banner_text: Luyuan Wang's Blog
+index_banner_text_secondary: www.wangluyuan.cc
+index_font_awesome_icon_css: fa fa-space-shuttle
+
+# Header
+menu:
+  首页: /
+  归档: /archives
+  关于: /about
+  联系我: /contact
+
+# Post
+default_post_title: Untitled
+default_post_icon: fa-file-text-o
+
+# Archive Date Format
+archive_date_format: MMM YYYY
+archive_font_awesome_icon_css: fa-folder-open
+
+# About Widget
+about_widget_avatar_url: https://ooo.0o0.ooo/2017/04/22/58fa2d6164f2d.jpg
+about_widget_text: "王路远<br>Luyuan Wang<br>www.wangluyuan.cc<br>e@wangluyuan.cc"
+
+
+# Comments.
+comments:
+  # Disqus comments
+  disqus_shortname: 
+
+# Google Analytics Tracking ID
+google_analytics:
+
+# Social Media Platforms
+social_platforms:
+  - url: http://www.wangluyuan.cc
+    fa_icon:  fa-globe
+  - url: https://git.bingyan.net/u/BeBeBerr
+    fa_icon: fa-gitlab
+  - url: https://github.com/BeBeBerr
+    fa_icon: fa-github
+#  - url: https://twitter.com/?lang=en
+#    fa_icon: fa-twitter
+#  - url: https://www.facebook.com/
+#    fa_icon: fa-facebook
+#  - url: https://dribbble.com/
+#    fa_icon: fa-dribbble 
+#  - url: https://plus.google.com/
+#    fa_icon: fa-google-plus
+#  - url: https://www.behance.net/
+#    fa_icon: fa-behance
+#  - url: https://500px.com/
+#    fa_icon: fa-500px
+  - url: http://weibo.com/BeBeBerr
+    fa_icon: fa-weibo
+  - url: mailto:e@wangluyuan.cc
+    fa_icon: fa-envelope
+#  - url: /#
+#    fa_icon: fa-rss
+  
+
+# Footer about
+#footer_about: "@Untitled. All right reserved | Design & Hexo <a class=\"link dim white\" href=\"http://www.codeblocq.com/\">Jonathan Klughertz</a>"
+footer_about: "www.wangluyuan.cc"

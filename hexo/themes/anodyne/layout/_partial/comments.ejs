@@ -1,0 +1,35 @@
+<span id="busuanzi_container_page_pv">
+  <br/>本文总阅读量：<span id="busuanzi_value_page_pv"></span>次<br/>
+</span>
+
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytltkHPr'; 
+var conf = 'prod_9d0366f4dd97c25a5dfc01c79988673c'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+<% if(page.comments && theme.comments && theme.comments.disqus_shortname){ %>
+<div id="disqus_thread" class="mt5">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<% } %>
+
+<% if(page.comments && theme.comments && theme.comments.facebook && theme.comments.facebook.appid) { %>
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=<%= theme.comments.facebook.appid %>";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="<%= url %>" data-num-posts="<%= theme.comments.facebook.comment_count %>" data-width="100%" data-colorscheme="<%= theme.comments.facebook.comment_colorscheme %>"></div>
+<% } %>
