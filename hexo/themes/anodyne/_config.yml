@@ -9,10 +9,10 @@ index_font_awesome_icon_css: fa fa-space-shuttle
 
 # Header
 menu:
-  首页: /
-  归档: /archives
-  关于: /about
-  联系我: /contact
+  HOME: /
+  ARCHIVES: /archives
+  ABOUT: /about
+  CONTACT: /contact
 
 # Post
 default_post_title: Untitled
@@ -39,8 +39,6 @@ google_analytics:
 social_platforms:
   - url: http://www.wangluyuan.cc
     fa_icon:  fa-globe
-  - url: https://git.bingyan.net/u/BeBeBerr
-    fa_icon: fa-gitlab
   - url: https://github.com/BeBeBerr
     fa_icon: fa-github
 #  - url: https://twitter.com/?lang=en
