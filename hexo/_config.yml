@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Berr
+title: Luyuan's Blog
 subtitle:
 description:
-author: 王路远
-language:
+author: Luyuan Wang
+language: en
 timezone:
 
 # URL
@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: anodyne
+theme: icarus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
