@@ -31,3 +31,33 @@ hooks.forEach(hook => {
 hexo.extend.helper.register('console', function () {
     console.log(arguments)
 });
+
+hexo.extend.helper.register('excerpt', function (post) {
+    var excerpt;
+    if (post.excerpt) {
+        //excerpt = post.excerpt.replace(/\<[^\>]+\>/g, '');
+        excerpt = post.excerpt;
+    } else {
+        //excerpt = post.content.replace(/\<[^\>]+\>/g, '').substring(0, 200);
+        var valueable_br = -1;
+        var br = -1;
+        var start = 0; // skip title
+        for (var idx = 0; idx < 2; idx++) {
+            br = post.content.indexOf('<p>', br+1);
+            if (br < 0) {
+                break;
+            } else {
+                if (idx == 0) {
+                    start = br;
+                }
+                valueable_br = br;
+            }
+        }
+        if (valueable_br < 0) {
+            excerpt = 0;
+        } else {
+            excerpt = post.content.substring(start, br);
+        }
+        return excerpt;
+    }
+});

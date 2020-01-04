@@ -32,7 +32,13 @@ void CFRunLoopRun(void) {	/* DOES CALLOUT */
 
 ### 跑个题：啥是 check_for_fork
 
-当我们 fork 出来一个进程的时候，必须要紧接着调用一个 `exec` 家族的函数，从而让这个进程变成一个“全新的”进程。否则，包括 CoreFoundation, CoreData 甚至 Cocoa 等基础的框架都会出现异常。这里苹果检测了进程是否是 fork 出来的，如果是，就会调用 `__THE_PROCESS_HAS_FORKED_AND_YOU_CANNOT_USE_THIS_COREFOUNDATION_FUNCTIONALITY___YOU_MUST_EXEC__` 这个断言让程序崩溃。
+当我们 fork 出来一个进程的时候，必须要紧接着调用一个 `exec` 家族的函数，从而让这个进程变成一个“全新的”进程。否则，包括 CoreFoundation, CoreData 甚至 Cocoa 等基础的框架都会出现异常。这里苹果检测了进程是否是 fork 出来的，如果是，就会调用 
+
+```
+__THE_PROCESS_HAS_FORKED_AND_YOU_CANNOT_USE_THIS_COREFOUNDATION_FUNCTIONALITY___YOU_MUST_EXEC__
+```
+
+这个断言让程序崩溃。
 
 ---
 

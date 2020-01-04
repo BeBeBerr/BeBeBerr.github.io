@@ -46,7 +46,7 @@
             <% } %>
         </h1>
         <div class="content">
-            <%- index && post.excerpt ? post.excerpt : post.content %>
+            <%- index && excerpt(post) ? excerpt(post) : post.content %>
         </div>
         <% if (!index && post.tags && post.tags.length) { %>
         <div class="level is-size-7 is-uppercase">
@@ -62,7 +62,7 @@
             </div>
         </div>
         <% } %>
-        <% if (index && post.excerpt) { %>
+        <% if (index && excerpt(post)) { %>
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">

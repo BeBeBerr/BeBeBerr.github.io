@@ -37,16 +37,16 @@ navbar:
         Contact: /contact
     # Navigation bar links to be shown on the right
     links:
-        GitHub:
-            icon: fab fa-github
-            url: 'https://github.com/BeBeBerr'
+        Personal Website:
+                icon: fas fa-cloud
+                url: 'http://www.wangluyuan.cc'
 # Footer section link settings
 footer:
     # Links to be shown on the right of the footer section
     links:
-        GitHub:
-            icon: fab fa-github
-            url: 'https://github.com/BeBeBerr'
+        Personal Website:
+                icon: fas fa-cloud
+                url: 'http://www.wangluyuan.cc'
 # Article display settings
 article:
     # Code highlight settings
@@ -120,8 +120,14 @@ widgets:
             Github:
                 icon: fab fa-github
                 url: 'https://github.com/BeBeBerr'
+            Personal Website:
+                icon: fas fa-cloud
+                url: 'http://www.wangluyuan.cc'
+            Weibo:
+                icon: fab fa-weibo
+                url: 'https://weibo.com/BeBeBerr'
             Email:
-                icon: fab fa-envelope
+                icon: fas fa-envelope
                 url: 'mailto:e@wangluyuan.cc'
     # -
     #     # Widget name
@@ -135,7 +141,8 @@ widgets:
         position: left
         # Links to be shown in the links widget
         links:
-            Website: 'http://www.wangluyuan.cc'
+            Personal Website: 'http://www.wangluyuan.cc'
+            Bingyan Studio: 'https://www.bingyan.net'
     # -
     #     # Widget name
     #     type: category
