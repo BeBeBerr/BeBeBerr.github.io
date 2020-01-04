@@ -123,6 +123,9 @@ widgets:
             Personal Website:
                 icon: fas fa-cloud
                 url: 'http://www.wangluyuan.cc'
+            Linked In:
+                icon: fab fa-linkedin
+                url: 'https://www.linkedin.com/in/luyuanwang/'
             Weibo:
                 icon: fab fa-weibo
                 url: 'https://weibo.com/BeBeBerr'
