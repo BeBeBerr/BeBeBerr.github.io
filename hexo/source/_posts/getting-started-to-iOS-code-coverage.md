@@ -104,7 +104,7 @@ int main(int argc, char **argv){
 clang -ftest-coverage -fprofile-arcs hello.c -o hello
 ```
 
-运行可执行文件，得到 `.gcda` 文件。由于是二进制的文件，教难阅读（具体格式可参见 [gcov-io.h](https://opensource.apple.com/source/gcc/gcc-5370/gcc/gcov-io.h.auto.html) 中的描述）。但我们可以使用：
+运行可执行文件，得到 `.gcda` 文件。由于是二进制的文件，较难阅读（具体格式可参见 [gcov-io.h](https://opensource.apple.com/source/gcc/gcc-5370/gcc/gcov-io.h.auto.html) 中的描述）。但我们可以使用：
 
 ```shell
 gcov -dump hello.gcda
