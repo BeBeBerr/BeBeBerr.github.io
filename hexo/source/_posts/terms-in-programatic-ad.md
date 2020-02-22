@@ -1,5 +1,5 @@
 ---
-title: terms-in-programatic-ad
+title: Terminologies in Programatic Advertising
 date: 2020-02-22 11:28:45
 tags: AD
 ---
