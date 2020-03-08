@@ -69,4 +69,4 @@ theme: icarus
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/BeBeBerr/BeBeBerr.github.io.git
+  repo: git@github.com:BeBeBerr/BeBeBerr.github.io.git
