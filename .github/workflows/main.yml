@@ -40,11 +40,11 @@ jobs:
     - name: Setup Hexo Env
       run: |
         npm i -g hexo-cli
-        npm i
     
     - name: Deploy
       run: |
         cd hexo
+        npm i
         hexo clean
         hexo g
         hexo d
