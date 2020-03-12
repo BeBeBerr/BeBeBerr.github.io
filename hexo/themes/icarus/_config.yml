@@ -131,7 +131,7 @@ widgets:
                 url: 'https://weibo.com/BeBeBerr'
             Email:
                 icon: fas fa-envelope
-                url: 'mailto:e@wangluyuan.cc'
+                url: 'mailto:mail@luyuan.wang'
     # -
     #     # Widget name
     #     type: toc
@@ -144,6 +144,7 @@ widgets:
         position: left
         # Links to be shown in the links widget
         links:
+            Email: 'mail@luyuan.wang'
             Personal Website: 'http://www.wangluyuan.cc'
             Bingyan Studio: 'https://www.bingyan.net'
     # -
