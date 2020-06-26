@@ -1,7 +1,7 @@
 ---
 title: Intro to Computer Graphics - Building 3D GitHub Contributions Graph
 date: 2020-06-27 01:14:35
-tags:[WebGL, Computer Graphics]
+tags: [WebGL, Computer Graphics]
 ---
 
 # Intro to Computer Graphics - Building 3D GitHub Contributions Graph
