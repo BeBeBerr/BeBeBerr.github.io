@@ -54,7 +54,7 @@ $$
 
 最终的透视投影矩阵为：
 $$
-M_{persp}=M_{ortho}\cdot M_{persp\rarr ortho}
+M_{persp}=M_{ortho}\cdot M_{persp\rightarrow ortho}
 $$
 
 ### Viewport Transformation
