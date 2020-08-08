@@ -1,7 +1,7 @@
 ---
 title: iOS限制UIScrollView允许滑动角度
 date: 2017-11-13 23:13:09
-tags: [iOS, Gestures]
+tags: [iOS, Gesture]
 ---
 
 # iOS 限定 UIScrollView 允许滑动角度
