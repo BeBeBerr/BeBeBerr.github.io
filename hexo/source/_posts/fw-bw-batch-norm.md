@@ -14,7 +14,7 @@ tags: Machine Learning
 
 首先来看 Batch Normalization 的公式：
 
-<img src="/img/fw-bw-batch/batch_norm.png" alt="截屏2020-12-01 下午5.02.25" style="zoom:50%;" />
+<img src="/img/fw-bw-batch/batch_norm.png" alt="batch_norm" style="zoom:50%;" />
 
 不难写出以下代码：
 
@@ -49,7 +49,7 @@ $$
 $$
 计算图如下：
 
-![IMG_0409 2](/img/fw-bw-batch/comp_graph.jpg)
+![comp_graph](/img/fw-bw-batch/comp_graph.jpg)
 
 其中，浅绿色的文字代表正向传播的中间变量的值；橙色的文字代表反向传播的导数值；浅蓝色的文字代表了变量的维度。我们重点看其中的两个步骤。
 
