@@ -50,7 +50,7 @@ $$
 \frac{{D_k}^2 \cdot C_i \cdot {D_i}^2 + C_i \cdot C_o \cdot {D_i}^2}
 {{D_k}^2\cdot C_i \cdot C_o \cdot {D_i}^2}
 =
-\frac{1}{C_o} + \frac{1}{{D_k}^2}
+\frac{1}{C_o} + \frac{1}{ {D_k}^2}
 $$
 假如 Kernel Size 为 3，那么计算量减少为接近原来的九分之一（输出的通道数一般较大，可忽略该项带来的影响），这带来的计算性能的提升是非常可观的。而精度只下降了一点。
 
