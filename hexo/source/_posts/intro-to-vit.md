@@ -150,6 +150,26 @@ class MultiheadAttention(torch.nn.MultiheadAttention):
         return x[0]
 ```
 
+## Update *
+
+使用 Pytorch 自带的 MultiheadAttention 的问题已经解决：
+
+睡觉的时候突然想到会不会和计算图有关。因为将相同的 x 传入了三次，在反向传播计算梯度的时候，可能会把 K、Q、V 的梯度都累加到 x 上。于是把代码改成了这样：
+
+ ```python
+class MultiheadAttention(torch.nn.MultiheadAttention):
+    def __init__(self, embed_dim, num_heads, **kwargs):
+        super().__init__(embed_dim, num_heads, **kwargs)
+    
+    def forward(self, x, **kwargs):
+        x = super().forward(query=x.clone().detach(), key=x.clone().detach(), value=x, need_weights=False, **kwargs)
+        return x[0]
+ ```
+
+将其中两个从计算图中 detach 出来。之后网络性能果然正常了。经过实验，保留 key 或者 value 都可以达到不错的精度；保留 query 不行。
+
+只学会框架的使用只能解决浅层的问题，当稍微复杂一些的问题出现时，就必须对底层工作原理有所了解才可能解决。但是不管怎么说，问题解决了还是值得开心一下的🎉
+
 ## References
 
 1. ViT 原文 https://arxiv.org/pdf/2010.11929.pdf
