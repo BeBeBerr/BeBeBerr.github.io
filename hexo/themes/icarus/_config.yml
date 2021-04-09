@@ -39,14 +39,14 @@ navbar:
     links:
         Personal Website:
                 icon: fas fa-cloud
-                url: 'http://www.wangluyuan.cc'
+                url: 'http://www.luyuan.wang'
 # Footer section link settings
 footer:
     # Links to be shown on the right of the footer section
     links:
         Personal Website:
                 icon: fas fa-cloud
-                url: 'http://www.wangluyuan.cc'
+                url: 'http://www.luyuan.wang'
 # Article display settings
 article:
     # Code highlight settings
@@ -144,7 +144,7 @@ widgets:
         position: left
         # Links to be shown in the links widget
         links:
-            Personal Website: 'http://www.wangluyuan.cc'
+            Personal Website: 'http://www.luyuan.wang'
             Bingyan Studio: 'https://www.bingyan.net'
     # -
     #     # Widget name
