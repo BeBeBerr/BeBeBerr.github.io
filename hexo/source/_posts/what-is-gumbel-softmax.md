@@ -46,8 +46,7 @@ tags: Deep Learning
 
 计算公式如下：
 $$
-z = one\_hot(\mathop{argmax}\limits_{i}[g_i + log\alpha_i])
- 
+z = OneHot(\mathop{argmax}\limits_{i}[g_i + log\alpha_i])
 $$
 
 ### Gumbel Noise
@@ -56,7 +55,8 @@ $$
 
 服从 Gumbel 分布的随机变量可以通过以下公式计算：
 $$
-G_i = -log(-log(\epsilon_i))\\
+G_i = -log(-log(\epsilon_i)) \\
+
 \epsilon_i \sim Uniform(0, 1)
 $$
 为什么选择选择 Gumbel Noise 呢？数学上可以证明对每个值加上一个独立标准 Gumbel 噪声后，取最大值，得到的概率密度和 softmax 一致。通过实验，也可以验证如果使用其他的噪声，概率会失真。具体的实验结果和数学证明可以参考[这篇文章](https://www.cnblogs.com/initial-h/p/9468974.html)，证明过程还比较复杂。
