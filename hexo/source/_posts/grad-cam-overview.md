@@ -50,9 +50,37 @@ $$
 
 为了计算 heatmap，我们需要拿到最后一层卷积的 feature map，以及输出结果相对它的导数。最后一层的 feature map 很好得到，因为是正向传播，直接改 forward 代码就可以了。但是导数的反向传播是 PyTorch 自动计算的，我们该怎么拿到呢？其实 PyTorch 提供了 `foward_hook` 和 `backward_hook` ，利用 hook 函数就可以很方便的得到这两个值。
 
-完整的代码上传到了 GitHub Gist 上：
+```python
+class GradCAM():
+    def __init__(self, model, layer_index=-6):
+        # -6 is the last conv2d layer for mobilenet v2
+        self.model = model
+        self.layer_index = layer_index
+        self.register_hooks()
 
-<script src="https://gist.github.com/BeBeBerr/5af065430dece675f2b585f260108998.js"></script>
+    def _forward_hook(self, module, input, output):
+        self.feature_map = output
+        
+    def _backward_hook(self, module, grad_input, grad_output):
+        self.feature_map_grad = grad_output[0] # grad_output is a tensor
+
+    def register_hooks(self):
+        _, layer = list(self.model.named_modules())[self.layer_index]
+        layer.register_forward_hook(self._forward_hook)
+        layer.register_backward_hook(self._backward_hook)
+
+    def __call__(self, prediction, class_index):
+        self.model.zero_grad()
+        score = prediction[0, class_index]
+        score.backward()
+        alpha = self.feature_map_grad.mean(dim=(-1, -2), keepdim=True)
+        heatmap = self.feature_map * alpha
+        heatmap = heatmap.sum(1)
+        heatmap = F.relu(heatmap)
+        return heatmap
+```
+
+完整的代码上传到了 GitHub Gist 上：https://gist.github.com/BeBeBerr/5af065430dece675f2b585f260108998
 
 ## Experiments
 
