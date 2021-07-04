@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Getting Started to iOS Code Coverage - Luyuan&#39;s Blog</title>
+
+
+    <meta name="description" content="Getting Started to iOS Code Coverage获得代码覆盖率报告可以让我们更精准地进行测试。LLVM 本身就通过编译插桩提供了这样的能力，因此可以很简便地实现这一功能。但根据 Technical Q&amp;amp;A QA1964 提到的内容，带有 LLVM instrumentation 的 App 在提交的时候会被以下理由拒绝。因此如果要在线上做覆盖率检测，可能需要我们自己">
+<meta name="keywords" content="LLVM,Code Coverage">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Getting Started to iOS Code Coverage">
+<meta property="og:url" content="http://bebeberr.github.io/2020/01/29/getting-started-to-iOS-code-coverage/index.html">
+<meta property="og:site_name" content="Luyuan&#39;s Blog">
+<meta property="og:description" content="Getting Started to iOS Code Coverage获得代码覆盖率报告可以让我们更精准地进行测试。LLVM 本身就通过编译插桩提供了这样的能力，因此可以很简便地实现这一功能。但根据 Technical Q&amp;amp;A QA1964 提到的内容，带有 LLVM instrumentation 的 App 在提交的时候会被以下理由拒绝。因此如果要在线上做覆盖率检测，可能需要我们自己">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://bebeberr.github.io/images/og_image.png">
+<meta property="og:updated_time" content="2021-07-04T13:20:50.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Getting Started to iOS Code Coverage">
+<meta name="twitter:description" content="Getting Started to iOS Code Coverage获得代码覆盖率报告可以让我们更精准地进行测试。LLVM 本身就通过编译插桩提供了这样的能力，因此可以很简便地实现这一功能。但根据 Technical Q&amp;amp;A QA1964 提到的内容，带有 LLVM instrumentation 的 App 在提交的时候会被以下理由拒绝。因此如果要在线上做覆盖率检测，可能需要我们自己">
+<meta name="twitter:image" content="http://bebeberr.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/icon.jpg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/icon.jpg" alt="Getting Started to iOS Code Coverage" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+                <a class="navbar-item"
+                href="/contact">Contact</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Personal Website" href="http://www.luyuan.wang">
+                        
+                        <i class="fas fa-cloud"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T23:12:30.000Z">2020-01-29</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 minutes read (About 1602 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Getting Started to iOS Code Coverage
+            
+        </h1>
+        <div class="content">
+            <h1 id="Getting-Started-to-iOS-Code-Coverage"><a href="#Getting-Started-to-iOS-Code-Coverage" class="headerlink" title="Getting Started to iOS Code Coverage"></a>Getting Started to iOS Code Coverage</h1><p>获得代码覆盖率报告可以让我们更精准地进行测试。LLVM 本身就通过编译插桩提供了这样的能力，因此可以很简便地实现这一功能。但根据 <a href="https://developer.apple.com/library/archive/qa/qa1964/_index.html">Technical Q&amp;A QA1964</a> 提到的内容，带有 LLVM instrumentation 的 App 在提交的时候会被以下理由拒绝。因此如果要在线上做覆盖率检测，<strong>可能</strong>需要我们自己来实现。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invalid Bundle - Disallowed LLVM instrumentation. Do not submit apps with LLVM profiling instrumentation or coverage collection enabled. Turn off LLVM profiling or code coverage, rebuild your app and resubmit the app.</span><br></pre></td></tr></table></figure>
+<p> 下面先介绍如何使用 Xocde 本身集成的代码覆盖率检测工具 gcov。第三方的 <a href="https://github.com/jonreid/XcodeCoverage">Xcode Coverage</a> 提供了一些便利的工具，但暂时先不使用。</p>
+<h2 id="设置-Build-Settings"><a href="#设置-Build-Settings" class="headerlink" title="设置 Build Settings"></a>设置 Build Settings</h2><p>首先在 Build Settings 中打开以下两个设置选项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Instrument Program Flow = Yes</span><br><span class="line">Generate Legacy Test Coverage Files = Yes</span><br></pre></td></tr></table></figure>
+<p>这样，编译的时候会生成记录 Basic Block (BB) 和代码映射关系的 notes 文件，由编译器生成。运行时会生成记录代码执行情况的 data 文件，由实际要执行的程序生成。</p>
+<h2 id="找到-gcda-和-gcno-文件"><a href="#找到-gcda-和-gcno-文件" class="headerlink" title="找到 gcda 和 gcno 文件"></a>找到 gcda 和 gcno 文件</h2><p>为了找到 <code>.gcno</code> 文件所在的路径，需要在 Build Phases 中增加一个 Run Script 脚本，导出相应的环境变量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scripts="$( cd "$( dirname "$&#123;BASH_SOURCE[0]&#125;" )" &amp;&amp; pwd )"</span><br><span class="line">echo $( dirname "$&#123;BASH_SOURCE[0]&#125;" )</span><br><span class="line">export | egrep '( BUILT_PRODUCTS_DIR)|(CURRENT_ARCH)|(OBJECT_FILE_DIR_normal)|(SRCROOT)|(OBJROOT)|(TARGET_DEVICE_IDENTIFIER)|(TARGET_DEVICE_MODEL)|(PRODUCT_BUNDLE_IDENTIFIER)' &gt; "$&#123;scripts&#125;/env.sh"</span><br></pre></td></tr></table></figure>
+<p>通过 <code>echo</code> 出来的路径可以让我们找到 <code>env.sh</code> 文件，在里面可以看到 <code>OBJECT_FILE_DIR_normal</code> 等更多的环境变量。在我的环境中，这个路径是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Developer/Xcode/DerivedData/test-eurtcozdclpemgfxnumfljldtdjk/Build/Intermediates.noindex/test.build/Debug-iphonesimulator/test.build</span><br></pre></td></tr></table></figure>
+<p>进入当前路径下的 <code>Objects-normal/x86_64</code> ，就可以看到包括 <code>.gcda</code> 文件在内的编译产物了。因为我在使用模拟器，因此架构名称是 <code>x86_64</code> 。</p>
+<p>运行程序，以生成 <code>.gcda</code> 文件。使用模拟器的话，生成的 <code>.gcda</code> 的文件也会存放于这个路径下。而使用真机的话，<code>.gcda</code> 文件就会处于沙盒的 <code>Documents</code> 目录下。</p>
+<p>这里注意，只有在应用正常退出（双击 Home 键 kill 掉程序）后，<code>.gcda</code> 文件才会生成。</p>
+<h2 id="解析并生成报告"><a href="#解析并生成报告" class="headerlink" title="解析并生成报告"></a>解析并生成报告</h2><p>我们将 <code>.gcno</code> 和 <code>.gcda</code> 文件拷贝到源代码目录下，然后 cd 进入到源代码的顶层目录下。这是因为 <code>.gcno</code> 文件记录了代码的相对路径，如：<code>test/ViewController.m</code> ，如果目录的相对位置与之不符，解析时会出现错误。</p>
+<p>之后，需要安装用于解析这两种文件的工具 <code>lcov</code> 。之后执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lcov -c -b &lt;base dir&gt; -d &lt;filename&gt; -o &lt;output&gt;.info</span><br></pre></td></tr></table></figure>
+<p>生成 <code>.info</code> 文件。之后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genhtml cov.info</span><br></pre></td></tr></table></figure>
+<p>打开 <code>index.html</code> 就可以直观的 html 报告了🎉🎉🎉</p>
+<p><img src="/img/start-code-cov/report.png" alt="report"></p>
+<p>在这个例子中，我放置了红色、蓝色两个按钮，并在运行时只点击红色按钮。从报告中可以看到，蓝色按钮的回调函数从未被覆盖到。</p>
+<p>lcov 还可以通过 <code>-a</code> 来增加其他的 <code>.info</code> 文件，从而整合多人的覆盖率。</p>
+<h2 id="原理浅析"><a href="#原理浅析" class="headerlink" title="原理浅析"></a>原理浅析</h2><p>LLVM 通过编译插桩，修改 IR 代码从而实现了代码执行情况的统计。其中，一个重要的概念是 <a href="https://en.wikipedia.org/wiki/Basic_block">Basic Block</a> (BB) 。</p>
+<h3 id="Basic-Block-Graph"><a href="#Basic-Block-Graph" class="headerlink" title="Basic Block Graph"></a>Basic Block Graph</h3><p>一个 BB 的定义是：只有一个顺序的代码结构，只有一个入口和一个出口。这意味着中间没有 jump 指令，只有最后一行代码能让程序执行到其他的 BB。这意味着，只要当前的 BB 中第一行代码被执行，块内的代码就都会被顺序的执行一次。</p>
+<p>如果跳转是有条件的，那么就会产生一个分支（ARC）。这种情况下，一个 BB 就会有两个可能的终点。把每一个 BB 当作节点，每一个 ARC 当作边，就会构成一个有向图。运行时，根据 ARC 的条件，就可以推算出 BB 的执行次数。根据 <code>.gcno</code> 的映射关系，就可以得到代码的覆盖率。</p>
+<p><img src="/img/start-code-cov/arc.jpg" alt="arc"></p>
+<p>下面以一个真实的例子演示。出于简便起见，我们编写一段简单的程序 <code>hello.c</code> ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Hello, how are you doing?\n"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Haha, I'm doing great!\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后，编译并得到 <code>.gcno</code> 文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang -ftest-coverage -fprofile-arcs hello.c -o hello</span><br></pre></td></tr></table></figure>
+<p>运行可执行文件，得到 <code>.gcda</code> 文件。由于是二进制的文件，较难阅读（具体格式可参见 <a href="https://opensource.apple.com/source/gcc/gcc-5370/gcc/gcov-io.h.auto.html">gcov-io.h</a> 中的描述）。但我们可以使用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcov -dump hello.gcda</span><br></pre></td></tr></table></figure>
+<p>把内容解析出来。内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">===== main (0) @ hello.c:3</span><br><span class="line">Block : 0 Counter : 1</span><br><span class="line">	Destination Edges : 1 (1),</span><br><span class="line">	Lines : 3,</span><br><span class="line">Block : 1 Counter : 1</span><br><span class="line">	Source Edges : 0 (1),</span><br><span class="line">	Destination Edges : 2 (0), 3 (1),</span><br><span class="line">	Lines : 4,</span><br><span class="line">Block : 2 Counter : 0</span><br><span class="line">	Source Edges : 1 (0),</span><br><span class="line">	Destination Edges : 4 (0),</span><br><span class="line">	Lines : 5,6,</span><br><span class="line">Block : 3 Counter : 1</span><br><span class="line">	Source Edges : 1 (1),</span><br><span class="line">	Destination Edges : 4 (1),</span><br><span class="line">	Lines : 7,</span><br><span class="line">Block : 4 Counter : 1</span><br><span class="line">	Source Edges : 2 (0), 3 (1),</span><br><span class="line">	Destination Edges : 5 (1),</span><br><span class="line">	Lines : 9,</span><br><span class="line">Block : 5 Counter : 1</span><br><span class="line">	Source Edges : 4 (1),</span><br><span class="line">File &apos;hello.c&apos;</span><br><span class="line">Lines executed:66.67% of 6</span><br><span class="line">hello.c:creating &apos;hello.c.gcov&apos;</span><br></pre></td></tr></table></figure>
+<p>根据这些信息，我们可以画出这样的图，其中含有代码执行次数和行号信息：</p>
+<p><img src="/img/start-code-cov/flow.jpg" alt="flow"></p>
+<h3 id="插桩前后对比"><a href="#插桩前后对比" class="headerlink" title="插桩前后对比"></a>插桩前后对比</h3><p>通过生成 IR 代码，我们可以对比出插桩前后的区别：</p>
+<p><img src="/img/start-code-cov/ir.PNG" alt="ir"></p>
+<p>左边为原始代码，右边为插桩后。用粉色标记出来的地方即插入的桩代码，可见是插在每个 BB 前面的。从 load - add - store 的结构中也能看出计数的过程。</p>
+<p>References：</p>
+<p>[1] iOS 覆盖率检测原理与增量代码测试覆盖率工具实现，美团技术团队 <a href="https://www.jianshu.com/p/0431b23adba3">https://www.jianshu.com/p/0431b23adba3</a></p>
+<p>[2] <a href="https://github.com/yanxiangyfg/gcov">https://github.com/yanxiangyfg/gcov</a></p>
+<p>[3] <a href="http://www.c-s-a.org.cn/csa/ch/reader/create_pdf.aspx?file_no=6776&amp;flag=1&amp;year_id=2019&amp;quarter_id=2">http://www.c-s-a.org.cn/csa/ch/reader/create_pdf.aspx?file_no=6776&amp;flag=1&amp;year_id=2019&amp;quarter_id=2</a></p>
+<p>[4] <a href="https://blog.csdn.net/yanxiangyfg/article/details/80989680">https://blog.csdn.net/yanxiangyfg/article/details/80989680</a></p>
+<p>[5] <a href="https://github.com/llvm-mirror/llvm/blob/release_70/lib/Transforms/Instrumentation/GCOVProfiling.cpp">https://github.com/llvm-mirror/llvm/blob/release_70/lib/Transforms/Instrumentation/GCOVProfiling.cpp</a></p>
+<p>[6] <a href="https://github.com/llvm-mirror/compiler-rt/blob/release_70/lib/profile/GCDAProfiling.c">https://github.com/llvm-mirror/compiler-rt/blob/release_70/lib/profile/GCDAProfiling.c</a></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Code-Coverage/">Code Coverage</a>, <a class="has-link-grey -link" href="/tags/LLVM/">LLVM</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/02/02/func-level-ios-code-coverage/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Function Level Code Coverage for iOS</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/01/27/first-llvm-pass/">
+                <span class="level-item">Writing the Very First LLVM Pass</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/icon.jpg" alt="Luyuan Wang">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Luyuan Wang
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Engineer.
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Beijing</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            85
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            0
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            55
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="http://www.wangluyuan.cc" target="_blank" rel="noopener">
+                Visit My Website</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/BeBeBerr">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Personal Website" href="http://www.wangluyuan.cc">
+                
+                <i class="fas fa-cloud"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linked In" href="https://www.linkedin.com/in/luyuanwang/">
+                
+                <i class="fab fa-linkedin"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Weibo" href="https://weibo.com/BeBeBerr">
+                
+                <i class="fab fa-weibo"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Email" href="mailto:mail@luyuan.wang">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Links
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="http://www.luyuan.wang" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Personal Website</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.luyuan.wang</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.bingyan.net" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Bingyan Studio</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.bingyan.net</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Tag Cloud
+        </h3>
+        <a href="/tags/AD/" style="font-size: 10px;">AD</a> <a href="/tags/AFNetworking/" style="font-size: 12.5px;">AFNetworking</a> <a href="/tags/Algorithm/" style="font-size: 17.5px;">Algorithm</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/AutoLayout/" style="font-size: 10px;">AutoLayout</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/CNN/" style="font-size: 10px;">CNN</a> <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/Code-Coverage/" style="font-size: 12.5px;">Code Coverage</a> <a href="/tags/Computer-Graphics/" style="font-size: 10px;">Computer Graphics</a> <a href="/tags/Computer-Organization/" style="font-size: 12.5px;">Computer Organization</a> <a href="/tags/Computer-Vision/" style="font-size: 12.5px;">Computer Vision</a> <a href="/tags/CoreAnimation/" style="font-size: 10px;">CoreAnimation</a> <a href="/tags/CoreBluetooth/" style="font-size: 12.5px;">CoreBluetooth</a> <a href="/tags/DSP/" style="font-size: 12.5px;">DSP</a> <a href="/tags/Deep-Learning/" style="font-size: 20px;">Deep Learning</a> <a href="/tags/Design-Patterns/" style="font-size: 12.5px;">Design Patterns</a> <a href="/tags/First-Aid/" style="font-size: 10px;">First-Aid</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/Gesture/" style="font-size: 12.5px;">Gesture</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/Instruments/" style="font-size: 10px;">Instruments</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JSCore/" style="font-size: 12.5px;">JSCore</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kibana/" style="font-size: 12.5px;">Kibana</a> <a href="/tags/LLVM/" style="font-size: 15px;">LLVM</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Machine-Learning/" style="font-size: 12.5px;">Machine Learning</a> <a href="/tags/MultiThreading/" style="font-size: 12.5px;">MultiThreading</a> <a href="/tags/OKR/" style="font-size: 12.5px;">OKR</a> <a href="/tags/Obj-C/" style="font-size: 17.5px;">Obj-C</a> <a href="/tags/PlutoSDR/" style="font-size: 10px;">PlutoSDR</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RaspberryPi/" style="font-size: 10px;">RaspberryPi</a> <a href="/tags/Robotics/" style="font-size: 10px;">Robotics</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDR/" style="font-size: 12.5px;">SDR</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/X11/" style="font-size: 10px;">X11</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/dyld/" style="font-size: 10px;">dyld</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gem5/" style="font-size: 10px;">gem5</a> <a href="/tags/iOS/" style="font-size: 17.5px;">iOS</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/perf/" style="font-size: 10px;">perf</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-07-04T20:49:20.000Z">2021-07-04</time></div>
+                    <a href="/2021/07/04/cbam-spatial/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Spatial Attention (CBAM)</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-28T19:11:53.000Z">2021-06-28</time></div>
+                    <a href="/2021/06/28/intuitive-wavelets/" class="title has-link-black-ter is-size-6 has-text-weight-normal">直观理解 Wavelets</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-06-12T16:18:27.000Z">2021-06-12</time></div>
+                    <a href="/2021/06/12/grad-cam-overview/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Grad-CAM Overview</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-31T16:36:36.000Z">2021-05-31</time></div>
+                    <a href="/2021/05/31/dtcwt-lowpass-shape/" class="title has-link-black-ter is-size-6 has-text-weight-normal">DTCWT Lowpass Shape</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-12T16:14:45.000Z">2021-05-12</time></div>
+                    <a href="/2021/05/12/what-is-gumbel-softmax/" class="title has-link-black-ter is-size-6 has-text-weight-normal">What is Gumbel Softmax?</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+        <!-- <div class="column-right-shadow is-hidden-widescreen "> -->
+        <div class="column-right-shadow  ">
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">September 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/09/">
+                <span class="level-start">
+                    <span class="level-item">September 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AD/">
+                        <span class="tag">AD</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AFNetworking/">
+                        <span class="tag">AFNetworking</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Algorithm/">
+                        <span class="tag">Algorithm</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Animation/">
+                        <span class="tag">Animation</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AutoLayout/">
+                        <span class="tag">AutoLayout</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/C-C/">
+                        <span class="tag">C/C++</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CNN/">
+                        <span class="tag">CNN</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CocoaPods/">
+                        <span class="tag">CocoaPods</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Code-Coverage/">
+                        <span class="tag">Code Coverage</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Graphics/">
+                        <span class="tag">Computer Graphics</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Organization/">
+                        <span class="tag">Computer Organization</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Vision/">
+                        <span class="tag">Computer Vision</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CoreAnimation/">
+                        <span class="tag">CoreAnimation</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CoreBluetooth/">
+                        <span class="tag">CoreBluetooth</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/DSP/">
+                        <span class="tag">DSP</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Deep-Learning/">
+                        <span class="tag">Deep Learning</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Design-Patterns/">
+                        <span class="tag">Design Patterns</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/First-Aid/">
+                        <span class="tag">First-Aid</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Flutter/">
+                        <span class="tag">Flutter</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Gesture/">
+                        <span class="tag">Gesture</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/GitHub/">
+                        <span class="tag">GitHub</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Instruments/">
+                        <span class="tag">Instruments</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Interview/">
+                        <span class="tag">Interview</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JSCore/">
+                        <span class="tag">JSCore</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Java/">
+                        <span class="tag">Java</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JavaScript/">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Kibana/">
+                        <span class="tag">Kibana</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/LLVM/">
+                        <span class="tag">LLVM</span>
+                        <span class="tag is-grey">4</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Layout/">
+                        <span class="tag">Layout</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Machine-Learning/">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/MultiThreading/">
+                        <span class="tag">MultiThreading</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/OKR/">
+                        <span class="tag">OKR</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Obj-C/">
+                        <span class="tag">Obj-C</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/PlutoSDR/">
+                        <span class="tag">PlutoSDR</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Promise/">
+                        <span class="tag">Promise</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Push/">
+                        <span class="tag">Push</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/PyTorch/">
+                        <span class="tag">PyTorch</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RaspberryPi/">
+                        <span class="tag">RaspberryPi</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Robotics/">
+                        <span class="tag">Robotics</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RunLoop/">
+                        <span class="tag">RunLoop</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/SDR/">
+                        <span class="tag">SDR</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/SQLite/">
+                        <span class="tag">SQLite</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Swift/">
+                        <span class="tag">Swift</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/UITableView/">
+                        <span class="tag">UITableView</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/WebGL/">
+                        <span class="tag">WebGL</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/X11/">
+                        <span class="tag">X11</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Xcode/">
+                        <span class="tag">Xcode</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/dyld/">
+                        <span class="tag">dyld</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ffmpeg/">
+                        <span class="tag">ffmpeg</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gem5/">
+                        <span class="tag">gem5</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/iOS/">
+                        <span class="tag">iOS</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/macOS/">
+                        <span class="tag">macOS</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/network/">
+                        <span class="tag">network</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/perf/">
+                        <span class="tag">perf</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/icon.jpg" alt="Getting Started to iOS Code Coverage" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Luyuan Wang.&nbsp;
+                Powered by <a href="http://www.luyuan.wang" target="_blank" rel="noopener">luyuan.wang</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Personal Website" href="http://www.luyuan.wang">
+                        
+                        <i class="fas fa-cloud"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://bebeberr.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
