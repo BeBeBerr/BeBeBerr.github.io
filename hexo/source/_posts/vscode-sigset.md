@@ -1,5 +1,5 @@
 ---
-title: vscode-sigset
+title: VSCode sigset_t is Undefined
 date: 2021-11-13 19:14:27
 tags: VSCode
 ---
