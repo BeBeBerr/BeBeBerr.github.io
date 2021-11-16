@@ -10,7 +10,7 @@ tags: VSCode
 
 如下图所示：
 
-![sigset_t](/Users/wangluyuan/Documents/github/BeBeBerr.github.io/hexo/source/img/vscode-sigset/sigset_t.PNG)
+![sigset_t](/img/vscode-sigset/sigset_t.PNG)
 
 `sigset_t` 并不在 C99 / C11 standard 里。但是它是包含在 POSIX standard 里的。因此为了避免出现此错误提示，我们需要更改 VSCode C/C++ Extension 的配置。
 
