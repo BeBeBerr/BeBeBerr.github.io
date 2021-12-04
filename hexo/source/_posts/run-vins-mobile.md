@@ -1,5 +1,5 @@
 ---
-title: How to: Build and Run VINS-Mobile
+title: How to Build and Run VINS-Mobile
 date: 2021-12-04 14:43:08
 tags: SLAM
 ---
