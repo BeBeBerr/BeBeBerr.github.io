@@ -104,7 +104,7 @@ widgets:
         # Author name to be shown in the profile widget
         author: Luyuan Wang
         # Title of the author to be shown in the profile widget
-        author_title: Engineer.
+        author_title: Empty Stack Engineer
         # Author's current location to be shown in the profile widget
         location: Beijing
         # Path or URL to the avatar to be shown in the profile widget
@@ -145,6 +145,7 @@ widgets:
         # Links to be shown in the links widget
         links:
             Personal Website: 'http://www.luyuan.wang'
+            Biorobotics Lab: 'http://biorobotics.ri.cmu.edu'
             Bingyan Studio: 'https://www.bingyan.net'
     # -
     #     # Widget name
