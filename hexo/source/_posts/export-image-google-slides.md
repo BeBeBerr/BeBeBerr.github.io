@@ -18,4 +18,4 @@ mv <file_name>.pptx <file_name>.zip && unzip <file_name>.zip
 
 解压之后就能看到全部的原始文件了，问题解决🎉
 
-![unzip-pptx](../img/export-slides/unzip-pptx.png)
+![unzip-pptx](/img/export-slides/unzip-pptx.png)
