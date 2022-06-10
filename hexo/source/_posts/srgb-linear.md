@@ -134,3 +134,12 @@ private func gammaMappingSRGB(value: Float?) -> Float {
 }
 ```
 
+## References
+
+[1] CIE Colorimetry: https://medium.com/hipster-color-science/a-beginners-guide-to-colorimetry-401f1830b65a
+
+[2] Wikipedia sRGB: https://en.wikipedia.org/wiki/SRGB
+
+[3] sRGB: https://www.w3.org/Graphics/Color/sRGB
+
+[4] Gamma / Linear / sRGB and Unity: https://zhuanlan.zhihu.com/p/66558476
