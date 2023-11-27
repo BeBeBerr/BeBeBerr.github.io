@@ -1,5 +1,5 @@
 ---
-title: uiautomator-dynamic
+title: A crazy way to dump dynamic views with UIAutomator
 date: 2023-11-27 22:47:47
 tags:
 ---
