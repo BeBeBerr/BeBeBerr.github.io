@@ -1,0 +1,91 @@
+## Theorem
+
+Given a window function $w(t)$, define the time and frequency bandwidth as:
+$$
+Time\space BW: \sigma_t(w) = \int t^2|w(t)|^2 dt \\
+Freq\space BW: \sigma_u(w) = \int u^2|W(u)|^2du
+$$
+Then, 
+$$
+\sigma_t(w)\cdot\sigma_u(w) \geq \frac{1}{16 \pi^2}
+$$
+
+## Proof
+
+$$
+\sigma_t(w)\cdot\sigma_u(w) = \left[ \int t^2|w(t)|^2 dt \right] \left[ \int u^2|W(u)|^2 du \right] \\
+= \left[ \int t^2|w(t)|^2 dt \right] \left[ \int \left|\frac{1}{j2\pi} \frac{d}{dt}w(t)\right|^2 dt \right] \\
+= \frac{1}{4\pi^2} \|t w(t) \|^2 \cdot \| \frac{dw(t)}{dt} \|^2
+$$
+
+---
+
+Explanation:
+
+(1)
+$$
+\frac{1}{j2\pi}\frac{d}{dt}x(t) \longleftrightarrow uX(u)
+$$
+(2)
+
+Norm is defined as:
+$$
+\|x\| = \sqrt{\langle x, x\rangle} \\
+\Rightarrow \|x\|^2 = \langle x, x\rangle
+$$
+Where $\langle x, x\rangle$ is the inner product, and:
+$$
+a(t) \longleftrightarrow A(u) \\
+b(t) \longleftrightarrow B(u) \\
+\langle a, b\rangle = \int a(t) b^*(t) dt \\
+\langle a, b\rangle = \langle A, B\rangle
+$$
+Where $b^*$ is the conjugation vector of $b$.
+
+---
+
+Now back to the proof...
+$$
+\sigma_t(w)\cdot\sigma_u(w) = \frac{1}{4\pi^2} \|t w(t) \|^2 \cdot \| \frac{dw(t)}{dt} \|^2 \\
+\geq \frac{1}{4\pi^2} \left[ \int tw(t) \frac{dw(t)}{\cancel{dt}} \cancel{dt} \right]^2 \\
+= \frac{1}{4\pi^2} \left[ \int\limits _{-\infin }^{+\infin} t\cdot d\left(\frac{w^2(t)}{2}\right)  \right]^2 \\
+= \frac{1}{4\pi^2}\left[\frac{tw^2(t)}{2}\Big|_{-\infin}^{+\infin}  - \int \frac{w^2(t)}{2}dt  \right] \\
+= \frac{1}{16\pi^2}
+$$
+
+---
+
+Explanation:
+
+(3)
+
+[Cauchy–Schwarz Inequality](https://en.wikipedia.org/wiki/Cauchy–Schwarz_inequality):
+$$
+\langle a,b \rangle = \|a\|\|b\|cos\theta \leq \|a\|\|b\|
+$$
+(4)
+
+Chain Rule:
+$$
+\int d(ab) = \int adb + \int bda \\
+\Rarr  \int adb = \int d(ab) - \int bda \\
+= ab - \int bda
+$$
+(5)
+
+We have some assumptions of w(t). First, w(t) is unit normalized. Second, w(t) is centered at zero. Third, w(t) decays fast enough.
+$$
+\frac{tw^2(t)}{2}\Big|_{-\infin}^{+\infin} = 0
+$$
+As w(t) decays fast enough (faster than $\sqrt{t}$), this term is zero.
+
+(6)
+$$
+\int \frac{w^2(t)}{2}dt = \frac{1}{2}
+$$
+As w(t) is unit normalized:
+$$
+\int |w(t)|^2 dt = \|w(t)\| = 1
+$$
+
+
