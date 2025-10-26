@@ -1,4 +1,4 @@
-const logger = require('hexo-log')();
+const logger = require('hexo-log').default();
 
 logger.info(`=======================================
  ██╗ ██████╗ █████╗ ██████╗ ██╗   ██╗███████╗

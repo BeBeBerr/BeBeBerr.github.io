@@ -1,63 +1,55 @@
-require('../includes/tasks/welcome');
-require('../includes/tasks/check_deps');
-require('../includes/tasks/check_config');
-require('../includes/generators/categories')(hexo);
-require('../includes/generators/category')(hexo);
-require('../includes/generators/tags')(hexo);
-require('../includes/generators/insight')(hexo);
-require('../includes/helpers/cdn')(hexo);
-require('../includes/helpers/config')(hexo);
-require('../includes/helpers/layout')(hexo);
-require('../includes/helpers/override')(hexo);
-require('../includes/helpers/page')(hexo);
-require('../includes/helpers/site')(hexo);
+// themes/icarus/scripts/index.js
+module.exports = function (hexo) {
+    // 统一加载器：兼容导出函数 / 导出 { register } / 纯副作用模块
+    function load(modPath) { const m = require(modPath); if (typeof m === 'function') return m(hexo); if (m && typeof m.register === 'function') return m.register(hexo); return m; }
 
-// Fix large blog rendering OOM
-const hooks = [
-    'after_render:html',
-    'after_post_render'
-]
-const filters = [
-    'hexoMetaGeneratorInject',
-    'externalLinkFilter'
-];
-hooks.forEach(hook => {
-    hexo.extend.filter.list()[hook]
-        .filter(filter => filters.includes(filter.name))
-        .forEach(filter => hexo.extend.filter.unregister(hook, filter));
-});
+    [
+        '../includes/tasks/welcome',
+        '../includes/tasks/check_deps',
+        '../includes/tasks/check_config',
+        '../includes/generators/categories',
+        '../includes/generators/category',
+        '../includes/generators/tags',
+        '../includes/generators/insight',
+        '../includes/helpers/cdn',
+        '../includes/helpers/config',
+        '../includes/helpers/layout',
+        '../includes/helpers/override',
+        '../includes/helpers/page',
+        '../includes/helpers/site',
+    ].forEach(load);
 
-// Debug helper
-hexo.extend.helper.register('console', function () {
-    console.log(arguments)
-});
-
-hexo.extend.helper.register('excerpt', function (post) {
-    var excerpt;
-    if (post.excerpt) {
-        //excerpt = post.excerpt.replace(/\<[^\>]+\>/g, '');
-        excerpt = post.excerpt;
-    } else {
-        //excerpt = post.content.replace(/\<[^\>]+\>/g, '').substring(0, 200);
-        var valueable_br = -1;
-        var br = -1;
-        var start = 0; // skip title
-        for (var idx = 0; idx < 2; idx++) {
-            br = post.content.indexOf('<p>', br+1);
-            if (br < 0) {
-                break;
-            } else {
-                if (idx == 0) {
-                    start = br;
-                }
-                valueable_br = br;
-            }
+    // Fix large blog rendering OOM —— 只在 hook 存在时才注销
+    const hooks = ['after_render:html', 'after_post_render'];
+    const toRemove = new Set(['hexoMetaGeneratorInject', 'externalLinkFilter']);
+    hooks.forEach(hook => {
+        const list = hexo.extend && hexo.extend.filter && hexo.extend.filter.list && hexo.extend.filter.list();
+        const arr = list && list[hook];
+        if (Array.isArray(arr)) {
+            arr
+                .filter(f => f && toRemove.has(f.name))
+                .forEach(f => hexo.extend.filter.unregister(hook, f));
         }
-        if (valueable_br < 0) {
-            excerpt = 0;
-        } else {
-            excerpt = post.content.substring(start, br);
-        }
-        return excerpt;
-    }
-});
+    });
+
+    // Debug helper
+    hexo.extend.helper.register('console', function () {
+        // 展开打印更清晰
+        // eslint-disable-next-line no-console
+        console.log(...arguments);
+    });
+
+    // 更稳健的 excerpt：取文章前两个 <p> 之间的内容；无则返回空串
+    hexo.extend.helper.register('excerpt', function (post) {
+        if (post && post.excerpt) return post.excerpt;
+
+        const html = (post && post.content) || '';
+        const first = html.indexOf('<p>');
+        if (first < 0) return '';
+        let second = html.indexOf('<p>', first + 3);
+        if (second < 0) second = html.length;
+        return html.substring(first, second);
+    });
+};
+
+module.exports(hexo);

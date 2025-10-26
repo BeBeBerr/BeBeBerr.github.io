@@ -1,8 +1,9 @@
 const fs = require('fs');
 const util = require('util');
 const path = require('path');
-const logger = require('hexo-log')();
+const logger = require('hexo-log').default();
 const yaml = require('js-yaml');
+const { DEFAULT_SCHEMA } = yaml;
 
 const { errors } = require('../common/utils');
 const rootSpec = require('../specs/config.spec');
@@ -22,7 +23,7 @@ if (!fs.existsSync(CONFIG_PATH)) {
 }
 
 const validator = new ConfigValidator(rootSpec);
-const config = yaml.safeLoad(fs.readFileSync(CONFIG_PATH));
+const config = yaml.load(fs.readFileSync(CONFIG_PATH, 'utf8'), { schema: DEFAULT_SCHEMA });
 try {
     validator.validate(config);
 } catch (e) {

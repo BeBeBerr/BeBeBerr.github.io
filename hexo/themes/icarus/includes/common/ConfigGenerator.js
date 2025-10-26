@@ -1,6 +1,6 @@
 const yaml = require('js-yaml');
-const Type = require('js-yaml/lib/js-yaml/type');
-const Schema = require('js-yaml/lib/js-yaml/schema');
+// 从顶层拿到 Type / Schema / DEFAULT_SCHEMA（v4 可用）
+const { Type, Schema, DEFAULT_SCHEMA } = yaml;
 
 const { is, descriptors } = require('./utils');
 const { doc, type, requires, defaultValue } = descriptors;
@@ -9,7 +9,7 @@ const UNDEFINED = Symbol('undefined');
 // output null as empty in yaml
 const YAML_SCHEMA = new Schema({
     include: [
-        require('js-yaml/lib/js-yaml/schema/default_full')
+        DEFAULT_SCHEMA
     ],
     implicit: [
         new Type('tag:yaml.org,2002:null', {

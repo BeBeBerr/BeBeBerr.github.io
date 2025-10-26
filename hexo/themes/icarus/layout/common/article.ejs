@@ -1,4 +1,4 @@
-<% post = post(); %>
+<% if (typeof post === 'function') { post = post(); } %>
 <div class="card">
     <% if (has_thumbnail(post)) { %>
     <div class="card-image">
