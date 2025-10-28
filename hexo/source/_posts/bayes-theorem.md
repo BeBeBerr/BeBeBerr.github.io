@@ -7,6 +7,8 @@ tags: Probability
 # 用概率论分析娘娘们的怀孕概率
 
 > AI 科普文章系列 —— 贝叶斯定律（Bayes's Theorem）
+>
+> B 站视频：https://www.bilibili.com/video/BV1Cz4y1b7nN/?spm_id_from=333.337.search-card.all.click
 
 <img src="/img/bayes/chenqie.webp" alt="chenqie" style="zoom:25%;" />
 
