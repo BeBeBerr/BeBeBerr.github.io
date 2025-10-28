@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 8.0.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>CS336 Study Note - Assignment1 - Luyuan&#39;s Blog</title>
+
+
+    <meta name="description" content="CS336 Study Note - Assignment 1Stanford CS336 学习笔记 作业 1 主要涵盖以下几个方面：  BPE tokenizer 从头搭一个 Transformer LM，包括要手写 Multi-head attention，RoPE 训练相关的 AdamW 优化器，top-p 采样等  总体来说工作量还是比较大的。我的精力主要放在理解原理和保证代码的正确性上，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS336 Study Note - Assignment1">
+<meta property="og:url" content="http://bebeberr.github.io/2025/10/25/cs336-assignment-1/index.html">
+<meta property="og:site_name" content="Luyuan&#39;s Blog">
+<meta property="og:description" content="CS336 Study Note - Assignment 1Stanford CS336 学习笔记 作业 1 主要涵盖以下几个方面：  BPE tokenizer 从头搭一个 Transformer LM，包括要手写 Multi-head attention，RoPE 训练相关的 AdamW 优化器，top-p 采样等  总体来说工作量还是比较大的。我的精力主要放在理解原理和保证代码的正确性上，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://bebeberr.github.io/images/og_image.png">
+<meta property="article:published_time" content="2025-10-25T23:31:29.000Z">
+<meta property="article:modified_time" content="2025-10-28T00:04:22.565Z">
+<meta property="article:author" content="Luyuan Wang">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://bebeberr.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/icon.jpg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/icon.jpg" alt="CS336 Study Note - Assignment1" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+                <a class="navbar-item"
+                href="/contact">Contact</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Personal Website" href="http://www.luyuan.wang">
+                        
+                        <i class="fas fa-cloud"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2025-10-25T23:31:29.000Z">2025-10-25</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    29 minutes read (About 4345 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                CS336 Study Note - Assignment1
+            
+        </h1>
+        <div class="content">
+            <h1 id="CS336-Study-Note-Assignment-1"><a href="#CS336-Study-Note-Assignment-1" class="headerlink" title="CS336 Study Note - Assignment 1"></a>CS336 Study Note - Assignment 1</h1><p>Stanford CS336 学习笔记</p>
+<p>作业 1 主要涵盖以下几个方面：</p>
+<ol>
+<li>BPE tokenizer</li>
+<li>从头搭一个 Transformer LM，包括要手写 Multi-head attention，RoPE</li>
+<li>训练相关的 AdamW 优化器，top-p 采样等</li>
+</ol>
+<p>总体来说工作量还是比较大的。我的精力主要放在理解原理和保证代码的正确性上，由于学习时间有限，像性能调优以及跑实验对比参数等就略过了。写完这次作业收获很大，这篇文章用来记录下我当时比较 confused 的点，以及一些 insight。</p>
+<h2 id="BPE"><a href="#BPE" class="headerlink" title="BPE"></a>BPE</h2><p>BPE 属于一听原理都懂，但是真的动手写还是有些挑战的。我觉得 BPE 可能是作业 1 里最花时间的一部分了。这个算法整体是这样工作的：</p>
+<ol>
+<li>初始化 vocabulary，要把 special token 和 0-255 这种单字节的所有可能值放进去。这样任意的字符串都能编码，即使有 BPE 训练时没见过的表示。比如，用户输入了一个特殊的字符，这个字符在训练集里从未出现过。</li>
+<li>把输入的字符串用 unicode encode 成 a list of bytes。注意 unicode 是可变长的编码，一个字符可能占多个字节。</li>
+<li>special token 永远不能再分割。为了方便，还会做 pre-tokenize，大概就是用一个正则尽量按单词划分。</li>
+<li>以 pre-tokenize 分割的“单词”里，每两个 byte 为一组，统计频率。例如 [32, 12, 5] 就要分别统计 (32, 12) 和 (12, 5) 出现的频率。Pre-tokenize 之后就不考虑跨“单词”的 pair 了。分割单词还有个好处，就是可以统计单词词频，然后用单词内 byte pair 的频率乘单词词频就能统计全文的 byte pair 频率，提高效率。</li>
+<li>选择频率最高的 byte pair，如果有相同的，按字典序 break tie。讲这个合并后的 byte pair 作为新的 vocab，并赋予 token id。把全文中所有出现该 pair 的地方用心的 token 替代。例如 [32, 12, 5] 中，假设 (32, 12) 被替换成了 258，那就变成 [258, 5]。</li>
+<li>重复这个过程。过程中，vocabulary 会逐渐增多，直到达到 vocab_size 的 limit 后停止。</li>
+<li>保存 vocabulary （即 bytes -&gt; token id），以及 merge 的顺序。保存顺序是为了 encode 的时候能按照训练时同样的顺序合并。否则，假如 (32, 12) 和 (12, 5) 都在 vocab 里，[32, 12, 5] 应该先合并哪个呢？答案是，如果训练的时候 (12, 5) 先合并的，encode 的时候也应该先合并 (12, 5)。</li>
+</ol>
+<h3 id="Byte-Level-Pair"><a href="#Byte-Level-Pair" class="headerlink" title="Byte Level Pair?"></a>Byte Level Pair?</h3><p>顾名思义，我一开始认为所有的 pair 都是在 byte level 操作的。这个命名有点误导性。真正操作应该是在 token (id) level 的。</p>
+<p>假设输入的字符串转化成 byte 是 [32, 12, 5]。我们有一个 special token EOS。那么，我们可以这样初始化：</p>
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Token ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EOS （special token 是不可分割的整体）</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0 （单 byte，value 是 0）</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>那转化成 token，就应该是 [33, 13, 6]，注意这里就是 token ID 了，也就是我们可能会看到 [1000, 5000, 2] 这样的 list。然后所有的 merge 和替换，应该都在 token level 进行。</p>
+<h3 id="Bytes-gt-ID-or-ID-gt-Bytes？"><a href="#Bytes-gt-ID-or-ID-gt-Bytes？" class="headerlink" title="Bytes -&gt; ID or ID -&gt; Bytes？"></a>Bytes -&gt; ID or ID -&gt; Bytes？</h3><p>两个方向的映射都需要，可以存一个，推断出另一个。</p>
+<h3 id="字典序（lexicographically-greater-pair）"><a href="#字典序（lexicographically-greater-pair）" class="headerlink" title="字典序（lexicographically greater pair）"></a>字典序（lexicographically greater pair）</h3><p>我当时有个疑问，break tie 时用的字典序是应该从 bytes 之间比较，还是转换成 character 再比较？毕竟字典序听起来像是 character 之间的比较。其实应该是 byte 的，毕竟两个 byte pair 都不一定能组成合法的 unicode character。</p>
+<p>我觉得 lexicographically order 只是形容排序方法，即先比第一个，再比第二个（像字典的排序），和字符不字符没关系，两个整型数组也能比。</p>
+<h3 id="Yield"><a href="#Yield" class="headerlink" title="Yield"></a>Yield</h3><p>如果想要返回一个 iterable，可以用 yield 关键字。这个我平时用的比较少，我的思维还停留在 coroutine 的时候 CPU yield :)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encode_iterable</span>(<span class="params">self, iterable: Iterable[<span class="built_in">str</span>]</span>) -&gt; Iterator[<span class="built_in">int</span>]:</span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> iterable:</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> <span class="variable language_">self</span>.encode(chunk)</span><br></pre></td></tr></table></figure>
+<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><p>以下是一些可以用来优化性能的地方（我就没有实现了）。</p>
+<p>第一当然是多线程。在统计词频，包括 encode，和替换 merge pair 的时候，都可以分配给多个线程处理再汇总。</p>
+<p>在统计频率之后，每次 merge 后并不需要全量再统计一遍新的频率。可以通过 track merge 产生的位置，就可以只更新受影响的词频。其余地方就不用再算一遍了。</p>
+<p>维护最大值可以用一个 heap，就像 leetcode 经典的 top-k problems。</p>
+<p>Encode 的时候，因为要按照 merges 的顺序合并，而不是简单的 bytes 先后合并，一个朴素的想法是从前往后遍历 merges。但这样很慢。一个更快的实现是，建立一个 merges_rank，即从 merged pair 到它在 merges 数组里位置的映射。rank 越小，优先级越高。之后遍历所有 pair，找到 rank 最小的 pair 合并。使用了这个 trick，本来需要跑几小时的代码几秒钟就完成了。</p>
+<h2 id="Transformer-LM"><a href="#Transformer-LM" class="headerlink" title="Transformer LM"></a>Transformer LM</h2><p>照着公式写 PyTorch 还是比手写 BPE 容易不少的。这里记录一下一些我已经生疏了的用法。</p>
+<h3 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter"></a>nn.Parameter</h3><p>以前我一直不知道 nn.Param 有什么用，感觉直接用 Python 的 class property 不就行了吗，为什么要包一层。毕竟，直接使用也会参与梯度计算。其实有两方面作用：</p>
+<ol>
+<li>用 nn.Parameter 包裹后，就自动变成了 named param。在 load_state_dict 之类的时候，变量名就是 key。</li>
+<li>会出现在 model.parameters() 里，优化器就可以直接更新它。否则即使有 grad，优化器也不会给它更新。</li>
+</ol>
+<h3 id="Advanced-Indexing"><a href="#Advanced-Indexing" class="headerlink" title="Advanced Indexing"></a>Advanced Indexing</h3><p>当 index 是一个 tensor 的时候，就会触发 advanced indexing。普通的索引只能找连续的切片。</p>
+<p>比如在实现 Embedding class 的时候就能用到。Embedding 的 weight 其实是一个 (vocab_size, embedding_dim) 的 tensor。这里 embedding_dim 也就是 d_model。说白了，就是给一个 token id，返回一个 d_model size 的 embedding vector 的字典。当输入是 batch_size 乘 seq_length 个 token id 的时候，我们不需要写循环一个一个的取 embedding，而是用 advanced indexing 就可以批量取出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Embedding</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_embeddings, embedding_dim, device=<span class="literal">None</span>, dtype=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        weight = torch.zeros((num_embeddings, embedding_dim), device=device, dtype=dtype)</span><br><span class="line">        torch.nn.init.trunc_normal_(weight, mean=<span class="number">0</span>, std=<span class="number">1</span>, a=-<span class="number">3</span>, b=<span class="number">3</span>)</span><br><span class="line">        <span class="variable language_">self</span>.weight = torch.nn.Parameter(weight)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, token_ids: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">        out = <span class="variable language_">self</span>.weight[token_ids] <span class="comment"># advanced indexing</span></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h3 id="Numerical-Stability"><a href="#Numerical-Stability" class="headerlink" title="Numerical Stability"></a>Numerical Stability</h3><p>这个其实还蛮重要的。如果不用上一些 trick 保证 numerical stable，那么可能产生 NaN 或者 INF。我还在实现 temperature scaled softmax 的时候忘记使用 trick，导致 CUDA 崩溃，报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA error: device-side assert triggered</span><br></pre></td></tr></table></figure>
+<p>找了半天发现是因为算 softmax 时不稳定导致的。这个还挺难 debug 的。</p>
+<p>总结下来，这个作业里有两处要注意，一个时 softmax，一个是 sigmoid，都有一些 trick 来让数值更稳定。</p>
+<h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>为什么 softmax 运算要用 exp，而不是直接用线性归一化呢？有以下三个原因：</p>
+<ol>
+<li>logits 可能有负数，出现负概率就不对了。用 exp 可以把数值都缩放到 0 至正无穷。</li>
+<li>exp 的导数简单，梯度平滑，方便训练。</li>
+<li>指数能放大差距，让大的数占据主导（所以叫 soft-max）。</li>
+</ol>
+<h3 id="RoPE"><a href="#RoPE" class="headerlink" title="RoPE"></a>RoPE</h3><p>由于 attention 操作是位置无关的，所以需要引入位置编码来引入 token 的位置信息，因为显然“我爱你”和“你爱我”的含义是非常不同的。为什么 self attention 是位置无关的呢？我们看它的公式：<br>$$<br>Attention(Q, K, V) = softmax(\frac{Q^TK}{\sqrt{d_k}})V<br>$$<br>注意这里 QKV 都是 (…, seq_len, d_model) 维度的。假设输入是 [x1, x2, x3]，输出是 [y1, y2, y3]，那么如果交换 x1, x3 的位置，得到的 y1’ 和 y3’ 实际上是没变的，只是位置跟着做了同样的改变，即输入变为 [x3, x2, x1] 输出变为 [y3, y2, y1]。换句话说，这是 permutation equivalent 的操作。即 token 之间注意力的相对大小没有改变，这不符合直觉。</p>
+<p>举例来说，“我打你很痛”，和“你打我很痛”，前者应该的”你“和”痛“应该注意力很高；后者应该是”我“和”痛“注意力高。如果注意力大小一致的话，模型就感知不到是谁痛这层的信息了。</p>
+<p>RoPE 是一种相对位置编码，<a href="https://zhuanlan.zhihu.com/p/667864459">这篇文章</a>讲解的很好。对位置 i 的高维向量，两两一组做二维旋转变化来赋予位置信息。从公式来看：<br>$$<br>R_k^i =<br>\begin{bmatrix}<br>cos(\theta_k^i) &amp; -sin(\theta_k^i) \<br>sin(\theta_k^i) &amp; cos(\theta_k^i)<br>\end{bmatrix}<br>$$<br>可以看到，旋转的角度即取决于该向量在 sequence 里的位置 i，又取决于维度 k。这样可以让模型获得多尺度的位置感知能力，从而学会在不同的维度上学习不同的东西。在低维度，旋转变化慢，适合学长距离关系；在高维度，旋转快，适合学短距离关系。</p>
+<p>为什么说是相对位置编码呢？因为考虑两个位置的向量，一个旋转了 p 度，另一个旋转了 q 度，他们相对旋转了 p - q 度。对于注意力机制来说，有如下性质（尖括号代表注意力的 dot product 运算）：<br>$$<br>\langle R_{\theta_p} q,\, R_{\theta_q} k \rangle = \langle q,\, R_{\theta_{p - q}} k \rangle<br>$$<br>在 PyTorch 实现的过程中，我遇到了以下几个有意思的点：</p>
+<ol>
+<li>可以利用 <code>register_buffer</code> 来把参数添加为模型的一部分，但是不参与优化（不进入 parameters）。虽然不参与优化，但是可以跟随 <code>.to(device)</code> 移动，也可以 load_state 时保存。</li>
+<li><code>repeat_interleave</code> 在构造两两重复的 cos 和 sin 值的时候很实用。</li>
+<li>用 <code>x_for_sin[..., 0::2] = -x[..., 1::2]</code> 可以间隔地给 x 加上负号。</li>
+</ol>
+<h3 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h3><p>在看 attention 的公式的时候，我产生了一个疑问：QK 的点积是在算相似度，这很好理解，但是为什么要除以根号下 d_k？这是因为 QK 是很多个随机变量的乘积的和。虽然期望为 0，但是方差是 d_k。下面解释为什么方差是 d_k：</p>
+<p>我们假设 Q 和 K 里每个元素都是 iid 的，期望为 0，方差为 1。内积 s = QK 的方差为：<br>$$<br>Var(s) = E(s^2) - (E(s))^2 = E(s^2)<br>$$<br>因为 E(s) 是 0。展开：<br>$$<br>E(s^2) = E((\sum q_ik_i)^2)<br>$$<br>展开这个多项式的平方，把 E 换到里面，就有：<br>$$<br>E((\sum q_ik_i)^2) = \sum_i E((q_ik_i)^2) + \sum_{i \neq j} E(q_ik_iq_jk_j)<br>$$<br>因为 iid 且期望为 0，因此第二项为 0。又因为 q 和 k 独立，因此：<br>$$<br>E((q_ik_i)^2) = E(q_i^2) \cdot E(k_i^2)<br>$$<br>由于 Var(q) = 1，因此有 Var(q) = E(q^2) - E(q)^2 = 1，所以 E(q^2) = 1。那么：<br>$$<br>E((q_ik_i)^2) = 1 \<br>Var(s) = \sum_i E((q_ik_i)^2) = \sum_{i}^{d_k}1 =  d_k<br>$$<br>所以，<br>$$<br>Var(\frac{Q^TK}{\sqrt{d_k}}) = (\frac{1}{\sqrt{d_k}})^2 \cdot Var(Q^TK) = \frac{1}{d_k} \cdot d_k = 1<br>$$<br>这样，就把整体的方差从 d_k 转化成了 1，避免了数值可能过大的问题，便于优化。</p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><h3 id="Cross-Entropy-Loss"><a href="#Cross-Entropy-Loss" class="headerlink" title="Cross Entropy Loss"></a>Cross Entropy Loss</h3><p>在 Transformer LM 中，Cross Entropy Loss 的定义如下：<br>$$<br>l(\theta; D) = \frac{1}{|D|m} \sum_{x \in D} \sum_{i=1}^{m}-\mathrm{log} p_{\theta}(x_{i+1}|x_{1:i})<br>$$<br>其中，D 是训练集，m 是 seq_len，p 代表给定前序的 token，预测下一个 token 的概率，即模型输出的 logits 过 softmax 之后算出的概率。加和求平均值的概念比较好理解，我的疑问是，为什么这就是 cross entropy？</p>
+<p>首先回顾下信息论中 entropy 的定义：<br>$$<br>H(P) = -\sum_xP(x)\mathrm{log}P(x)<br>$$<br>熵用来衡量一个分布的不确定度或信息量，即概率小（惊讶程度越高），熵越大。所以要用每种 x 的可能取值的概率做加权。取 -log 作为信息量的衡量，是因为 log 可以把多个随机变量的概率相乘变成相加，便于计算；而负号让大的概率变成小的信息量。</p>
+<p>交叉熵用来衡量两个概率分布的差距：<br>$$<br>H(P, Q) = -\sum_{x}P(x)\mathrm{log}Q(x)<br>$$<br>其中 P 是真实分布（ground truth），Q 是模型的预测（softmax 概率）。</p>
+<p>P 经常是 one-hot 编码，所以只有正确的时候是 1，其他所有 case 都是 0。换句话说，CE loss 只在意正确的分布大小。在我们这里，传入的 targets 是正确的 token id (index)，所以可以用 <code>torch.gather</code> 函数收集正确 index 上的 logits 值。</p>
+<p>这里也有一些数值稳定性的优化，包括减去最大值，以及 cancel out log 和 exp，等。</p>
+<h3 id="AdamW"><a href="#AdamW" class="headerlink" title="AdamW"></a>AdamW</h3><p>AdamW 是一个有状态的优化器，它可以自适应学习率，让每个参数都能独立调节步长。同时还有 weight decay，防止参数过大。这其中涉及到估计梯度的一阶矩 (first moment) 和二阶矩 (second moment)。一阶矩是梯度的期望，即梯度的平均方向，即动量。二阶矩是梯度平方的期望，即波动大小。</p>
+<p>在估计一二阶矩的时候，采用的是指数加权平均（EMA）的 online estimation。这是对历史梯度的加权平均，即越近的梯度权重越大，越老的梯度权重呈指数衰减。</p>
+<h3 id="Next-Token-Prediction"><a href="#Next-Token-Prediction" class="headerlink" title="Next Token Prediction"></a>Next Token Prediction</h3><p>平时总说 LM 就是预测下一个词，这让我之前产生了一个印象，即模型的输入应该是 tokens，如 [x1, x2, x3]，输出应该是下一个 token，即 y = x4。其实这是不对的。模型的输出，是对每一个位置的下一个词的预测。即，模型的输出应该是 [y1, y2, y3]，对应的 ground truth 应该是 [x2, x3, x4]。只不过在 test time，我们只取出最后一个 token 的预测。</p>
+<p>那因果性（causality）怎么保证呢？训练时，如果输入输出 pair 是 ([x1, x2, x3], [x2, x3, x4])，模型不是已经提前看到了 x1 的下一个 token 是 x2 了吗？答案是，在 attention 的计算中， 我们传入了 causal mask 来过滤掉未来的 token。</p>
+<p>具体来说，在计算 attention 的时候，我们算出来的 attention score 会在违反因果性的地方（mask）被设置成 -inf。这样通过 softmax 之后会变成 0，从而让模型无法在该位置看到后面的信息。再具体一点，每个 token 只能和左侧的 token 算出 attention，和右侧的永远会被重置成 0。</p>
+<p>既然 attention 的因果性保证了，那网络的其他部分会不会破坏掉因果性呢？这是不会的。拆解来看，embedding 层，encoding，FFN，RMSNorm，Residual，全部都是在每个位置独立计算的，不会横跨 token；即他们都把 seq_len 维度当作 batch 维度对待。Attention 是唯一一个例外。</p>
+<h2 id="Text-Generation"><a href="#Text-Generation" class="headerlink" title="Text Generation"></a>Text Generation</h2><h3 id="Decoding-amp-Top-P-Sampling"><a href="#Decoding-amp-Top-P-Sampling" class="headerlink" title="Decoding &amp; Top-P Sampling"></a>Decoding &amp; Top-P Sampling</h3><p>当我们有了一个能 predict next token 的模型，怎么 decode 出文本呢？我的直觉是：这还不简单吗，找到概率最大的 token id，然后查询 vocab 中对应的 bytes 不就好了。这被称为 greedy decoding，是可行的，但是让 model 失去了生成多样性回答的能力。更好的办法是根据概率采样。</p>
+<p>Decoding 有两个 trick，第一个是 temperature scaling。其实就是算 softmax 的时候引入一个额外的温度参数。温度高，就把概率的差距改小了，那模型的输出就更随机一些。温度低，就退化成了 one-hot，接近 greedy decoding。</p>
+<p>另外就是 top-p 了。原理很简单，就是把概率排序，找到概率最大的几个元素，使他们的概率和不超过 p。之后只在这几个大概率的 token 中采样。</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link-link" href="/tags/Deep-Learning/" rel="tag">Deep Learning</a>, <a class="has-link-grey -link-link" href="/tags/LLM/" rel="tag">LLM</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2023/11/27/uiautomator-dynamic/">
+                <span class="level-item">A crazy way to dump dynamic views with UIAutomator</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/icon.jpg" alt="Luyuan Wang">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Luyuan Wang
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Empty Stack Engineer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Beijing</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            108
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            0
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            65
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="http://www.wangluyuan.cc" target="_blank" rel="noopener">
+                Visit My Website</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/BeBeBerr">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Personal Website" href="http://www.wangluyuan.cc">
+                
+                <i class="fas fa-cloud"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linked In" href="https://www.linkedin.com/in/luyuanwang/">
+                
+                <i class="fab fa-linkedin"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Weibo" href="https://weibo.com/BeBeBerr">
+                
+                <i class="fab fa-weibo"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Email" href="mailto:mail@luyuan.wang">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Links
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="http://www.luyuan.wang" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Personal Website</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.luyuan.wang</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="http://biorobotics.ri.cmu.edu" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Biorobotics Lab</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">biorobotics.ri.cmu.edu</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://www.bingyan.net" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Bingyan Studio</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">www.bingyan.net</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Tag Cloud
+        </h3>
+        <a href="/tags/AD/" style="font-size: 10px;">AD</a> <a href="/tags/AFNetworking/" style="font-size: 11.67px;">AFNetworking</a> <a href="/tags/Algorithm/" style="font-size: 16.67px;">Algorithm</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/AutoLayout/" style="font-size: 10px;">AutoLayout</a> <a href="/tags/C-C/" style="font-size: 13.33px;">C/C++</a> <a href="/tags/CNN/" style="font-size: 10px;">CNN</a> <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/Code-Coverage/" style="font-size: 11.67px;">Code Coverage</a> <a href="/tags/Computer-Graphics/" style="font-size: 10px;">Computer Graphics</a> <a href="/tags/Computer-Organization/" style="font-size: 11.67px;">Computer Organization</a> <a href="/tags/Computer-Vision/" style="font-size: 16.67px;">Computer Vision</a> <a href="/tags/CoreAnimation/" style="font-size: 10px;">CoreAnimation</a> <a href="/tags/CoreBluetooth/" style="font-size: 11.67px;">CoreBluetooth</a> <a href="/tags/DSP/" style="font-size: 13.33px;">DSP</a> <a href="/tags/Deep-Learning/" style="font-size: 20px;">Deep Learning</a> <a href="/tags/Design-Patterns/" style="font-size: 11.67px;">Design Patterns</a> <a href="/tags/First-Aid/" style="font-size: 10px;">First-Aid</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/Front-End/" style="font-size: 10px;">Front End</a> <a href="/tags/Gesture/" style="font-size: 11.67px;">Gesture</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/Instruments/" style="font-size: 10px;">Instruments</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JSCore/" style="font-size: 11.67px;">JSCore</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kibana/" style="font-size: 11.67px;">Kibana</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/LLVM/" style="font-size: 15px;">LLVM</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Machine-Learning/" style="font-size: 11.67px;">Machine Learning</a> <a href="/tags/MultiThreading/" style="font-size: 11.67px;">MultiThreading</a> <a href="/tags/OKR/" style="font-size: 11.67px;">OKR</a> <a href="/tags/Obj-C/" style="font-size: 16.67px;">Obj-C</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Operating-System/" style="font-size: 10px;">Operating System</a> <a href="/tags/PlutoSDR/" style="font-size: 10px;">PlutoSDR</a> <a href="/tags/Point-Cloud/" style="font-size: 10px;">Point Cloud</a> <a href="/tags/Probability/" style="font-size: 10px;">Probability</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/PyTorch/" style="font-size: 11.67px;">PyTorch</a> <a href="/tags/Python/" style="font-size: 16.67px;">Python</a> <a href="/tags/RaspberryPi/" style="font-size: 10px;">RaspberryPi</a> <a href="/tags/Robotics/" style="font-size: 11.67px;">Robotics</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDR/" style="font-size: 11.67px;">SDR</a> <a href="/tags/SLAM/" style="font-size: 16.67px;">SLAM</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Swift/" style="font-size: 11.67px;">Swift</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/X11/" style="font-size: 10px;">X11</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/dyld/" style="font-size: 10px;">dyld</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gem5/" style="font-size: 10px;">gem5</a> <a href="/tags/iOS/" style="font-size: 18.33px;">iOS</a> <a href="/tags/macOS/" style="font-size: 13.33px;">macOS</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/perf/" style="font-size: 10px;">perf</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2025-10-25T23:31:29.000Z">2025-10-25</time></div>
+                    <a href="/2025/10/25/cs336-assignment-1/" class="title has-link-black-ter is-size-6 has-text-weight-normal">CS336 Study Note - Assignment1</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-11-28T06:47:47.000Z">2023-11-27</time></div>
+                    <a href="/2023/11/27/uiautomator-dynamic/" class="title has-link-black-ter is-size-6 has-text-weight-normal">A crazy way to dump dynamic views with UIAutomator</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-05-16T18:39:46.000Z">2023-05-16</time></div>
+                    <a href="/2023/05/16/bayes-theorem/" class="title has-link-black-ter is-size-6 has-text-weight-normal">用概率论分析娘娘们的怀孕概率</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2023-01-24T07:01:37.000Z">2023-01-23</time></div>
+                    <a href="/2023/01/23/c-try-catch/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Try-Catch Segmentation Fault in C</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2022-12-24T07:03:08.000Z">2022-12-23</time></div>
+                    <a href="/2022/12/23/torch-polar-coord/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Faster WarpPolar with PyTorch and GPU</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+        <!-- <div class="column-right-shadow is-hidden-widescreen "> -->
+        <div class="column-right-shadow  ">
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2025/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2025</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2023/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2023</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2023/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2023</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2023/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2023</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/09/">
+                <span class="level-start">
+                    <span class="level-item">September 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2022/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2022</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">September 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/05/">
+                <span class="level-start">
+                    <span class="level-item">May 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/10/">
+                <span class="level-start">
+                    <span class="level-item">October 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/09/">
+                <span class="level-start">
+                    <span class="level-item">September 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/08/">
+                <span class="level-start">
+                    <span class="level-item">August 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/07/">
+                <span class="level-start">
+                    <span class="level-item">July 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AD/">
+                        <span class="tag">AD</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AFNetworking/">
+                        <span class="tag">AFNetworking</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Algorithm/">
+                        <span class="tag">Algorithm</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Animation/">
+                        <span class="tag">Animation</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/AutoLayout/">
+                        <span class="tag">AutoLayout</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/C-C/">
+                        <span class="tag">C/C++</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CNN/">
+                        <span class="tag">CNN</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CocoaPods/">
+                        <span class="tag">CocoaPods</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Code-Coverage/">
+                        <span class="tag">Code Coverage</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Graphics/">
+                        <span class="tag">Computer Graphics</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Organization/">
+                        <span class="tag">Computer Organization</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Computer-Vision/">
+                        <span class="tag">Computer Vision</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CoreAnimation/">
+                        <span class="tag">CoreAnimation</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/CoreBluetooth/">
+                        <span class="tag">CoreBluetooth</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/DSP/">
+                        <span class="tag">DSP</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Deep-Learning/">
+                        <span class="tag">Deep Learning</span>
+                        <span class="tag is-grey">9</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Design-Patterns/">
+                        <span class="tag">Design Patterns</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/First-Aid/">
+                        <span class="tag">First-Aid</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Flutter/">
+                        <span class="tag">Flutter</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Front-End/">
+                        <span class="tag">Front End</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Gesture/">
+                        <span class="tag">Gesture</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/GitHub/">
+                        <span class="tag">GitHub</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Instruments/">
+                        <span class="tag">Instruments</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Interview/">
+                        <span class="tag">Interview</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JSCore/">
+                        <span class="tag">JSCore</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Java/">
+                        <span class="tag">Java</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/JavaScript/">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Kibana/">
+                        <span class="tag">Kibana</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/LLM/">
+                        <span class="tag">LLM</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/LLVM/">
+                        <span class="tag">LLVM</span>
+                        <span class="tag is-grey">4</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Layout/">
+                        <span class="tag">Layout</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Linux/">
+                        <span class="tag">Linux</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Machine-Learning/">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/MultiThreading/">
+                        <span class="tag">MultiThreading</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/OKR/">
+                        <span class="tag">OKR</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Obj-C/">
+                        <span class="tag">Obj-C</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/OpenCV/">
+                        <span class="tag">OpenCV</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Operating-System/">
+                        <span class="tag">Operating System</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/PlutoSDR/">
+                        <span class="tag">PlutoSDR</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Point-Cloud/">
+                        <span class="tag">Point Cloud</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Probability/">
+                        <span class="tag">Probability</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Promise/">
+                        <span class="tag">Promise</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Push/">
+                        <span class="tag">Push</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/PyTorch/">
+                        <span class="tag">PyTorch</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RaspberryPi/">
+                        <span class="tag">RaspberryPi</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Robotics/">
+                        <span class="tag">Robotics</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RunLoop/">
+                        <span class="tag">RunLoop</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/SDR/">
+                        <span class="tag">SDR</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/SLAM/">
+                        <span class="tag">SLAM</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/SQLite/">
+                        <span class="tag">SQLite</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Swift/">
+                        <span class="tag">Swift</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/UITableView/">
+                        <span class="tag">UITableView</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/VSCode/">
+                        <span class="tag">VSCode</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/WebGL/">
+                        <span class="tag">WebGL</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/X11/">
+                        <span class="tag">X11</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Xcode/">
+                        <span class="tag">Xcode</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/dyld/">
+                        <span class="tag">dyld</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ffmpeg/">
+                        <span class="tag">ffmpeg</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/gem5/">
+                        <span class="tag">gem5</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/iOS/">
+                        <span class="tag">iOS</span>
+                        <span class="tag is-grey">6</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/macOS/">
+                        <span class="tag">macOS</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/misc/">
+                        <span class="tag">misc</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/network/">
+                        <span class="tag">network</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/perf/">
+                        <span class="tag">perf</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/icon.jpg" alt="CS336 Study Note - Assignment1" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2025 Luyuan Wang.&nbsp;
+                Powered by <a href="http://www.luyuan.wang" target="_blank" rel="noopener">luyuan.wang</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Personal Website" href="http://www.luyuan.wang">
+                        
+                        <i class="fas fa-cloud"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://bebeberr.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
